@@ -1,4 +1,4 @@
-# Prompter Estúdio
+# Prompter Studio
 
 Teleprompter para gravação, com espelhamento para teleprompter de vidro.
 
