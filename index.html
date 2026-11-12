@@ -36,7 +36,7 @@
 /* Telegron. Feito para iPhone e Android de ponta: título grande, lista em vez de grade,
    ações embaixo no alcance do polegar, teclas com relevo, vidro sobre o texto do prompter.
    Tema escuro ou claro (automático segue o celular); a tela de leitura é sempre a do roteiro. */
-:root,#prompter,:root[data-theme="light"] .feature .f-row{
+:root,#prompter,#review,:root[data-theme="light"] .feature .f-row{
   --bg:#09090b; --surface:#141417; --surface-2:#1c1c20; --surface-3:#28282d; --field:#131316;
   --hair:rgba(255,255,255,.075); --hair-2:rgba(255,255,255,.13);
   --fg:#f5f5f7; --fg-2:rgba(235,235,245,.64); --fg-3:rgba(235,235,245,.38);
@@ -282,6 +282,29 @@ label[for]{cursor:pointer}
 .play{display:grid;place-items:center;width:68px;height:68px;border-radius:50%;flex:none}
 .play svg{width:28px;height:28px}
 #hud.faded .hud-top,#hud.faded .hud-bottom{opacity:0;pointer-events:none}
+/* modo câmera: a câmera ocupa a tela, o roteiro passa numa faixa no alto, perto da lente */
+#camView{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1);background:#000}
+#prompter.cam #stage{bottom:auto;height:calc(var(--st) + 40%);transform:none!important;background:linear-gradient(to bottom,rgba(0,0,0,.8) 0%,rgba(0,0,0,.62) 72%,rgba(0,0,0,0) 100%)}
+#prompter.cam #content{text-shadow:0 1px 4px rgba(0,0,0,.85)}
+#prompter.cam .hud-top,#prompter.cam #pMirror{display:none}
+#pCamOff{display:none}
+#prompter.cam #pCamOff{display:flex}
+#prompter.cam .play{background:rgba(0,0,0,.25);border:4px solid #fff;box-shadow:0 2px 10px rgba(0,0,0,.4);text-shadow:none;filter:none}
+#prompter.cam .play svg{display:none}
+#prompter.cam .play::after{content:"";width:48px;height:48px;border-radius:50%;background:#ff3b30;transition:width .2s,height .2s,border-radius .2s}
+#prompter.cam.recording .play::after{width:26px;height:26px;border-radius:7px}
+.rec-info{display:none;align-items:center;gap:8px;width:max-content;margin:0 auto 10px;padding:6px 12px;border-radius:99px;background:rgba(0,0,0,.6);color:#fff;font-size:13.5px;font-weight:600;font-variant-numeric:tabular-nums}
+#prompter.cam .rec-info{display:flex}
+.rec-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.45)}
+#prompter.recording .rec-dot{background:#ff3b30}
+.rec-q{color:rgba(255,255,255,.72);font-weight:500}
+#review{position:fixed;inset:0;z-index:50;background:#000;display:flex;align-items:center;justify-content:center;padding:calc(var(--st) + 14px) var(--gr) calc(var(--sb) + 16px) var(--gl);color:#f5f5f7}
+.rv{width:100%;max-width:480px;max-height:100%;display:flex;flex-direction:column;gap:12px}
+#rvVideo{width:100%;min-height:0;flex:1 1 auto;max-height:64vh;border-radius:18px;background:#111;object-fit:contain}
+.rv-info{text-align:center;font-size:13.5px;color:rgba(235,235,245,.68);font-variant-numeric:tabular-nums}
+.rv-row{display:flex;gap:10px}
+.rv-row .btn{flex:1;padding:0 10px;font-size:15px}
+#review [data-armed]{color:#ff5d52}
 @media (max-width:340px){.speed-lbl{display:none}.cb{width:48px}.ctl{gap:4px}.play{width:60px;height:60px}}
 @media (max-width:310px){.cb{width:42px;font-size:0;gap:0}}
 /* celular deitado no suporte: controles numa linha só, sobrando altura para o texto */
@@ -468,6 +491,8 @@ label[for]{cursor:pointer}
   <symbol id="i-keyboard" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><path d="M6.5 10h.01M10 10h.01M13.5 10h.01M17 10h.01M8 14h8"/></g></symbol>
   <symbol id="i-trash" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 7h15"/><path d="M9.4 7V5.6c0-.9.7-1.6 1.6-1.6h2c.9 0 1.6.7 1.6 1.6V7"/><path d="M6.3 7l.8 11.3c.1 1.2 1 2.2 2.2 2.2h5.4c1.2 0 2.1-1 2.2-2.2L17.7 7"/><path d="M10.2 11v5.5M13.8 11v5.5"/></g></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-cam" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6.5" width="12.5" height="11" rx="2.6"/><path d="m15.5 10.6 4.1-2.5c.6-.4 1.4.1 1.4.8v6.2c0 .7-.8 1.2-1.4.8l-4.1-2.5"/></g></symbol>
+  <symbol id="i-cam-off" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6.5h3c1.4 0 2.5 1.1 2.5 2.5v1.6l4.1-2.5c.6-.4 1.4.1 1.4.8v6.2c0 .5-.3.8-.7.9M15.5 15v.9c0 .9-.5 1.6-1.2 2"/><path d="M6.2 6.6A2.6 2.6 0 0 0 3 9.1v5.8c0 1.4 1.2 2.6 2.6 2.6h7.3M3 3l18 18"/></g></symbol>
   <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></g></symbol>
   <symbol id="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></symbol>
   <symbol id="i-contrast" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17A8.5 8.5 0 0 0 12 3.5Z" fill="currentColor" stroke="none"/></g></symbol>
@@ -561,6 +586,7 @@ label[for]{cursor:pointer}
 
 <!-- ============ PROMPTER ============ -->
 <section id="prompter" hidden>
+  <video id="camView" playsinline muted autoplay hidden></video>
   <div id="stage">
     <div id="content" class="ptx"><div id="padTop"></div><div id="ptext"></div><div id="padBot"></div></div>
     <div id="cue"></div>
@@ -574,10 +600,12 @@ label[for]{cursor:pointer}
         <div class="p-title" id="pTitle"></div>
         <div class="p-time"><b id="tElapsed">00:00</b> · <span id="tLeft">faltam 00:00</span></div>
       </div>
+      <button class="round gk blur" id="pCam" type="button" aria-label="Gravar com a câmera"><svg class="i"><use href="#i-cam"/></svg></button>
       <button class="round gk blur" id="pEdit" type="button" aria-label="Editar roteiro"><svg class="i"><use href="#i-edit"/></svg></button>
       <button class="round gk blur" id="pSettings" type="button" aria-label="Ajustes"><svg class="i"><use href="#i-gear"/></svg></button>
     </div>
     <div class="hud-bottom">
+      <div class="rec-info" id="recInfo"><span class="rec-dot" aria-hidden="true"></span><b id="recTime">00:00</b><span class="rec-q" id="recQual"></span></div>
       <div class="panel glass">
         <div class="speed">
           <span class="speed-lbl" id="spdLbl">Velocidade</span>
@@ -592,6 +620,7 @@ label[for]{cursor:pointer}
           <button class="play" id="pPlay" type="button" aria-label="Rolar"><svg><use href="#i-play"/></svg></button>
           <button class="cb gk" id="pBigger" type="button" aria-label="Aumentar letra"><span class="aa" aria-hidden="true">A+</span>Letra</button>
           <button class="cb gk" id="pMirror" type="button"><svg aria-hidden="true"><use href="#i-mirror"/></svg><span id="pMirrorLbl">Espelho</span></button>
+          <button class="cb gk" id="pCamOff" type="button"><svg aria-hidden="true"><use href="#i-cam-off"/></svg>Sair</button>
         </div>
       </div>
     </div>
@@ -749,6 +778,19 @@ label[for]{cursor:pointer}
 </div>
 
 <div id="snack" class="glass" hidden role="status" aria-live="polite"><span id="snackText"></span><button id="snackUndo" type="button">Desfazer</button></div>
+<!-- ============ REVISÃO DA GRAVAÇÃO ============ -->
+<div id="review" hidden>
+  <div class="rv" role="dialog" aria-modal="true" aria-label="Vídeo gravado">
+    <video id="rvVideo" playsinline controls></video>
+    <div class="rv-info" id="rvInfo"></div>
+    <button class="btn lg primary" id="rvSave" type="button">Salvar vídeo</button>
+    <div class="rv-row">
+      <button class="btn" id="rvRetake" type="button" data-label="Gravar de novo">Gravar de novo</button>
+      <button class="btn" id="rvExit" type="button" data-label="Sair da câmera">Sair da câmera</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -761,7 +803,7 @@ label[for]{cursor:pointer}
     get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   };
-  const DEFAULTS = { fontSize: 56, font: 'inter', lineHeight: 1.3, margin: 6, align: 'left', speed: 22, mirror: 'none',
+  const DEFAULTS = { fontSize: 56, camFont: 34, font: 'inter', lineHeight: 1.3, margin: 6, align: 'left', speed: 22, mirror: 'none',
     fg: '#ffffff', bg: '#000000', cue: 30, showCue: true, countdown: 3, tapToggle: true, autoHide: true, dragPauses: true, theme: 'auto' };
   const FONTS = {
     inter: '"Inter", system-ui, sans-serif',
@@ -1175,7 +1217,11 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   /* ---------------- motor do prompter ---------------- */
   const P = { pos: 0, max: 0, playing: false, counting: false, last: 0, elapsed: 0, raf: 0, lineH: 0, cueY: 0, cd: 0 };
   const stage = $('#stage'), content = $('#content');
-  const pxPerSec = () => settings.speed * settings.fontSize * 0.05;
+  // Modo câmera: letra própria (menor, numa faixa perto da lente) e nunca espelhado.
+  const cam = { on: false, stream: null, rec: null, chunks: [], t0: 0, tick: 0, mime: '', qual: '' };
+  const fsz = () => cam.on ? settings.camFont : settings.fontSize;
+  const mir = () => cam.on ? 'none' : settings.mirror;
+  const pxPerSec = () => settings.speed * fsz() * 0.05;
   let wl = null;
   async function wake() { try { if ('wakeLock' in navigator && !wl) { wl = await navigator.wakeLock.request('screen'); wl.addEventListener('release', () => { wl = null; }); } } catch (e) {} }
   function sleep() { try { if (wl) wl.release(); } catch (e) {} wl = null; }
@@ -1195,26 +1241,28 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     });
   }
   function closePrompter(to) {
+    if (cam.rec) { stopRec(); return; }
+    if (cam.on) camOff(true);
     setPlaying(false); cancelAnimationFrame(P.raf); sleep();
     if (to === 'editor') openEditor(current); else show('home');
   }
   function syncSpeed() { setSliders('speed', settings.speed); $('#spdVal').textContent = settings.speed; }
   function applyStage() {
-    $('#prompter').style.background = settings.bg;
-    stage.style.transform = MIRROR[settings.mirror] || 'none';
+    $('#prompter').style.background = cam.on ? '#000' : settings.bg;
+    stage.style.transform = MIRROR[mir()] || 'none';
     Object.assign(content.style, {
-      color: settings.fg, fontFamily: FONTS[settings.font] || FONTS.inter, fontSize: settings.fontSize + 'px',
+      color: cam.on ? '#ffffff' : settings.fg, fontFamily: FONTS[settings.font] || FONTS.inter, fontSize: fsz() + 'px',
       lineHeight: settings.lineHeight, paddingLeft: settings.margin + '%', paddingRight: settings.margin + '%', textAlign: settings.align
     });
     $('#cue').hidden = !settings.showCue;
-    $('#pMirror').classList.toggle('on', settings.mirror !== 'none');
+    $('#pMirror').classList.toggle('on', mir() !== 'none');
     $('#pMirrorLbl').textContent = MIRROR_LBL[settings.mirror];
     syncSpeed();
   }
   function layout(keepPos) {
     const ratio = P.max ? P.pos / P.max : 0;
     const h = stage.clientHeight || window.innerHeight;
-    P.lineH = settings.fontSize * settings.lineHeight;
+    P.lineH = fsz() * settings.lineHeight;
     P.cueY = h * settings.cue / 100;
     $('#padTop').style.height = Math.max(0, P.cueY - P.lineH / 2) + 'px';
     $('#padBot').style.height = h + 'px';
@@ -1245,23 +1293,29 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     const btn = $('#pPlay');
     btn.innerHTML = `<svg><use href="#i-${on ? 'pause' : 'play'}"/></svg>`;
     btn.setAttribute('aria-label', on ? 'Pausar' : 'Rolar');
-    $('#hud').classList.toggle('faded', on && settings.autoHide);
+    // No modo câmera os controles não somem: o botão de parar a gravação tem que estar sempre à vista.
+    $('#hud').classList.toggle('faded', on && settings.autoHide && !cam.on);
     clearInterval(P.cd); P.counting = false; $('#countdown').hidden = true;
-    if (on) {
-      wake();
-      if (settings.countdown > 0 && P.pos < 2) {
-        let n = settings.countdown; P.counting = true;
-        const el = $('#countdown'), put = (v) => { el.innerHTML = '<span>' + v + '</span>'; };
-        put(n); el.hidden = false;
-        P.cd = setInterval(() => { n--; if (n <= 0) { clearInterval(P.cd); el.hidden = true; P.counting = false; } else put(n); }, 1000);
-      }
-    }
+    const force = P.forceCount; P.forceCount = false;
+    if (!on) { P.onGo = null; return; }
+    wake();
+    // onGo: o que começa junto com a rolagem (a gravação), depois da contagem se houver.
+    const go = () => { const f = P.onGo; P.onGo = null; if (f) f(); };
+    if (settings.countdown > 0 && (P.pos < 2 || force)) {
+      let n = settings.countdown; P.counting = true;
+      const el = $('#countdown'), put = (v) => { el.innerHTML = '<span>' + v + '</span>'; };
+      put(n); el.hidden = false;
+      P.cd = setInterval(() => { n--; if (n <= 0) { clearInterval(P.cd); el.hidden = true; P.counting = false; go(); } else put(n); }, 1000);
+    } else go();
   }
   function jump(dy) { P.pos = clamp(P.pos + dy, 0, P.max); render(); }
   function changeSpeed(d) { settings.speed = clamp(settings.speed + d, 1, 60); saveSettings(true); syncSpeed(); render(); }
-  function changeFont(d) { settings.fontSize = clamp(settings.fontSize + d, 24, 160); saveSettings(true); applyStage(); layout(true); toast(settings.fontSize + ' px'); }
+  function changeFont(d) {
+    const k = cam.on ? 'camFont' : 'fontSize';
+    settings[k] = clamp(settings[k] + d, 18, 160); saveSettings(true); applyStage(); layout(true); toast(settings[k] + ' px');
+  }
 
-  const vflip = () => settings.mirror === 'v' || settings.mirror === 'hv';
+  const vflip = () => mir() === 'v' || mir() === 'hv';
   let drag = null;
   stage.addEventListener('pointerdown', (e) => {
     drag = { y: e.clientY, pos: P.pos, moved: false };
@@ -1285,7 +1339,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   stage.addEventListener('wheel', (e) => { e.preventDefault(); jump(e.deltaY * (vflip() ? -1 : 1)); }, { passive: false });
 
   const hudBtn = (id, fn) => $(id).addEventListener('click', (e) => { e.currentTarget.blur(); fn(); });
-  hudBtn('#pPlay', () => setPlaying(!P.playing));
+  hudBtn('#pPlay', () => { if (cam.on) recToggle(); else setPlaying(!P.playing); });
   hudBtn('#pBack', () => closePrompter('home'));
   hudBtn('#pEdit', () => closePrompter('editor'));
   hudBtn('#pRestart', () => { P.pos = 0; P.elapsed = 0; render(); });
@@ -1308,7 +1362,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     if (e.target.matches('input, textarea, select')) return;
     const h = stage.clientHeight;
     switch (e.key) {
-      case ' ': case 'Enter': case 'PageDown': e.preventDefault(); setPlaying(!P.playing); break;
+      case ' ': case 'Enter': case 'PageDown': e.preventDefault(); if (cam.on) recToggle(); else setPlaying(!P.playing); break;
       case 'ArrowUp': e.preventDefault(); changeSpeed(1); break;
       case 'ArrowDown': e.preventDefault(); changeSpeed(-1); break;
       case 'ArrowLeft': case 'PageUp': e.preventDefault(); jump(-h * 0.3); break;
@@ -1317,6 +1371,131 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
       case 'Escape': closePrompter('home'); break;
     }
   });
+  /* ---------------- gravar com a câmera, lendo o roteiro ----------------
+     Usa a câmera do próprio aparelho pelo navegador, pedindo o máximo que ele entregar
+     (até 4K, taxa de dados alta, áudio sem o filtro de chamada). A qualidade real aparece na tela. */
+  async function camOn() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) { toast('Este navegador não grava vídeo'); return; }
+    setPlaying(false);
+    try {
+      cam.stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'user', width: { ideal: 3840 }, height: { ideal: 2160 }, frameRate: { ideal: 30 } },
+        audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+      });
+    } catch (e) { toast('Sem acesso à câmera. Libere a câmera e o microfone para o Telegron'); return; }
+    const v = $('#camView'); v.srcObject = cam.stream; v.hidden = false;
+    try { await v.play(); } catch (e) {}
+    const st = (cam.stream.getVideoTracks()[0] || { getSettings: () => ({}) }).getSettings();
+    const short = Math.min(st.width || 0, st.height || 0);
+    cam.qual = [short >= 2160 ? '4K' : short ? short + 'p' : '', st.frameRate ? Math.round(st.frameRate) + ' fps' : ''].filter(Boolean).join(' · ');
+    $('#recQual').textContent = cam.qual;
+    cam.on = true; $('#prompter').classList.add('cam');
+    P.pos = 0; P.elapsed = 0; applyStage(); layout(false); updRecTime();
+  }
+  function camOff(quiet) {
+    if (cam.rec) { stopRec(); return; }
+    if (cam.stream) cam.stream.getTracks().forEach(t => t.stop());
+    cam.stream = null;
+    const v = $('#camView'); v.srcObject = null; v.hidden = true;
+    cam.on = false; $('#prompter').classList.remove('cam', 'recording');
+    setPlaying(false);
+    if (!quiet) { applyStage(); layout(true); }
+  }
+  function pickMime() {
+    const c = ['video/mp4;codecs=hvc1,mp4a.40.2', 'video/mp4;codecs=avc1.640028,mp4a.40.2', 'video/mp4;codecs=avc1,mp4a.40.2', 'video/mp4',
+      'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
+    return c.find(t => { try { return MediaRecorder.isTypeSupported(t); } catch (e) { return false; } }) || '';
+  }
+  function bitrate() {
+    const st = cam.stream.getVideoTracks()[0].getSettings();
+    const px = (st.width || 1920) * (st.height || 1080), fps = st.frameRate || 30;
+    return Math.round(Math.min(40e6, Math.max(10e6, px * fps * 0.22)));
+  }
+  function updRecTime() { $('#recTime').textContent = cam.rec ? fmt((performance.now() - cam.t0) / 1000) : '00:00'; }
+  function startRec() {
+    cam.mime = pickMime();
+    const opts = { videoBitsPerSecond: bitrate(), audioBitsPerSecond: 192000 };
+    if (cam.mime) opts.mimeType = cam.mime;
+    let r;
+    try { r = new MediaRecorder(cam.stream, opts); }
+    catch (e) { try { r = new MediaRecorder(cam.stream); } catch (e2) { toast('Não deu para gravar neste aparelho'); return false; } }
+    cam.rec = r; cam.chunks = [];
+    r.ondataavailable = (e) => { if (e.data && e.data.size) cam.chunks.push(e.data); };
+    r.onstop = finishRec;
+    r.start(1000);
+    cam.t0 = performance.now();
+    $('#prompter').classList.add('recording');
+    clearInterval(cam.tick); cam.tick = setInterval(updRecTime, 250); updRecTime();
+    return true;
+  }
+  function stopRec() {
+    if (cam.rec && cam.rec.state !== 'inactive') cam.rec.stop();
+    clearInterval(cam.tick);
+    $('#prompter').classList.remove('recording');
+    setPlaying(false);
+  }
+  function recToggle() {
+    if (cam.rec) { stopRec(); return; }
+    if (P.counting) { setPlaying(false); return; }
+    // Contagem, depois grava e rola junto. Se o texto já foi até o fim, recomeça do topo.
+    if (P.pos >= P.max - 1) { P.pos = 0; render(); }
+    P.elapsed = 0; P.forceCount = true;
+    P.onGo = () => { if (!startRec()) setPlaying(false); };
+    setPlaying(true);
+  }
+  // Se o app sair da tela no meio da gravação, o iPhone corta a câmera: fecha o que já foi gravado.
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && cam.rec) stopRec(); });
+
+  let take = null;
+  const pad2 = (n) => String(n).padStart(2, '0');
+  function finishRec() {
+    const r = cam.rec; cam.rec = null;
+    const type = (r && r.mimeType) || cam.mime || 'video/mp4';
+    const blob = new Blob(cam.chunks, { type }); cam.chunks = [];
+    const dur = (performance.now() - cam.t0) / 1000;
+    updRecTime();
+    if (!blob.size) { toast('A gravação não chegou a começar'); return; }
+    const d = new Date(), ext = /mp4/.test(type) ? 'mp4' : 'webm';
+    const base = (current ? nameOf(current) : 'Roteiro').replace(/[\\/:*?"<>|]+/g, ' ').slice(0, 40).trim();
+    take = { blob, type, url: URL.createObjectURL(blob), saved: false,
+      name: 'Telegron ' + base + ' ' + d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()) + ' ' + pad2(d.getHours()) + 'h' + pad2(d.getMinutes()) + '.' + ext };
+    $('#rvVideo').src = take.url;
+    $('#rvInfo').textContent = [cam.qual, fmt(dur), Math.max(1, Math.round(blob.size / 1048576)) + ' MB'].filter(Boolean).join(' · ');
+    $$('#review [data-armed]').forEach(b => { b.removeAttribute('data-armed'); b.textContent = b.dataset.label; });
+    $('#review').hidden = false;
+  }
+  function closeReview() {
+    const v = $('#rvVideo'); v.pause(); v.removeAttribute('src'); v.load();
+    if (take) URL.revokeObjectURL(take.url);
+    take = null; $('#review').hidden = true;
+  }
+  // Apagar um vídeo que ainda não foi salvo pede um segundo toque: não tem desfazer.
+  function confirmOr(btn, msg, fn) {
+    if (take && !take.saved && !btn.hasAttribute('data-armed')) {
+      btn.setAttribute('data-armed', ''); btn.textContent = msg;
+      setTimeout(() => { if (btn.hasAttribute('data-armed')) { btn.removeAttribute('data-armed'); btn.textContent = btn.dataset.label; } }, 3500);
+      return;
+    }
+    fn();
+  }
+  $('#rvSave').addEventListener('click', async () => {
+    if (!take) return;
+    const file = new File([take.blob], take.name, { type: take.type });
+    try {
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: take.name });
+        take.saved = true; toast('Vídeo pronto'); return;
+      }
+    } catch (e) { if (e && e.name === 'AbortError') return; }
+    const a = document.createElement('a'); a.href = take.url; a.download = take.name;
+    document.body.appendChild(a); a.click(); a.remove();
+    take.saved = true; toast('Vídeo baixado');
+  });
+  $('#rvRetake').addEventListener('click', (e) => confirmOr(e.currentTarget, 'Toque de novo: este vídeo some', () => { closeReview(); P.pos = 0; P.elapsed = 0; render(); }));
+  $('#rvExit').addEventListener('click', (e) => confirmOr(e.currentTarget, 'Toque de novo: este vídeo some', () => { closeReview(); camOff(); }));
+  hudBtn('#pCam', camOn);
+  hudBtn('#pCamOff', () => camOff());
+
   const ro = new ResizeObserver(() => { if (view === 'prompter') layout(true); });
   ro.observe(stage); ro.observe($('#ptext'));
 
