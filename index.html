@@ -284,7 +284,7 @@ label[for]{cursor:pointer}
 #hud.faded .hud-top,#hud.faded .hud-bottom{opacity:0;pointer-events:none}
 /* modo câmera: a câmera ocupa a tela, o roteiro passa numa faixa no alto, perto da lente */
 #camView{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1);background:#000}
-#prompter.cam #stage{bottom:auto;height:calc(var(--st) + 40%);transform:none!important;background:linear-gradient(to bottom,rgba(0,0,0,.8) 0%,rgba(0,0,0,.62) 72%,rgba(0,0,0,0) 100%)}
+#prompter.cam #stage{bottom:auto;height:calc(var(--st) + 44%);transform:none!important;background:linear-gradient(to bottom,rgba(0,0,0,.84) 0%,rgba(0,0,0,.74) 45%,rgba(0,0,0,.45) 72%,rgba(0,0,0,.14) 88%,rgba(0,0,0,0) 100%);-webkit-mask-image:linear-gradient(to bottom,#000 0,#000 62%,rgba(0,0,0,.55) 80%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0,#000 62%,rgba(0,0,0,.55) 80%,transparent 100%)}
 #prompter.cam #content{text-shadow:0 1px 4px rgba(0,0,0,.85)}
 #prompter.cam .hud-top,#prompter.cam #pMirror{display:none}
 #pCamOff{display:none}
@@ -304,7 +304,9 @@ label[for]{cursor:pointer}
 .rv-info{text-align:center;font-size:13.5px;color:rgba(235,235,245,.68);font-variant-numeric:tabular-nums}
 .rv-row{display:flex;gap:10px}
 .rv-row .btn{flex:1;padding:0 10px;font-size:15px}
-#review [data-armed]{color:#ff5d52}
+.rv-del{background:linear-gradient(180deg,#ff6a5f,#e5392e);border-color:rgba(255,140,130,.5);color:#fff;text-shadow:0 1px 1px rgba(120,10,0,.35)}
+@media (hover:hover){.rv-del:hover{background:linear-gradient(180deg,#ff6a5f,#e5392e);filter:brightness(1.07)}}
+.rv-del:active{background:linear-gradient(180deg,#e5392e,#d8332a);filter:none}
 @media (max-width:340px){.speed-lbl{display:none}.cb{width:48px}.ctl{gap:4px}.play{width:60px;height:60px}}
 @media (max-width:310px){.cb{width:42px;font-size:0;gap:0}}
 /* celular deitado no suporte: controles numa linha só, sobrando altura para o texto */
@@ -785,8 +787,8 @@ label[for]{cursor:pointer}
     <div class="rv-info" id="rvInfo"></div>
     <button class="btn lg primary" id="rvSave" type="button">Salvar vídeo</button>
     <div class="rv-row">
-      <button class="btn" id="rvRetake" type="button" data-label="Gravar de novo">Gravar de novo</button>
-      <button class="btn" id="rvExit" type="button" data-label="Sair da câmera">Sair da câmera</button>
+      <button class="btn" id="rvRetake" type="button">Gravar de novo</button>
+      <button class="btn rv-del" id="rvDelete" type="button">Excluir</button>
     </div>
   </div>
 </div>
@@ -1373,14 +1375,15 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   });
   /* ---------------- gravar com a câmera, lendo o roteiro ----------------
      Usa a câmera do próprio aparelho pelo navegador, pedindo o máximo que ele entregar
-     (até 4K, taxa de dados alta, áudio sem o filtro de chamada). A qualidade real aparece na tela. */
+     (até 4K, taxa de dados alta, voz no volume habitual). A qualidade real aparece na tela. */
   async function camOn() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) { toast('Este navegador não grava vídeo'); return; }
     setPlaying(false);
     try {
       cam.stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: 'user', width: { ideal: 3840 }, height: { ideal: 2160 }, frameRate: { ideal: 30 } },
-        audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+        // Volume no nível habitual: deixar o aparelho ajustar o ganho e tirar o ruído de fundo, como os apps de câmera.
+        audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }
       });
     } catch (e) { toast('Sem acesso à câmera. Libere a câmera e o microfone para o Telegron'); return; }
     const v = $('#camView'); v.srcObject = cam.stream; v.hidden = false;
@@ -1447,6 +1450,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && cam.rec) stopRec(); });
 
   let take = null;
+  const toTop = () => { P.pos = 0; P.elapsed = 0; render(); };
   const pad2 = (n) => String(n).padStart(2, '0');
   function finishRec() {
     const r = cam.rec; cam.rec = null;
@@ -1461,7 +1465,6 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
       name: 'Telegron ' + base + ' ' + d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()) + ' ' + pad2(d.getHours()) + 'h' + pad2(d.getMinutes()) + '.' + ext };
     $('#rvVideo').src = take.url;
     $('#rvInfo').textContent = [cam.qual, fmt(dur), Math.max(1, Math.round(blob.size / 1048576)) + ' MB'].filter(Boolean).join(' · ');
-    $$('#review [data-armed]').forEach(b => { b.removeAttribute('data-armed'); b.textContent = b.dataset.label; });
     $('#review').hidden = false;
   }
   function closeReview() {
@@ -1469,30 +1472,22 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     if (take) URL.revokeObjectURL(take.url);
     take = null; $('#review').hidden = true;
   }
-  // Apagar um vídeo que ainda não foi salvo pede um segundo toque: não tem desfazer.
-  function confirmOr(btn, msg, fn) {
-    if (take && !take.saved && !btn.hasAttribute('data-armed')) {
-      btn.setAttribute('data-armed', ''); btn.textContent = msg;
-      setTimeout(() => { if (btn.hasAttribute('data-armed')) { btn.removeAttribute('data-armed'); btn.textContent = btn.dataset.label; } }, 3500);
-      return;
-    }
-    fn();
-  }
   $('#rvSave').addEventListener('click', async () => {
     if (!take) return;
     const file = new File([take.blob], take.name, { type: take.type });
     try {
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({ files: [file], title: take.name });
-        take.saved = true; toast('Vídeo pronto'); return;
+        closeReview(); toTop(); toast('Vídeo salvo'); return;
       }
     } catch (e) { if (e && e.name === 'AbortError') return; }
     const a = document.createElement('a'); a.href = take.url; a.download = take.name;
     document.body.appendChild(a); a.click(); a.remove();
-    take.saved = true; toast('Vídeo baixado');
+    setTimeout(() => { closeReview(); toTop(); }, 400); toast('Vídeo baixado');
   });
-  $('#rvRetake').addEventListener('click', (e) => confirmOr(e.currentTarget, 'Toque de novo: este vídeo some', () => { closeReview(); P.pos = 0; P.elapsed = 0; render(); }));
-  $('#rvExit').addEventListener('click', (e) => confirmOr(e.currentTarget, 'Toque de novo: este vídeo some', () => { closeReview(); camOff(); }));
+  // Gravar de novo já começa a próxima (com a contagem); Excluir apaga e deixa a câmera pronta.
+  $('#rvRetake').addEventListener('click', () => { closeReview(); toTop(); recToggle(); });
+  $('#rvDelete').addEventListener('click', () => { closeReview(); toTop(); toast('Vídeo excluído'); });
   hudBtn('#pCam', camOn);
   hudBtn('#pCamOff', () => camOff());
 
