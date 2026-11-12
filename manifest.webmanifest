@@ -1,6 +1,6 @@
 {
-  "name": "Prompter Studio",
-  "short_name": "Prompter",
+  "name": "Telegron",
+  "short_name": "Telegron",
   "description": "Teleprompter para gravação, com espelhamento para vidro.",
   "lang": "pt-BR",
   "start_url": "./",

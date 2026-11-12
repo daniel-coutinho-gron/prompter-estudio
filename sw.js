@@ -1,5 +1,5 @@
-// Prompter Studio: funciona sem internet depois da primeira abertura.
-const CACHE = 'prompter-v4';
+// Telegron: funciona sem internet depois da primeira abertura.
+const CACHE = 'telegron-v5';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './icon.svg', './apple-touch-icon.png'];
 
 self.addEventListener('install', (e) => {

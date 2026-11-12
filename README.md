@@ -1,4 +1,4 @@
-# Prompter Studio
+# Telegron
 
 Teleprompter para gravação, com espelhamento para teleprompter de vidro.
 

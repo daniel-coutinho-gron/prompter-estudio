@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
-<title>Prompter Studio</title>
+<title>Telegron</title>
 <meta name="theme-color" content="#09090b">
 <meta name="color-scheme" content="dark light">
 <meta name="format-detection" content="telephone=no,email=no,address=no,date=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Prompter">
+<meta name="apple-mobile-web-app-title" content="Telegron">
 <script>
 /* Tema antes de pintar: sem piscar o tema errado. Automático segue o celular. */
 (function () {
@@ -32,14 +32,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Atkinson+Hyperlegible:wght@400;700&family=Inter:opsz,wght@14..32,400..800&family=Manrope:wght@400..800&display=swap">
 <style>
-/* Prompter Studio. Feito para iPhone e Android de ponta: título grande, lista em vez de grade,
+/* Telegron. Feito para iPhone e Android de ponta: título grande, lista em vez de grade,
    ações embaixo no alcance do polegar, teclas com relevo, vidro sobre o texto do prompter.
    Tema escuro ou claro (automático segue o celular); a tela de leitura é sempre a do roteiro. */
 :root,#prompter,:root[data-theme="light"] .feature .f-row{
   --bg:#09090b; --surface:#141417; --surface-2:#1c1c20; --surface-3:#28282d; --field:#131316;
   --hair:rgba(255,255,255,.075); --hair-2:rgba(255,255,255,.13);
   --fg:#f5f5f7; --fg-2:rgba(235,235,245,.64); --fg-3:rgba(235,235,245,.38);
-  --accent-text:#ffb547; --danger:#ff5d52;
+  --accent-text:#FF8A1E; --danger:#ff5d52;
   --card-lift:inset 0 1px 0 rgba(255,255,255,.035),0 1px 2px rgba(0,0,0,.35);
   --key:linear-gradient(180deg,#2c2c32,#1f1f24); --key-h:linear-gradient(180deg,#35353c,#28282e); --key-p:linear-gradient(180deg,#1c1c21,#222227);
   --key-edge:rgba(255,255,255,.085);
@@ -56,7 +56,7 @@
   --bg:#f2f2f6; --surface:#ffffff; --surface-2:#f4f4f7; --surface-3:#e6e6eb; --field:#ffffff;
   --hair:rgba(0,0,0,.08); --hair-2:rgba(0,0,0,.15);
   --fg:#111114; --fg-2:rgba(60,60,67,.76); --fg-3:rgba(60,60,67,.46);
-  --accent-text:#a65d00; --danger:#e0352b;
+  --accent-text:#EE3A00; --danger:#d42f25;
   --card-lift:0 1px 2px rgba(0,0,0,.05),0 4px 14px -6px rgba(0,0,0,.1);
   --key:linear-gradient(180deg,#ffffff,#f2f2f5); --key-h:linear-gradient(180deg,#fbfbfd,#e9e9ee); --key-p:linear-gradient(180deg,#e6e6eb,#eeeef2);
   --key-edge:rgba(0,0,0,.1);
@@ -70,10 +70,13 @@
   color-scheme:light;
 }
 :root{
-  --accent:#ffb547; --accent-ink:#2a1a00;
-  --amber:linear-gradient(180deg,#ffc86d,#f8a634); --amber-h:linear-gradient(180deg,#ffd187,#ffb244); --amber-p:linear-gradient(180deg,#ee9f2e,#f4a93d);
-  --amber-lift:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -1px 0 rgba(140,80,0,.25),0 1px 1.5px rgba(0,0,0,.4),0 3px 8px -2px rgba(0,0,0,.4);
-  --amber-sunk:inset 0 1.5px 3px rgba(120,60,0,.45);
+  /* laranja GRON, valores do Manual de Identidade V1: o ângulo acompanha o formato da peça */
+  --accent:#FF8A1E; --accent-ink:#ffffff;
+  --grad:linear-gradient(115deg,#FFA200 0%,#F86C00 52%,#EE3A00 100%);
+  --grad-sq:linear-gradient(135deg,#FFA200 0%,#F86C00 52%,#EE3A00 100%);
+  --grad-line:linear-gradient(90deg,#FFA200,#EE3A00);
+  --grad-lift:inset 0 1px 0 rgba(255,255,255,.34),inset 0 -1px 0 rgba(110,25,0,.3),0 1px 1.5px rgba(0,0,0,.4),0 3px 8px -2px rgba(0,0,0,.4);
+  --grad-sunk:inset 0 1.5px 3px rgba(100,20,0,.5);
   --toast-bg:rgba(36,36,42,.86);
   /* fonte do app; a do roteiro é escolhida nos Ajustes e não depende desta */
   --ui:"Manrope",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
@@ -98,9 +101,10 @@ label[for]{cursor:pointer}
 .btn,.round,.chip,.step,.color,.item-play,.del{background:var(--key);border:1px solid var(--key-edge);box-shadow:var(--key-lift);color:var(--fg);transition:background .15s,box-shadow .15s,transform .1s,color .15s}
 @media (hover:hover){.btn:hover,.round:hover,.chip:hover,.step:hover,.color:hover,.item-play:hover,.del:hover{background:var(--key-h)}}
 .btn:active,.round:active,.chip:active,.step:active,.color:active,.item-play:active,.del:active{background:var(--key-p);box-shadow:var(--key-sunk);transform:translateY(1px)}
-.btn.primary,.play{background:var(--amber);border:1px solid rgba(255,214,150,.6);color:var(--accent-ink);box-shadow:var(--amber-lift);text-shadow:0 1px 0 rgba(255,255,255,.25)}
-@media (hover:hover){.btn.primary:hover,.play:hover{background:var(--amber-h)}}
-.btn.primary:active,.play:active{background:var(--amber-p);box-shadow:var(--amber-sunk);transform:translateY(1px)}
+.btn.primary,.play{background:var(--grad);border:1px solid rgba(255,170,90,.55);color:var(--accent-ink);box-shadow:var(--grad-lift);text-shadow:0 1px 1px rgba(110,25,0,.35);transition:filter .15s,box-shadow .15s,transform .1s}
+.play{background:var(--grad-sq)}
+@media (hover:hover){.btn.primary:hover,.play:hover{filter:brightness(1.07) saturate(1.04)}}
+.btn.primary:active,.play:active{filter:brightness(.93);box-shadow:var(--grad-sunk);transform:translateY(1px)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 18px;border-radius:14px;font-size:16px;font-weight:600;letter-spacing:-.01em;white-space:nowrap}
 .btn.lg{height:54px;border-radius:16px;font-size:17px;padding:0 20px}
 .btn.sm{height:36px;padding:0 14px;border-radius:11px;font-size:15px}
@@ -154,10 +158,9 @@ label[for]{cursor:pointer}
 .screen{position:relative;display:block;width:100%;height:124px;overflow:hidden;text-align:left;background:#000}
 .screen:focus-visible{outline-offset:-3px}
 .screen-text{position:absolute;inset:0;padding:18px 18px 0 32px;font-size:19px;font-weight:600;-webkit-mask-image:linear-gradient(to bottom,#000 0,#000 52%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0,#000 52%,transparent 100%);overflow-wrap:anywhere}
-.screen-cue{position:absolute;left:0;right:0;top:18px;height:25px;pointer-events:none;background:linear-gradient(90deg,rgba(255,181,71,.16),rgba(255,181,71,.04) 60%,transparent)}
-.screen-cue::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);border-left:11px solid var(--accent);border-top:8px solid transparent;border-bottom:8px solid transparent}
-:root[data-theme="light"] .screen-cue{background:linear-gradient(90deg,rgba(255,165,30,.2),rgba(255,165,30,.05) 60%,transparent)}
-:root[data-theme="light"] .screen-cue::before{border-left-color:#f29a1e}
+.screen-cue{position:absolute;left:0;right:0;top:18px;height:25px;pointer-events:none;background:linear-gradient(90deg,rgba(248,108,0,.2),rgba(248,108,0,.05) 60%,transparent)}
+.screen-cue::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);background:var(--grad-sq);clip-path:polygon(0 0,100% 50%,0 100%);width:11px;height:16px}
+:root[data-theme="light"] .screen-cue{background:linear-gradient(90deg,rgba(248,108,0,.16),rgba(248,108,0,.04) 60%,transparent)}
 :root[data-theme="light"] .screen-text .note{color:var(--accent-text);opacity:1}
 .f-row{display:flex;align-items:center;gap:12px;padding:13px 14px 14px 16px;border-top:1px solid var(--hair)}
 .f-info{flex:1;min-width:0}
@@ -252,10 +255,11 @@ label[for]{cursor:pointer}
 #prompter{position:fixed;inset:0;z-index:20;background:#000;overflow:hidden;color:var(--fg);-webkit-user-select:none;user-select:none}
 #stage{position:absolute;inset:0;overflow:hidden;touch-action:none;cursor:grab;-webkit-touch-callout:none}
 #content{will-change:transform;font-weight:600}
-#cue{position:absolute;left:0;right:0;transform:translateY(-50%);pointer-events:none;background:linear-gradient(90deg,rgba(255,181,71,.13),rgba(255,181,71,.04) 60%,transparent)}
-#cue::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);border-left:16px solid var(--accent);border-top:12px solid transparent;border-bottom:12px solid transparent}
+#cue{position:absolute;left:0;right:0;transform:translateY(-50%);pointer-events:none;background:linear-gradient(90deg,rgba(248,108,0,.17),rgba(248,108,0,.05) 60%,transparent)}
+#cue::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);background:var(--grad-sq);clip-path:polygon(0 0,100% 50%,0 100%);width:16px;height:24px}
 #countdown{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--ui);font-weight:800;font-size:min(40vw,40vh);letter-spacing:-.04em;color:var(--accent);background:rgba(0,0,0,.6);pointer-events:none;font-variant-numeric:tabular-nums}
-#progress{position:absolute;top:0;left:0;height:3px;width:0;background:var(--accent);z-index:3;pointer-events:none}
+@supports (-webkit-background-clip:text) or (background-clip:text){#countdown span{background:var(--grad-sq);-webkit-background-clip:text;background-clip:text;color:transparent}}
+#progress{position:absolute;top:0;left:0;height:3px;width:0;background:var(--grad-line);z-index:3;pointer-events:none}
 .hud-top,.hud-bottom{position:absolute;left:0;right:0;z-index:2;transition:opacity .3s}
 .hud-top{top:0;display:flex;align-items:center;gap:8px;padding:calc(var(--st) + 10px) var(--gr) 0 var(--gl)}
 .hud-top .round{width:44px;height:44px}
@@ -296,7 +300,7 @@ label[for]{cursor:pointer}
 .slider{position:relative;height:44px;touch-action:pan-y;cursor:pointer;-webkit-user-select:none;user-select:none;outline:none;--p:50%}
 .slider .rail{position:absolute;left:14px;right:14px;top:0;bottom:0}
 .slider .track{position:absolute;left:0;right:0;top:50%;height:7px;margin-top:-3.5px;border-radius:4px;background:var(--well);box-shadow:var(--well-shadow);overflow:hidden}
-.slider .fill{position:absolute;left:0;top:0;bottom:0;width:calc(14px + (100% - 28px) * var(--f,.5));background:var(--amber)}
+.slider .fill{position:absolute;left:0;top:0;bottom:0;width:calc(14px + (100% - 28px) * var(--f,.5));background:var(--grad-line)}
 .slider .thumb{position:absolute;top:50%;left:var(--p);width:28px;height:28px;margin:-14px 0 0 -14px;border-radius:50%;background:linear-gradient(180deg,#fff,#e8e8ed);box-shadow:0 1px 1px rgba(0,0,0,.3),0 2px 7px rgba(0,0,0,.4),inset 0 -1px 0 rgba(0,0,0,.08);transition:transform .12s}
 @media (hover:hover){.slider:hover .thumb{transform:scale(1.06)}}
 .slider.dragging .thumb{transform:scale(1.1)}
@@ -321,7 +325,7 @@ label[for]{cursor:pointer}
 .sheet-bar h2{margin:0;font-size:22px;font-weight:800;letter-spacing:-.025em}
 .pv{position:relative;height:84px;margin-top:14px;overflow:hidden;border-radius:16px;border:1px solid var(--hair-2);display:flex;align-items:center;box-shadow:inset 0 1px 3px rgba(0,0,0,.4)}
 .pv-inner{width:100%;font-weight:600;white-space:nowrap;overflow:hidden}
-.pv-cue{position:absolute;left:0;top:50%;transform:translateY(-50%);border-left:12px solid var(--accent);border-top:9px solid transparent;border-bottom:9px solid transparent;z-index:1}
+.pv-cue{position:absolute;left:0;top:50%;transform:translateY(-50%);width:12px;height:18px;background:var(--grad-sq);clip-path:polygon(0 0,100% 50%,0 100%);z-index:1}
 .sheet-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:4px var(--gr) calc(var(--sb) + 28px) var(--gl)}
 @media (min-width:640px){.sheet-body{padding-bottom:28px}}
 
@@ -383,9 +387,9 @@ label[for]{cursor:pointer}
 .sw input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer;z-index:1}
 .sw span{position:absolute;inset:0;border-radius:99px;background:var(--well);box-shadow:var(--well-shadow);transition:background .2s;pointer-events:none}
 .sw span::after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:linear-gradient(180deg,#fff,#ececf1);box-shadow:0 1px 3px rgba(0,0,0,.4),0 0 0 .5px rgba(0,0,0,.12);transition:transform .2s var(--ease)}
-.sw input:checked + span{background:var(--amber);box-shadow:inset 0 1px 2px rgba(120,60,0,.35)}
+.sw input:checked + span{background:var(--grad-sq);box-shadow:inset 0 1px 2px rgba(110,25,0,.35)}
 .sw input:checked + span::after{transform:translateX(20px)}
-@media (hover:hover){.sw:hover input:not(:checked) + span{background:var(--well-h)}.sw:hover input:checked + span{background:var(--amber-h)}}
+@media (hover:hover){.sw:hover input:not(:checked) + span{background:var(--well-h)}.sw:hover input:checked + span{filter:brightness(1.07)}}
 .sw input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px}
 .keys{padding:8px 0;font-size:15px;color:var(--fg)}
 .krow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0}
@@ -440,8 +444,8 @@ label[for]{cursor:pointer}
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <linearGradient id="mk-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#303139"/><stop offset=".42" stop-color="#18181d"/><stop offset="1" stop-color="#09090b"/></linearGradient>
-    <linearGradient id="mk-amb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd585"/><stop offset="1" stop-color="#f7981a"/></linearGradient>
-    <linearGradient id="mk-band" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffb547" stop-opacity=".34"/><stop offset=".5" stop-color="#ffb547" stop-opacity=".10"/><stop offset="1" stop-color="#ffb547" stop-opacity="0"/></linearGradient>
+    <linearGradient id="mk-amb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFA200"/><stop offset=".52" stop-color="#F86C00"/><stop offset="1" stop-color="#EE3A00"/></linearGradient>
+    <linearGradient id="mk-band" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F86C00" stop-opacity=".34"/><stop offset=".5" stop-color="#F86C00" stop-opacity=".10"/><stop offset="1" stop-color="#F86C00" stop-opacity="0"/></linearGradient>
     <linearGradient id="mk-rec" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7468"/><stop offset="1" stop-color="#e8352b"/></linearGradient>
   </defs>
   <symbol id="i-mark" viewBox="0 0 1024 1024"><rect width="1024" height="1024" rx="229" fill="url(#mk-bg)"/><rect x="138" y="414" width="886" height="196" rx="98" fill="url(#mk-band)"/><rect x="380" y="318" width="384" height="72" rx="36" fill="#9da2ae" opacity=".62"/><rect x="380" y="476" width="506" height="72" rx="36" fill="#f2f2f5"/><rect x="380" y="634" width="446" height="72" rx="36" fill="#9da2ae" opacity=".7"/><rect x="380" y="792" width="300" height="72" rx="36" fill="#9da2ae" opacity=".42"/><path d="M206 430 L330 512 L206 594 Z" fill="url(#mk-amb)" stroke="url(#mk-amb)" stroke-width="36" stroke-linejoin="round"/><circle cx="822" cy="196" r="50" fill="url(#mk-rec)"/></symbol>
@@ -732,7 +736,7 @@ label[for]{cursor:pointer}
           <div class="row"><span>Voltar tudo ao padrão</span><button class="btn sm btn-danger" id="sReset" type="button">Restaurar</button></div>
         </div>
       </div>
-      <p class="ver">Prompter Studio</p>
+      <p class="ver">Telegron</p>
     </div>
   </div>
 </div>
@@ -1280,8 +1284,9 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
       wake();
       if (settings.countdown > 0 && P.pos < 2) {
         let n = settings.countdown; P.counting = true;
-        const el = $('#countdown'); el.textContent = n; el.hidden = false;
-        P.cd = setInterval(() => { n--; if (n <= 0) { clearInterval(P.cd); el.hidden = true; P.counting = false; } else el.textContent = n; }, 1000);
+        const el = $('#countdown'), put = (v) => { el.innerHTML = '<span>' + v + '</span>'; };
+        put(n); el.hidden = false;
+        P.cd = setInterval(() => { n--; if (n <= 0) { clearInterval(P.cd); el.hidden = true; P.counting = false; } else put(n); }, 1000);
       }
     }
   }
