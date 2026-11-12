@@ -1,4 +1,4 @@
-# Telegron
+# TeleGron
 
 Teleprompter para gravação, com espelhamento para teleprompter de vidro.
 

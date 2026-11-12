@@ -1,6 +1,6 @@
 {
-  "name": "Telegron",
-  "short_name": "Telegron",
+  "name": "TeleGron",
+  "short_name": "TeleGron",
   "description": "Teleprompter para gravação, com espelhamento para vidro.",
   "lang": "pt-BR",
   "start_url": "./",

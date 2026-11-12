@@ -1,6 +1,6 @@
-// Telegron: funciona sem internet depois da primeira abertura.
-const CACHE = 'telegron-v5';
-const CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './icon.svg', './apple-touch-icon.png'];
+// TeleGron: funciona sem internet depois da primeira abertura.
+const CACHE = 'telegron-v8';
+const CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './icon.svg', './apple-touch-icon.png', './favicon.ico'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting()));

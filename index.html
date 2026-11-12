@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
-<title>Telegron</title>
+<title>TeleGron</title>
 <meta name="theme-color" content="#09090b">
 <meta name="color-scheme" content="dark light">
 <meta name="format-detection" content="telephone=no,email=no,address=no,date=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="Telegron">
+<meta name="apple-mobile-web-app-title" content="TeleGron">
 <script>
 /* Tema antes de pintar: sem piscar o tema errado. Automático segue o celular. */
 (function () {
@@ -27,13 +27,14 @@
 </script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" href="favicon.ico" sizes="32x32 48x48 64x64">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Atkinson+Hyperlegible:wght@400;700&family=Inter:opsz,wght@14..32,400..800&family=Manrope:wght@400..800&display=swap">
 <style>
-/* Telegron. Feito para iPhone e Android de ponta: título grande, lista em vez de grade,
+/* TeleGron. Feito para iPhone e Android de ponta: título grande, lista em vez de grade,
    ações embaixo no alcance do polegar, teclas com relevo, vidro sobre o texto do prompter.
    Tema escuro ou claro (automático segue o celular); a tela de leitura é sempre a do roteiro. */
 :root,#prompter,#review,:root[data-theme="light"] .feature .f-row{
@@ -196,8 +197,8 @@ label[for]{cursor:pointer}
 @media (hover:hover){.item:has(.item-main:hover){background:var(--surface-2)}}
 .none{color:var(--fg-2);text-align:center;padding:40px 0 8px;margin:0}
 .empty{text-align:center;padding:36px 12px 8px}
-.empty svg{width:72px;height:72px;border-radius:17px}
-.empty h2{margin:18px 0 6px;font-size:22px;font-weight:700;letter-spacing:-.02em}
+
+.empty h2{margin:8px 0 6px;font-size:22px;font-weight:700;letter-spacing:-.02em}
 .empty p{margin:0 auto;max-width:300px;color:var(--fg-2);font-size:15px;line-height:1.5}
 .foot-note{margin:28px 0 0;text-align:center;font-size:12.5px;color:var(--fg-3)}
 
@@ -514,13 +515,6 @@ html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
 <body>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <linearGradient id="mk-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#303139"/><stop offset=".42" stop-color="#18181d"/><stop offset="1" stop-color="#09090b"/></linearGradient>
-    <linearGradient id="mk-amb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFA200"/><stop offset=".52" stop-color="#F86C00"/><stop offset="1" stop-color="#EE3A00"/></linearGradient>
-    <linearGradient id="mk-band" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F86C00" stop-opacity=".34"/><stop offset=".5" stop-color="#F86C00" stop-opacity=".10"/><stop offset="1" stop-color="#F86C00" stop-opacity="0"/></linearGradient>
-    <linearGradient id="mk-rec" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7468"/><stop offset="1" stop-color="#e8352b"/></linearGradient>
-  </defs>
-  <symbol id="i-mark" viewBox="0 0 1024 1024"><rect width="1024" height="1024" rx="229" fill="url(#mk-bg)"/><rect x="138" y="414" width="886" height="196" rx="98" fill="url(#mk-band)"/><rect x="380" y="318" width="384" height="72" rx="36" fill="#9da2ae" opacity=".62"/><rect x="380" y="476" width="506" height="72" rx="36" fill="#f2f2f5"/><rect x="380" y="634" width="446" height="72" rx="36" fill="#9da2ae" opacity=".7"/><rect x="380" y="792" width="300" height="72" rx="36" fill="#9da2ae" opacity=".42"/><path d="M206 430 L330 512 L206 594 Z" fill="url(#mk-amb)" stroke="url(#mk-amb)" stroke-width="36" stroke-linejoin="round"/><circle cx="822" cy="196" r="50" fill="url(#mk-rec)"/></symbol>
   <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></symbol>
   <symbol id="i-pause" viewBox="0 0 24 24"><rect fill="currentColor" x="6" y="5" width="4.5" height="14" rx="1.2"/><rect fill="currentColor" x="13.5" y="5" width="4.5" height="14" rx="1.2"/></symbol>
   <symbol id="i-back" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></symbol>
@@ -601,7 +595,6 @@ html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
 
     <p class="none" id="noResults" hidden>Nenhum roteiro com esse termo.</p>
     <div class="empty" id="emptyState" hidden>
-      <svg viewBox="0 0 1024 1024" aria-hidden="true"><use href="#i-mark"/></svg>
       <h2>Nenhum roteiro ainda</h2>
       <p>Toque em Novo roteiro e escreva ou cole o texto.</p>
     </div>
@@ -824,7 +817,7 @@ html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
           <div class="row"><span>Voltar tudo ao padrão</span><button class="btn sm btn-danger" id="sReset" type="button">Restaurar</button></div>
         </div>
       </div>
-      <p class="ver">Telegron</p>
+      <p class="ver">TeleGron</p>
     </div>
   </div>
 </div>
@@ -1502,7 +1495,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     try { await openStream(); }
     catch (e) {
       cam.on = false; cam.loading = false; camState(); applyStage(); layout(true);
-      toast('Sem acesso à câmera. Libere a câmera e o microfone para o Telegron'); return false;
+      toast('Sem acesso à câmera. Libere a câmera e o microfone para o TeleGron'); return false;
     }
     cam.loading = false; camState(); updRecTime();
     return true;
@@ -1605,7 +1598,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     const d = new Date(), ext = /mp4/.test(type) ? 'mp4' : 'webm';
     const base = (current ? nameOf(current) : 'Câmera').replace(/[\\/:*?"<>|]+/g, ' ').slice(0, 40).trim();
     take = { blob, type, url: URL.createObjectURL(blob),
-      name: 'Telegron ' + base + ' ' + d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()) + ' ' + pad2(d.getHours()) + 'h' + pad2(d.getMinutes()) + '.' + ext };
+      name: 'TeleGron ' + base + ' ' + d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()) + ' ' + pad2(d.getHours()) + 'h' + pad2(d.getMinutes()) + '.' + ext };
     $('#rvVideo').src = take.url;
     $('#rvInfo').textContent = [takes > 1 ? takes + ' takes' : '', cam.qual, fmt(dur), Math.max(1, Math.round(blob.size / 1048576)) + ' MB'].filter(Boolean).join(' · ');
     $('#review').hidden = false;
