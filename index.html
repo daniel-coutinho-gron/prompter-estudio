@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111316">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Prompter">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+[hidden]{display:none!important}
+img{max-width:100%}
+</style>
+</head>
+<body>
+<title>Prompter Estúdio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap">
+<style>
+/* Layout: graphite studio console. Script library grid; full-bleed stage for reading; console bars docked to the screen edges. Single dark look, by choice. */
+:root{
+  --bg:#111316; --panel:#181b20; --panel-2:#22262d; --line:#2e333c;
+  --fg:#eceef2; --muted:#979eab; --amber:#ffb547; --amber-ink:#2b1d00; --rec:#ff5245;
+  --ui:"Inter",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --display:"Space Grotesk","Inter",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--ui);font-size:15px;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+body.locked{overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+
+/* ---------- shared controls ---------- */
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-weight:600;font-size:14px}
+.btn.primary{background:var(--amber);border-color:var(--amber);color:var(--amber-ink)}
+.btn.ghost{background:transparent}
+.btn svg{width:18px;height:18px;flex:none}
+.icon-btn{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:var(--panel-2);border:1px solid var(--line);flex:none}
+.icon-btn svg{width:20px;height:20px}
+
+/* ---------- home ---------- */
+.wrap{max-width:980px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:22px 56px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.tally{width:10px;height:10px;border-radius:50%;background:var(--rec);box-shadow:0 0 0 4px rgba(255,82,69,.18);flex:none}
+.brand h1{font-family:var(--display);font-size:clamp(26px,6vw,34px);letter-spacing:-.02em;margin:0;line-height:1.05}
+.sub{color:var(--muted);margin:10px 0 18px;font-size:14px}
+.tools{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+.search{flex:1 1 220px;display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:0 12px;min-width:0}
+.search svg{width:18px;height:18px;color:var(--muted);flex:none}
+.search input{flex:1;background:none;border:0;padding:10px 0;outline:none;min-width:0;font-size:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px;min-height:178px;text-align:left;cursor:pointer;min-width:0;transition:border-color .15s,transform .15s}
+.card:hover{border-color:#454b57}
+.card:active{transform:scale(.985)}
+.card h3{font-size:16px;font-weight:700;margin:0;line-height:1.25;overflow-wrap:anywhere}
+.card .preview{color:var(--muted);font-size:13px;line-height:1.45;margin:0;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.card .meta{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:6px;font-family:var(--mono);font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.mini{background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:5px 9px;font-family:var(--ui);font-size:12px;font-weight:600}
+.card.new{border-style:dashed;align-items:center;justify-content:center;color:var(--amber);font-weight:600;background:transparent}
+.card.new .plus{font-size:40px;line-height:1;font-weight:400}
+.empty{grid-column:1/-1;color:var(--muted);padding:24px 0}
+.foot-note{color:var(--muted);font-size:12.5px;margin-top:22px;line-height:1.5}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- editor ---------- */
+#editor:not([hidden]){display:flex;flex-direction:column;min-height:100%}
+.ed{max-width:820px;width:100%;margin:0 auto;flex:1;display:flex;flex-direction:column;gap:12px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px 24px;box-sizing:border-box}
+.ed-bar{display:flex;align-items:center;gap:10px}
+#edTitle{flex:1;min-width:0;background:none;border:0;font-family:var(--display);font-size:22px;font-weight:700;padding:6px 0;outline:none;border-bottom:1px solid transparent}
+#edTitle:focus{border-bottom-color:var(--line)}
+#edText{flex:1;min-height:52vh;width:100%;box-sizing:border-box;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;font-size:18px;line-height:1.6;resize:none;outline:none}
+#edText:focus{border-color:#4a505c}
+.ed-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;color:var(--muted);font-size:13px}
+.ed-stats{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:12.5px}
+.hint{font-size:12.5px;line-height:1.5;color:var(--muted)}
+.hint code{font-family:var(--mono);color:var(--amber);font-size:12px}
+.danger{color:var(--rec)}
+
+/* ---------- prompter ---------- */
+#prompter{position:fixed;inset:0;z-index:20;background:#000;overflow:hidden}
+#stage{position:absolute;inset:0;overflow:hidden;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+#content{will-change:transform;box-sizing:border-box;font-weight:600}
+#ptext p{margin:0 0 .55em}
+#ptext b{font-weight:800}
+#ptext .note{display:inline-block;font-family:var(--ui);font-size:.42em;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);border:2px solid currentColor;border-radius:.4em;padding:.15em .55em;vertical-align:middle;opacity:.9}
+#cue{position:absolute;left:0;right:0;transform:translateY(-50%);pointer-events:none;background:linear-gradient(90deg,rgba(255,181,71,.13),rgba(255,181,71,.04) 60%,transparent)}
+#cue::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);border-left:16px solid var(--amber);border-top:12px solid transparent;border-bottom:12px solid transparent}
+#countdown{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--mono);font-size:min(42vw,42vh);color:var(--amber);background:rgba(0,0,0,.55);pointer-events:none;font-variant-numeric:tabular-nums}
+#progress{position:absolute;top:0;left:0;height:3px;background:var(--amber);width:0;z-index:3;pointer-events:none}
+.hud-top,.hud-bottom{position:absolute;left:0;right:0;z-index:2;transition:opacity .35s;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
+.hud-top .icon-btn{background:rgba(34,38,45,.92)}
+.hud-top{top:0;padding-top:calc(env(safe-area-inset-top,0px) + 10px);padding-bottom:22px;display:flex;align-items:center;gap:10px;background:linear-gradient(rgba(0,0,0,.82),rgba(0,0,0,0))}
+.hud-bottom{bottom:0;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 12px);padding-top:26px;background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.88) 38%);display:flex;flex-direction:column;gap:10px;align-items:center}
+#hud.faded .hud-top,#hud.faded .hud-bottom{opacity:0;pointer-events:none}
+.p-title{flex:1;min-width:0;font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.clock{font-family:var(--mono);font-size:12.5px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums;line-height:1.35;white-space:nowrap}
+.clock b{color:var(--fg);font-weight:500}
+.rec-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--muted);margin-right:6px;vertical-align:1px}
+.playing .rec-dot{background:var(--rec)}
+.speed-row{display:flex;align-items:center;gap:10px;width:100%;max-width:560px}
+.speed-row label{font-size:12px;color:var(--muted);white-space:nowrap}
+.speed-row input{flex:1;min-width:0;accent-color:var(--amber)}
+.speed-val{font-family:var(--mono);min-width:2.2em;text-align:right;font-variant-numeric:tabular-nums}
+.ctl-row{display:flex;align-items:center;justify-content:center;gap:8px}
+.hbtn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:rgba(34,38,45,.92);border:1px solid var(--line);border-radius:12px;min-width:50px;height:54px;padding:0 8px;font-size:10.5px;font-weight:600;color:var(--fg)}
+.hbtn svg{width:20px;height:20px}
+.hbtn .big{font-size:17px;font-weight:800;line-height:1}
+.hbtn.on{border-color:var(--amber);color:var(--amber)}
+.play{width:66px;height:66px;border-radius:50%;background:var(--amber);border:0;color:var(--amber-ink);display:grid;place-items:center;margin:0 4px;box-shadow:0 6px 24px rgba(255,181,71,.25)}
+.play svg{width:28px;height:28px}
+
+/* ---------- settings sheet ---------- */
+#sheetWrap{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;justify-content:center}
+#sheetWrap.over-stage{background:rgba(0,0,0,.15)}
+.sheet{background:var(--panel);width:100%;max-width:560px;max-height:82%;overflow:auto;border-radius:20px 20px 0 0;border:1px solid var(--line);border-bottom:0;box-sizing:border-box;padding:0 max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 22px) max(16px,env(safe-area-inset-left,0px));overscroll-behavior:contain}
+#sheetWrap.over-stage .sheet{max-height:56%}
+.sheet-head{position:sticky;top:0;background:var(--panel);display:flex;align-items:center;justify-content:space-between;padding:14px 0 10px;z-index:1}
+.sheet-head h2{font-family:var(--display);font-size:20px;margin:0}
+.pv{height:118px;overflow:hidden;border-radius:12px;border:1px solid var(--line);margin-bottom:6px;display:flex;align-items:center}
+.pv-inner{width:100%;box-sizing:border-box;font-weight:600}
+.group{margin-top:16px}
+.group h4{margin:0 0 4px;font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);min-height:28px}
+.row:last-child{border-bottom:0}
+.row > span:first-child{flex:none}
+.row .val{font-family:var(--mono);color:var(--muted);font-size:12.5px;font-variant-numeric:tabular-nums}
+.row.stack{flex-direction:column;align-items:stretch;gap:8px}
+.row.stack .lbl{display:flex;justify-content:space-between}
+.row input[type=range]{width:100%;accent-color:var(--amber)}
+.row select{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;max-width:60%;font-size:16px}
+.row input[type=color]{width:44px;height:30px;border:1px solid var(--line);border-radius:8px;background:none;padding:0}
+.seg{display:flex;background:var(--panel-2);border:1px solid var(--line);border-radius:11px;padding:3px;gap:3px}
+.seg button{flex:1;background:none;border:0;border-radius:8px;padding:8px 6px;font-size:13px;font-weight:600;color:var(--muted);white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--amber);color:var(--amber-ink)}
+.flip-h{display:inline-block;transform:scaleX(-1)}
+.flip-v{display:inline-block;transform:scaleY(-1)}
+.flip-hv{display:inline-block;transform:scale(-1,-1)}
+.sw{position:relative;width:50px;height:30px;flex:none}
+.sw input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.sw span{position:absolute;inset:0;border-radius:99px;background:#3a3f49;transition:background .2s;pointer-events:none}
+.sw span::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .2s}
+.sw input:checked + span{background:var(--amber)}
+.sw input:checked + span::after{transform:translateX(20px)}
+.sw input:focus-visible + span{outline:2px solid var(--amber);outline-offset:2px}
+.presets{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);border-radius:9px;padding:6px 10px;font-size:13px;font-weight:700}
+.keys{font-size:12.5px;color:var(--muted);line-height:1.7;padding:10px 0}
+.keys kbd{font-family:var(--mono);font-size:11.5px;background:var(--panel-2);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--fg)}
+
+#toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 150px);transform:translateX(-50%);background:#f2f3f5;color:#111316;font-weight:600;font-size:14px;padding:10px 16px;border-radius:12px;z-index:60;pointer-events:none;opacity:0;transition:opacity .25s;max-width:80vw;text-align:center}
+#toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><rect fill="currentColor" x="6" y="5" width="4.5" height="14" rx="1.2"/><rect fill="currentColor" x="13.5" y="5" width="4.5" height="14" rx="1.2"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-restart" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4.5h4.5"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/></g></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" d="M4 20h4L19 9a2.1 2.1 0 0 0-4-4L4 16v4Z"/></symbol>
+  <symbol id="i-mirror" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18" stroke-dasharray="2 2.5"/><path d="M9 6 3 18h6V6Z"/><path d="M15 6l6 12h-6V6Z"/></g></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></g></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0-4-4m4 4 4-4M5 19h14"/></symbol>
+</svg>
+
+<!-- ============ HOME ============ -->
+<section id="home">
+  <div class="wrap">
+    <div class="top">
+      <div class="brand"><span class="tally" aria-hidden="true"></span><h1>Prompter Estúdio</h1></div>
+      <button class="icon-btn" id="homeSettings" type="button" aria-label="Ajustes"><svg><use href="#i-gear"/></svg></button>
+    </div>
+    <p class="sub" id="count">Seus roteiros</p>
+    <div class="tools">
+      <label class="search"><svg><use href="#i-search"/></svg><span class="sr">Buscar roteiro</span><input id="search" type="search" placeholder="Buscar roteiro" autocomplete="off"></label>
+      <label class="btn ghost" for="importFile" style="cursor:pointer"><svg><use href="#i-file"/></svg>Importar .txt</label>
+      <input id="importFile" type="file" accept=".txt,text/plain" hidden>
+    </div>
+    <div class="grid" id="grid"></div>
+    <p class="foot-note">Toque num roteiro para abrir o prompter. Os roteiros ficam salvos neste aparelho, neste navegador.</p>
+  </div>
+</section>
+
+<!-- ============ EDITOR ============ -->
+<section id="editor" hidden>
+  <div class="ed">
+    <div class="ed-bar">
+      <button class="icon-btn" id="edBack" type="button" aria-label="Voltar para os roteiros"><svg><use href="#i-back"/></svg></button>
+      <label class="sr" for="edTitle">Título do roteiro</label>
+      <input id="edTitle" type="text" placeholder="Título do roteiro" autocomplete="off">
+      <button class="btn primary" id="edPlay" type="button"><svg><use href="#i-play"/></svg>Ler</button>
+    </div>
+    <label class="sr" for="edText">Texto do roteiro</label>
+    <textarea id="edText" placeholder="Cole ou escreva o roteiro aqui."></textarea>
+    <div class="ed-foot">
+      <span class="ed-stats" id="edStats">0 palavras</span>
+      <button class="btn ghost danger" id="edDelete" type="button">Apagar roteiro</button>
+    </div>
+    <p class="hint">Linha em branco separa parágrafos. <code>**palavra**</code> fica em negrito. <code>[pausa]</code> vira uma marcação de direção em amarelo, que não conta no tempo.</p>
+  </div>
+</section>
+
+<!-- ============ PROMPTER ============ -->
+<section id="prompter" hidden>
+  <div id="stage">
+    <div id="content"><div id="padTop"></div><div id="ptext"></div><div id="padBot"></div></div>
+    <div id="cue"></div>
+    <div id="countdown" hidden>3</div>
+  </div>
+  <div id="progress"></div>
+  <div id="hud">
+    <div class="hud-top">
+      <button class="icon-btn" id="pBack" type="button" aria-label="Sair do prompter"><svg><use href="#i-back"/></svg></button>
+      <div class="p-title" id="pTitle"></div>
+      <div class="clock" id="clock"><span class="rec-dot"></span><b id="tElapsed">00:00</b><br><span id="tLeft">faltam 00:00</span></div>
+      <button class="icon-btn" id="pEdit" type="button" aria-label="Editar roteiro"><svg><use href="#i-edit"/></svg></button>
+      <button class="icon-btn" id="pSettings" type="button" aria-label="Ajustes"><svg><use href="#i-gear"/></svg></button>
+    </div>
+    <div class="hud-bottom">
+      <div class="speed-row">
+        <label for="spd">Velocidade</label>
+        <input id="spd" type="range" min="1" max="60" step="1">
+        <span class="speed-val" id="spdVal">22</span>
+      </div>
+      <div class="ctl-row">
+        <button class="hbtn" id="pRestart" type="button"><svg><use href="#i-restart"/></svg>Início</button>
+        <button class="hbtn" id="pSmaller" type="button" aria-label="Diminuir letra"><span class="big">A−</span>Letra</button>
+        <button class="hbtn" id="pBigger" type="button" aria-label="Aumentar letra"><span class="big">A+</span>Letra</button>
+        <button class="play" id="pPlay" type="button" aria-label="Rolar"><svg><use href="#i-play"/></svg></button>
+        <button class="hbtn" id="pMirror" type="button"><svg><use href="#i-mirror"/></svg><span id="pMirrorLbl">Espelho</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SETTINGS ============ -->
+<div id="sheetWrap" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="sheet-head"><h2 id="sheetTitle">Ajustes</h2><button class="btn primary" id="sheetDone" type="button">Concluir</button></div>
+    <div class="pv" id="pv"><div class="pv-inner" id="pvInner">Esta é a prévia do texto.</div></div>
+
+    <div class="group">
+      <h4>Espelhamento</h4>
+      <div class="row stack">
+        <div class="seg" data-seg="mirror" role="group" aria-label="Espelhamento">
+          <button type="button" data-v="none">abc</button>
+          <button type="button" data-v="h"><span class="flip-h">abc</span> horiz.</button>
+          <button type="button" data-v="v"><span class="flip-v">abc</span> vert.</button>
+          <button type="button" data-v="hv"><span class="flip-hv">abc</span> ambos</button>
+        </div>
+        <span class="hint">No teleprompter de vidro use o horizontal: o texto fica invertido no celular e aparece certo no reflexo.</span>
+      </div>
+    </div>
+
+    <div class="group">
+      <h4>Texto</h4>
+      <div class="row stack"><div class="lbl"><label for="sFont">Tamanho</label><span class="val" id="vFont"></span></div><input id="sFont" type="range" min="24" max="160" step="2" data-set="fontSize"></div>
+      <div class="row"><label for="sFace">Fonte</label>
+        <select id="sFace" data-set="font">
+          <option value="inter">Inter</option>
+          <option value="atkinson">Atkinson (alta legibilidade)</option>
+          <option value="helvetica">Helvetica</option>
+          <option value="black">Arial Black</option>
+          <option value="georgia">Georgia (serifa)</option>
+        </select>
+      </div>
+      <div class="row stack"><div class="lbl"><label for="sLH">Espaço entre linhas</label><span class="val" id="vLH"></span></div><input id="sLH" type="range" min="1" max="1.9" step="0.05" data-set="lineHeight"></div>
+      <div class="row stack"><div class="lbl"><label for="sMargin">Margens laterais</label><span class="val" id="vMargin"></span></div><input id="sMargin" type="range" min="0" max="30" step="1" data-set="margin"></div>
+      <div class="row"><span>Alinhamento</span>
+        <div class="seg" data-seg="align" role="group" aria-label="Alinhamento"><button type="button" data-v="left">Esquerda</button><button type="button" data-v="center">Centro</button></div>
+      </div>
+      <div class="row"><span>Cores</span>
+        <div class="presets">
+          <button class="chip" type="button" data-preset="#ffffff,#000000" style="background:#000;color:#fff">Branco</button>
+          <button class="chip" type="button" data-preset="#ffd84d,#000000" style="background:#000;color:#ffd84d">Amarelo</button>
+          <button class="chip" type="button" data-preset="#000000,#ffffff" style="background:#fff;color:#000">Invertido</button>
+        </div>
+      </div>
+      <div class="row"><label for="sFg">Cor do texto</label><input id="sFg" type="color" data-set="fg"></div>
+      <div class="row"><label for="sBg">Cor do fundo</label><input id="sBg" type="color" data-set="bg"></div>
+    </div>
+
+    <div class="group">
+      <h4>Rolagem</h4>
+      <div class="row stack"><div class="lbl"><label for="sSpeed">Velocidade</label><span class="val" id="vSpeed"></span></div><input id="sSpeed" type="range" min="1" max="60" step="1" data-set="speed"></div>
+      <div class="row"><span>Contagem antes de rolar</span>
+        <div class="seg" data-seg="countdown" role="group" aria-label="Contagem regressiva"><button type="button" data-v="0">Não</button><button type="button" data-v="3">3 s</button><button type="button" data-v="5">5 s</button><button type="button" data-v="10">10 s</button></div>
+      </div>
+      <div class="row"><label for="sTap">Tocar na tela pausa e retoma</label><span class="sw"><input id="sTap" type="checkbox" data-set="tapToggle"><span></span></span></div>
+      <div class="row"><label for="sHide">Esconder controles ao rolar</label><span class="sw"><input id="sHide" type="checkbox" data-set="autoHide"><span></span></span></div>
+      <div class="row"><label for="sDrag">Arrastar o texto pausa</label><span class="sw"><input id="sDrag" type="checkbox" data-set="dragPauses"><span></span></span></div>
+    </div>
+
+    <div class="group">
+      <h4>Linha de leitura</h4>
+      <div class="row"><label for="sCueOn">Mostrar seta</label><span class="sw"><input id="sCueOn" type="checkbox" data-set="showCue"><span></span></span></div>
+      <div class="row stack"><div class="lbl"><label for="sCue">Altura da seta na tela</label><span class="val" id="vCue"></span></div><input id="sCue" type="range" min="10" max="60" step="1" data-set="cue"></div>
+    </div>
+
+    <div class="group">
+      <h4>Controle remoto ou teclado Bluetooth</h4>
+      <div class="keys"><kbd>Espaço</kbd> <kbd>Enter</kbd> <kbd>Page Down</kbd> rola e pausa · <kbd>↑</kbd> <kbd>↓</kbd> velocidade · <kbd>←</kbd> <kbd>Page Up</kbd> volta um trecho · <kbd>→</kbd> avança · <kbd>Home</kbd> início · <kbd>Esc</kbd> sai</div>
+      <div class="row"><span>Voltar ao padrão</span><button class="btn ghost danger" id="sReset" type="button">Restaurar</button></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  const DEFAULTS = { fontSize: 56, font: 'inter', lineHeight: 1.3, margin: 6, align: 'left', speed: 22, mirror: 'none',
+    fg: '#ffffff', bg: '#000000', cue: 30, showCue: true, countdown: 3, tapToggle: true, autoHide: true, dragPauses: true };
+  const FONTS = {
+    inter: '"Inter", system-ui, sans-serif',
+    atkinson: '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif',
+    helvetica: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+    black: '"Arial Black", "Helvetica Neue", Arial, sans-serif',
+    georgia: 'Georgia, "Times New Roman", serif'
+  };
+  const MIRROR = { none: 'none', h: 'scaleX(-1)', v: 'scaleY(-1)', hv: 'scale(-1,-1)' };
+  const MIRROR_LBL = { none: 'Espelho', h: 'Horiz.', v: 'Vert.', hv: 'Ambos' };
+  const WPM = 150;
+  const SAMPLE = `Oi, tudo bem? Este é um roteiro de exemplo para você testar o prompter antes de gravar.
+
+[olhar para a lente]
+
+Toque na tela para começar e toque de novo para pausar. Se perder o ponto, arraste o texto com o dedo para voltar ou avançar.
+
+Para usar no vidro do teleprompter, abra os Ajustes e escolha o **espelhamento horizontal**. O texto fica invertido no celular e aparece certo no reflexo do vidro.
+
+[pausa]
+
+A seta amarela marca a linha que você deve estar lendo. Ajuste a velocidade até o texto acompanhar a sua fala, sem correr e sem arrastar.
+
+Quando terminar, apague este exemplo e crie o seu roteiro no botão de mais.`;
+
+  let settings = Object.assign({}, DEFAULTS, store.get('pe.settings', {}));
+  let scripts = store.get('pe.scripts', null);
+  const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  if (!Array.isArray(scripts)) {
+    scripts = [{ id: uid(), title: 'Exemplo: abertura de Reels', text: SAMPLE, updated: Date.now() }];
+    store.set('pe.scripts', scripts);
+  }
+  let saveT;
+  const saveScripts = (later) => { clearTimeout(saveT); if (later) saveT = setTimeout(() => store.set('pe.scripts', scripts), 300); else store.set('pe.scripts', scripts); };
+  const saveSettings = () => store.set('pe.settings', settings);
+
+  const esc = (t) => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const words = (t) => (t.replace(/\[[^\]\n]*\]/g, ' ').match(/\S+/g) || []).length;
+  const fmt = (s) => { s = Math.max(0, Math.round(s)); return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); };
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const renderScript = (text) => text.trim().split(/\n\s*\n/).map(p =>
+    '<p>' + esc(p).replace(/\n/g, '<br>').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[([^\]\n]+)\]/g, '<span class="note">$1</span>') + '</p>').join('');
+
+  let toastT;
+  function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 1700); }
+
+  function show(view) {
+    ['home', 'editor', 'prompter'].forEach(v => $('#' + v).hidden = v !== view);
+    document.body.classList.toggle('locked', view === 'prompter');
+    if (view === 'home') renderHome();
+    window.scrollTo(0, 0);
+  }
+
+  /* ---------------- home ---------------- */
+  function renderHome() {
+    const q = $('#search').value.trim().toLowerCase();
+    const list = scripts.slice().sort((a, b) => b.updated - a.updated)
+      .filter(s => !q || (s.title + ' ' + s.text).toLowerCase().includes(q));
+    let html = q ? '' : '<button class="card new" id="newCard" type="button"><span class="plus">+</span><span>Novo roteiro</span></button>';
+    html += list.map(s => {
+      const w = words(s.text);
+      return `<article class="card" tabindex="0" data-id="${s.id}" aria-label="Abrir ${esc(s.title || 'Sem título')} no prompter">
+        <h3>${esc(s.title || 'Sem título')}</h3>
+        <p class="preview">${s.text.trim() ? esc(s.text.slice(0, 260)) : '<i>Roteiro vazio</i>'}</p>
+        <div class="meta"><span>${w} pal · ${fmt(w / WPM * 60)}</span><button class="mini" type="button" data-edit="${s.id}">Editar</button></div>
+      </article>`;
+    }).join('');
+    if (q && !list.length) html = '<p class="empty">Nenhum roteiro com esse termo.</p>';
+    $('#grid').innerHTML = html;
+    const n = scripts.length;
+    $('#count').textContent = n === 0 ? 'Nenhum roteiro ainda. Crie o primeiro no botão de mais.' : (n === 1 ? '1 roteiro salvo' : n + ' roteiros salvos');
+  }
+  function newScript(text = '', title = '') {
+    const s = { id: uid(), title, text, updated: Date.now() };
+    scripts.push(s); saveScripts(); return s;
+  }
+  $('#grid').addEventListener('click', (e) => {
+    if (e.target.closest('#newCard')) { const s = newScript(); openEditor(s.id, true); return; }
+    const ed = e.target.closest('[data-edit]');
+    if (ed) { openEditor(ed.dataset.edit); return; }
+    const card = e.target.closest('.card[data-id]');
+    if (card) openPrompter(card.dataset.id);
+  });
+  $('#grid').addEventListener('keydown', (e) => {
+    const card = e.target.closest('.card[data-id]');
+    if (card && e.target === card && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openPrompter(card.dataset.id); }
+  });
+  $('#search').addEventListener('input', renderHome);
+  $('#importFile').addEventListener('change', (e) => {
+    const f = e.target.files && e.target.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = () => { const s = newScript(String(r.result || ''), f.name.replace(/\.[^.]+$/, '')); e.target.value = ''; openEditor(s.id); toast('Roteiro importado'); };
+    r.readAsText(f);
+  });
+
+  /* ---------------- editor ---------------- */
+  let current = null;
+  function openEditor(id, focus) {
+    current = scripts.find(s => s.id === id); if (!current) return show('home');
+    $('#edTitle').value = current.title; $('#edText').value = current.text;
+    resetDelete(); edStats(); show('editor');
+    if (focus) setTimeout(() => $('#edTitle').focus(), 50);
+  }
+  function edStats() {
+    const w = words(current.text);
+    $('#edStats').textContent = `${w} palavras · ${fmt(w / WPM * 60)} falando a ${WPM} pal/min`;
+  }
+  $('#edTitle').addEventListener('input', (e) => { current.title = e.target.value; current.updated = Date.now(); saveScripts(true); });
+  $('#edText').addEventListener('input', (e) => { current.text = e.target.value; current.updated = Date.now(); saveScripts(true); edStats(); });
+  $('#edBack').addEventListener('click', () => { saveScripts(); show('home'); });
+  $('#edPlay').addEventListener('click', () => { saveScripts(); openPrompter(current.id); });
+  let delArmed = false, delT;
+  function resetDelete() { delArmed = false; clearTimeout(delT); $('#edDelete').textContent = 'Apagar roteiro'; }
+  $('#edDelete').addEventListener('click', () => {
+    if (!delArmed) { delArmed = true; $('#edDelete').textContent = 'Toque de novo para apagar'; delT = setTimeout(resetDelete, 3500); return; }
+    scripts = scripts.filter(s => s !== current); saveScripts(); resetDelete(); show('home'); toast('Roteiro apagado');
+  });
+
+  /* ---------------- prompter engine ---------------- */
+  const P = { pos: 0, max: 0, playing: false, counting: false, last: 0, elapsed: 0, raf: 0, lineH: 0, cueY: 0, cd: 0 };
+  const stage = $('#stage'), content = $('#content');
+  const pxPerSec = () => settings.speed * settings.fontSize * 0.05;
+  let wl = null;
+  async function wake() { try { if ('wakeLock' in navigator && !wl) { wl = await navigator.wakeLock.request('screen'); wl.addEventListener('release', () => { wl = null; }); } } catch (e) {} }
+  function sleep() { try { if (wl) wl.release(); } catch (e) {} wl = null; }
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && !$('#prompter').hidden) wake(); });
+
+  function openPrompter(id) {
+    current = scripts.find(s => s.id === id); if (!current) return;
+    $('#ptext').innerHTML = current.text.trim() ? renderScript(current.text) : '<p class="note">Roteiro vazio. Toque em Editar.</p>';
+    $('#pTitle').textContent = current.title || 'Sem título';
+    show('prompter');
+    applyStage();
+    P.pos = 0; P.elapsed = 0;
+    layout(false);
+    setPlaying(false);
+    wake();
+    cancelAnimationFrame(P.raf); P.last = performance.now(); P.raf = requestAnimationFrame(tick);
+  }
+  function closePrompter(to) {
+    setPlaying(false); cancelAnimationFrame(P.raf); sleep();
+    if (to === 'editor') openEditor(current.id); else show('home');
+  }
+  function applyStage() {
+    $('#prompter').style.background = settings.bg;
+    stage.style.transform = MIRROR[settings.mirror] || 'none';
+    Object.assign(content.style, {
+      color: settings.fg, fontFamily: FONTS[settings.font] || FONTS.inter, fontSize: settings.fontSize + 'px',
+      lineHeight: settings.lineHeight, paddingLeft: settings.margin + '%', paddingRight: settings.margin + '%', textAlign: settings.align
+    });
+    $('#cue').hidden = !settings.showCue;
+    $('#pMirror').classList.toggle('on', settings.mirror !== 'none');
+    $('#pMirrorLbl').textContent = MIRROR_LBL[settings.mirror];
+    $('#spd').value = settings.speed; $('#spdVal').textContent = settings.speed;
+  }
+  function layout(keep) {
+    const ratio = P.max ? P.pos / P.max : 0;
+    const h = stage.clientHeight || window.innerHeight;
+    P.lineH = settings.fontSize * settings.lineHeight;
+    P.cueY = h * settings.cue / 100;
+    $('#padTop').style.height = Math.max(0, P.cueY - P.lineH / 2) + 'px';
+    $('#padBot').style.height = h + 'px';
+    P.max = Math.max(0, $('#ptext').offsetHeight - P.lineH);
+    P.pos = keep ? ratio * P.max : clamp(P.pos, 0, P.max);
+    const cue = $('#cue'); cue.style.top = P.cueY + 'px'; cue.style.height = P.lineH + 'px';
+    render();
+  }
+  let lastClock = '';
+  function render() {
+    content.style.transform = `translate3d(0,${-P.pos}px,0)`;
+    $('#progress').style.width = (P.max ? P.pos / P.max * 100 : 0) + '%';
+    const e = fmt(P.elapsed), l = 'faltam ' + fmt((P.max - P.pos) / pxPerSec());
+    if (e + l !== lastClock) { lastClock = e + l; $('#tElapsed').textContent = e; $('#tLeft').textContent = l; }
+  }
+  function tick(ts) {
+    const dt = Math.min(0.1, (ts - P.last) / 1000); P.last = ts;
+    if (P.playing && !P.counting && !drag) {
+      P.pos += pxPerSec() * dt; P.elapsed += dt;
+      if (P.pos >= P.max) { P.pos = P.max; render(); setPlaying(false); toast('Fim do roteiro'); }
+      else render();
+    }
+    P.raf = requestAnimationFrame(tick);
+  }
+  function setPlaying(on) {
+    if (on && P.pos >= P.max - 1) { P.pos = 0; P.elapsed = 0; render(); }
+    P.playing = on;
+    const btn = $('#pPlay');
+    btn.innerHTML = `<svg><use href="#i-${on ? 'pause' : 'play'}"/></svg>`;
+    btn.setAttribute('aria-label', on ? 'Pausar' : 'Rolar');
+    $('#clock').classList.toggle('playing', on);
+    $('#hud').classList.toggle('faded', on && settings.autoHide);
+    clearInterval(P.cd); P.counting = false; $('#countdown').hidden = true;
+    if (on) {
+      wake();
+      if (settings.countdown > 0 && P.pos < 2) {
+        let n = settings.countdown; P.counting = true;
+        const el = $('#countdown'); el.textContent = n; el.hidden = false;
+        P.cd = setInterval(() => { n--; if (n <= 0) { clearInterval(P.cd); el.hidden = true; P.counting = false; } else el.textContent = n; }, 1000);
+      }
+    }
+  }
+  function jump(dy) { P.pos = clamp(P.pos + dy, 0, P.max); render(); }
+  function changeSpeed(d) { settings.speed = clamp(settings.speed + d, 1, 60); saveSettings(); $('#spd').value = settings.speed; $('#spdVal').textContent = settings.speed; render(); }
+  function changeFont(d) { settings.fontSize = clamp(settings.fontSize + d, 24, 160); saveSettings(); applyStage(); layout(true); toast(settings.fontSize + ' pt'); }
+
+  const vflip = () => settings.mirror === 'v' || settings.mirror === 'hv';
+  let drag = null;
+  stage.addEventListener('pointerdown', (e) => {
+    drag = { y: e.clientY, pos: P.pos, moved: false };
+    try { stage.setPointerCapture(e.pointerId); } catch (err) {}
+  });
+  stage.addEventListener('pointermove', (e) => {
+    if (!drag) return;
+    let dy = e.clientY - drag.y; if (vflip()) dy = -dy;
+    if (!drag.moved && Math.abs(dy) > 8) { drag.moved = true; stage.style.cursor = 'grabbing'; if (P.playing && settings.dragPauses) setPlaying(false); }
+    if (drag.moved) { P.pos = clamp(drag.pos - dy, 0, P.max); render(); }
+  });
+  const endDrag = (e, cancelled) => {
+    if (drag && !drag.moved && !cancelled) {
+      if (settings.tapToggle) setPlaying(!P.playing);
+      else $('#hud').classList.toggle('faded');
+    }
+    drag = null; stage.style.cursor = '';
+  };
+  stage.addEventListener('pointerup', (e) => endDrag(e, false));
+  stage.addEventListener('pointercancel', (e) => endDrag(e, true));
+  stage.addEventListener('wheel', (e) => { e.preventDefault(); jump(e.deltaY * (vflip() ? -1 : 1)); }, { passive: false });
+
+  const hudBtn = (id, fn) => $(id).addEventListener('click', (e) => { e.currentTarget.blur(); fn(); });
+  hudBtn('#pPlay', () => setPlaying(!P.playing));
+  hudBtn('#pBack', () => closePrompter('home'));
+  hudBtn('#pEdit', () => closePrompter('editor'));
+  hudBtn('#pRestart', () => { P.pos = 0; P.elapsed = 0; render(); });
+  hudBtn('#pSmaller', () => changeFont(-4));
+  hudBtn('#pBigger', () => changeFont(4));
+  hudBtn('#pMirror', () => {
+    const order = ['none', 'h', 'v', 'hv'];
+    settings.mirror = order[(order.indexOf(settings.mirror) + 1) % order.length];
+    saveSettings(); applyStage(); layout(true);
+    toast({ none: 'Sem espelhamento', h: 'Espelhado na horizontal', v: 'Espelhado na vertical', hv: 'Espelhado nos dois sentidos' }[settings.mirror]);
+  });
+  hudBtn('#pSettings', () => { setPlaying(false); openSheet(true); });
+  $('#spd').addEventListener('input', (e) => { settings.speed = +e.target.value; saveSettings(); $('#spdVal').textContent = settings.speed; render(); });
+
+  document.addEventListener('keydown', (e) => {
+    if ($('#prompter').hidden || !$('#sheetWrap').hidden) return;
+    if (e.target.matches('input, textarea, select')) return;
+    const h = stage.clientHeight;
+    switch (e.key) {
+      case ' ': case 'Enter': case 'PageDown': e.preventDefault(); setPlaying(!P.playing); break;
+      case 'ArrowUp': e.preventDefault(); changeSpeed(1); break;
+      case 'ArrowDown': e.preventDefault(); changeSpeed(-1); break;
+      case 'ArrowLeft': case 'PageUp': e.preventDefault(); jump(-h * 0.3); break;
+      case 'ArrowRight': e.preventDefault(); jump(h * 0.3); break;
+      case 'Home': e.preventDefault(); P.pos = 0; P.elapsed = 0; render(); break;
+      case 'Escape': closePrompter('home'); break;
+    }
+  });
+  const ro = new ResizeObserver(() => { if (!$('#prompter').hidden) layout(true); });
+  ro.observe(stage); ro.observe($('#ptext'));
+
+  /* ---------------- settings sheet ---------------- */
+  function openSheet(overStage) {
+    $('#sheetWrap').classList.toggle('over-stage', !!overStage);
+    $('#pv').hidden = !!overStage;
+    syncForm(); $('#sheetWrap').hidden = false;
+  }
+  function closeSheet() { $('#sheetWrap').hidden = true; }
+  function applyPreview() {
+    const pv = $('#pv'), inner = $('#pvInner');
+    pv.style.background = settings.bg;
+    Object.assign(inner.style, {
+      color: settings.fg, fontFamily: FONTS[settings.font] || FONTS.inter, fontSize: Math.min(settings.fontSize, 52) + 'px',
+      lineHeight: settings.lineHeight, paddingLeft: settings.margin + '%', paddingRight: settings.margin + '%', textAlign: settings.align,
+      transform: MIRROR[settings.mirror] || 'none'
+    });
+  }
+  function syncForm() {
+    $$('[data-set]').forEach(el => { const k = el.dataset.set; if (el.type === 'checkbox') el.checked = !!settings[k]; else el.value = settings[k]; });
+    $$('.seg[data-seg]').forEach(seg => { const k = seg.dataset.seg; $$('button', seg).forEach(b => b.setAttribute('aria-pressed', String(String(settings[k]) === b.dataset.v))); });
+    $('#vFont').textContent = settings.fontSize + ' pt';
+    $('#vLH').textContent = Number(settings.lineHeight).toFixed(2) + '×';
+    $('#vMargin').textContent = settings.margin + '%';
+    $('#vSpeed').textContent = settings.speed;
+    $('#vCue').textContent = settings.cue + '% do topo';
+    applyPreview();
+  }
+  function commit() {
+    saveSettings(); syncForm();
+    if (!$('#prompter').hidden) { applyStage(); layout(true); }
+  }
+  $$('[data-set]').forEach(el => el.addEventListener('input', () => {
+    const k = el.dataset.set;
+    settings[k] = el.type === 'checkbox' ? el.checked : (el.type === 'range' ? +el.value : el.value);
+    commit();
+  }));
+  $$('.seg[data-seg]').forEach(seg => seg.addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    const k = seg.dataset.seg; settings[k] = typeof DEFAULTS[k] === 'number' ? +b.dataset.v : b.dataset.v; commit();
+  }));
+  $$('[data-preset]').forEach(b => b.addEventListener('click', () => { const [fg, bg] = b.dataset.preset.split(','); settings.fg = fg; settings.bg = bg; commit(); }));
+  let resetArmed = false, resetT;
+  $('#sReset').addEventListener('click', (e) => {
+    if (!resetArmed) { resetArmed = true; e.target.textContent = 'Toque de novo'; resetT = setTimeout(() => { resetArmed = false; e.target.textContent = 'Restaurar'; }, 3000); return; }
+    clearTimeout(resetT); resetArmed = false; e.target.textContent = 'Restaurar';
+    settings = Object.assign({}, DEFAULTS); commit(); toast('Ajustes restaurados');
+  });
+  $('#sheetDone').addEventListener('click', closeSheet);
+  $('#sheetWrap').addEventListener('click', (e) => { if (e.target.id === 'sheetWrap') closeSheet(); });
+  $('#homeSettings').addEventListener('click', () => openSheet(false));
+
+  renderHome();
+})();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+}
+</script>
+</body>
+</html>
