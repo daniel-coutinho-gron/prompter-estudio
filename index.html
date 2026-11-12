@@ -204,6 +204,7 @@ label[for]{cursor:pointer}
 .dock{position:fixed;left:0;right:0;bottom:0;z-index:10;padding:0 var(--gr) calc(var(--sb) + 12px) var(--gl);pointer-events:none}
 .dock-in{max-width:520px;margin:0 auto;display:flex;gap:8px;padding:8px;border-radius:24px;pointer-events:auto}
 .dock .primary{flex:1}
+@media (max-width:340px){.dock .cam-t{display:none}#camBtn{width:54px;padding:0}}
 
 @media (min-width:960px){
   .home{padding-top:calc(var(--st) + 24px)}
@@ -284,20 +285,70 @@ label[for]{cursor:pointer}
 #hud.faded .hud-top,#hud.faded .hud-bottom{opacity:0;pointer-events:none}
 /* modo câmera: a câmera ocupa a tela, o roteiro passa numa faixa no alto, perto da lente */
 #camView{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1);background:#000}
-#prompter.cam #stage{bottom:auto;height:calc(var(--st) + 44%);transform:none!important;background:linear-gradient(to bottom,rgba(0,0,0,.84) 0%,rgba(0,0,0,.74) 45%,rgba(0,0,0,.45) 72%,rgba(0,0,0,.14) 88%,rgba(0,0,0,0) 100%);-webkit-mask-image:linear-gradient(to bottom,#000 0,#000 62%,rgba(0,0,0,.55) 80%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0,#000 62%,rgba(0,0,0,.55) 80%,transparent 100%)}
+#prompter.cam #stage{top:calc(var(--st) + 66px);bottom:auto;height:42%;transform:none!important;background:linear-gradient(to bottom,rgba(0,0,0,.84) 0%,rgba(0,0,0,.74) 45%,rgba(0,0,0,.45) 72%,rgba(0,0,0,.14) 88%,rgba(0,0,0,0) 100%);-webkit-mask-image:linear-gradient(to bottom,#000 0,#000 62%,rgba(0,0,0,.55) 80%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0,#000 62%,rgba(0,0,0,.55) 80%,transparent 100%)}
 #prompter.cam #content{text-shadow:0 1px 4px rgba(0,0,0,.85)}
 #prompter.cam .hud-top,#prompter.cam #pMirror{display:none}
 #pCamOff{display:none}
 #prompter.cam #pCamOff{display:flex}
-#prompter.cam .play{background:rgba(0,0,0,.25);border:4px solid #fff;box-shadow:0 2px 10px rgba(0,0,0,.4);text-shadow:none;filter:none}
+/* câmera no padrão de app de câmera: barra no topo, controles soltos embaixo sobre um escurecido */
+.cam-top,.camf{display:none}
+#prompter.cam .cam-top{position:absolute;left:0;right:0;top:0;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:calc(var(--st) + 10px) var(--gr) 14px var(--gl);background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,0))}
+#prompter.cam .cam-top .round{width:44px;height:44px;background:rgba(18,18,22,.62);border-color:rgba(255,255,255,.14)}
+@media (hover:hover){#prompter.cam .cam-top .round:hover{background:rgba(40,40,46,.75)}}
+/* na câmera, o tamanho da letra fica na barra fina junto da velocidade */
+#prompter.cam #pSmaller,#prompter.cam #pBigger{display:none}
+#prompter.cam .camf{display:grid;font-size:15px;font-weight:700}
+.rec-info{display:flex;align-items:center;gap:8px;height:34px;padding:0 13px;border-radius:99px;background:rgba(18,18,22,.62);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+#prompter.recording .rec-info{background:rgba(200,30,20,.82);border-color:rgba(255,120,110,.5)}
+#prompter.cam .hud-bottom{padding:44px var(--gr) calc(var(--sb) + 20px) var(--gl);background:linear-gradient(to top,rgba(0,0,0,.62),rgba(0,0,0,.3) 60%,rgba(0,0,0,0))}
+#prompter.cam .panel{max-width:440px;padding:0;background:none;border:0;box-shadow:none}
+#prompter.cam .panel::before{display:none}
+#prompter.cam .speed{gap:6px;margin:0 auto 22px;padding:5px 8px 5px 6px;border:1px solid rgba(255,255,255,.12);border-radius:99px;background:rgba(18,18,22,.58);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+#prompter.cam .speed .step{width:34px;height:34px;border-radius:50%}
+#prompter.cam .speed-lbl{display:none}
+#prompter.cam .ctl{max-width:340px;margin:0 auto;justify-content:space-between;align-items:flex-start}
+#prompter.cam .cb{width:72px;height:auto;gap:7px;padding:0;background:none;border:0;box-shadow:none;color:rgba(255,255,255,.88);font-size:12px;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+#prompter.cam .cb svg{box-sizing:border-box;width:54px;height:54px;padding:15px;border-radius:50%;background:rgba(18,18,22,.58);border:1px solid rgba(255,255,255,.14);color:#fff;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);transition:background-color .15s,transform .1s}
+@media (hover:hover){#prompter.cam .cb:hover svg{background:rgba(40,40,46,.72)}}
+#prompter.cam .cb:active svg{transform:translateY(1px);background:rgba(10,10,12,.7)}
+#prompter.cam #pDone svg{background:var(--grad);border-color:rgba(255,170,90,.55)}
+#prompter.cam .play{width:80px;height:80px;margin-top:-6px;background:rgba(255,255,255,.12);border:4px solid #fff;box-shadow:0 4px 18px rgba(0,0,0,.45);text-shadow:none;filter:none}
 #prompter.cam .play svg{display:none}
-#prompter.cam .play::after{content:"";width:48px;height:48px;border-radius:50%;background:#ff3b30;transition:width .2s,height .2s,border-radius .2s}
-#prompter.cam.recording .play::after{width:26px;height:26px;border-radius:7px}
-.rec-info{display:none;align-items:center;gap:8px;width:max-content;margin:0 auto 10px;padding:6px 12px;border-radius:99px;background:rgba(0,0,0,.6);color:#fff;font-size:13.5px;font-weight:600;font-variant-numeric:tabular-nums}
-#prompter.cam .rec-info{display:flex}
+#prompter.cam .play::after{content:"";width:62px;height:62px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff6a5e,#e8261b 70%);box-shadow:inset 0 -2px 4px rgba(120,0,0,.35);transition:width .22s var(--ease),height .22s var(--ease),border-radius .22s var(--ease)}
+#prompter.cam.recording .play::after{width:30px;height:30px;border-radius:8px}
+#prompter.cam .play:active{transform:scale(.96)}
+/* enquanto a câmera liga: a tela já é a da câmera, sem passar pelo prompter */
+#prompter.cam-loading .cam-top,#prompter.cam-loading .hud-bottom{opacity:0;pointer-events:none}
+#prompter.cam-loading::after{content:"Ligando a câmera…";position:absolute;inset:0;z-index:4;display:grid;place-items:center;color:rgba(255,255,255,.72);font:600 15px var(--ui)}
 .rec-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.45)}
 #prompter.recording .rec-dot{background:#ff3b30}
-.rec-q{color:rgba(255,255,255,.72);font-weight:500}
+.rec-takes{color:rgba(255,255,255,.72);font-weight:600}
+.rec-takes:empty{display:none}
+.rec-res{display:inline-flex;gap:2px;height:34px;align-items:center;padding:3px;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-radius:99px;background:rgba(18,18,22,.62);border:1px solid rgba(255,255,255,.12)}
+.rec-res button{height:26px;padding:0 11px;border-radius:99px;color:rgba(255,255,255,.72);font-size:12.5px;font-weight:700;white-space:nowrap;transition:background-color .15s,color .15s}
+@media (hover:hover){.rec-res button:not([aria-pressed="true"]):hover{background:rgba(255,255,255,.14);color:#fff}}
+.rec-res button[aria-pressed="true"]{background:var(--grad);color:#fff;text-shadow:0 1px 1px rgba(110,25,0,.35)}
+.rec-res.locked{opacity:.5}
+.rec-fps{color:rgba(255,255,255,.72);font-weight:500;white-space:nowrap}
+#pScript,#pDone{display:none}
+#prompter.cam #pScript{display:flex}
+#prompter.cam #pRestart{display:none}
+#prompter.cam.session #pCamOff{display:none}
+#prompter.cam.session #pDone{display:flex}
+#prompter.cam.noscript #stage{height:100%;background:none;-webkit-mask-image:none;mask-image:none;pointer-events:none}
+#prompter.cam.noscript #content,#prompter.cam.noscript #cue{visibility:hidden}
+#prompter.cam.noscript .speed,#prompter.cam.noscript #pSmaller,#prompter.cam.noscript #pBigger{display:none}
+#prompter.cam.noscript .ctl{justify-content:space-around}
+#pickWrap{position:fixed;inset:0;z-index:45;display:flex;align-items:flex-end;justify-content:center;background:var(--scrim)}
+@media (min-width:640px){#pickWrap{align-items:center;padding:24px}#pickWrap .pick-sheet{border-radius:26px;border-bottom:1px solid var(--glass-edge)}}
+#pickWrap .pick-sheet{max-height:min(74%,calc(100% - var(--st) - 12px))}
+#pickWrap .pick-box{padding:0;margin-top:6px;overflow:hidden}
+#pickList{border:0;border-radius:0;background:none}
+#pickList button{grid-template-columns:24px 1fr auto;grid-template-areas:"i n c" "i d c";column-gap:14px;min-height:62px;padding:10px 16px}
+#pickList .pi{grid-area:i;width:20px;height:20px;color:var(--accent-text)}
+#pickList .fn{font-family:var(--ui);font-size:17px;font-weight:600}
+#pickList .fd{font-variant-numeric:tabular-nums}
+#pickList button[aria-checked="true"]{background:var(--well-h)}
 #review{position:fixed;inset:0;z-index:50;background:#000;display:flex;align-items:center;justify-content:center;padding:calc(var(--st) + 14px) var(--gr) calc(var(--sb) + 16px) var(--gl);color:#f5f5f7}
 .rv{width:100%;max-width:480px;max-height:100%;display:flex;flex-direction:column;gap:12px}
 #rvVideo{width:100%;min-height:0;flex:1 1 auto;max-height:64vh;border-radius:18px;background:#111;object-fit:contain}
@@ -424,6 +475,7 @@ label[for]{cursor:pointer}
 
 #toast{position:fixed;left:50%;bottom:calc(var(--sb) + 100px);transform:translateX(-50%);z-index:60;max-width:min(86vw,420px);padding:11px 16px;border-radius:14px;background:var(--toast-bg);-webkit-backdrop-filter:blur(20px) saturate(170%);backdrop-filter:blur(20px) saturate(170%);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:14px;font-weight:600;text-align:center;pointer-events:none;opacity:0;transition:opacity .25s}
 #toast.show{opacity:1}
+html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
 #actWrap{position:fixed;inset:0;z-index:45;display:flex;align-items:flex-end;justify-content:center;padding:0 var(--gr) calc(var(--sb) + 12px) var(--gl);background:var(--scrim)}
 @media (min-width:640px){#actWrap{align-items:center}}
 .act{width:100%;max-width:440px;display:flex;flex-direction:column;gap:10px;animation:sheet-in .28s var(--ease)}
@@ -495,6 +547,8 @@ label[for]{cursor:pointer}
   <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
   <symbol id="i-cam" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6.5" width="12.5" height="11" rx="2.6"/><path d="m15.5 10.6 4.1-2.5c.6-.4 1.4.1 1.4.8v6.2c0 .7-.8 1.2-1.4.8l-4.1-2.5"/></g></symbol>
   <symbol id="i-cam-off" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6.5h3c1.4 0 2.5 1.1 2.5 2.5v1.6l4.1-2.5c.6-.4 1.4.1 1.4.8v6.2c0 .5-.3.8-.7.9M15.5 15v.9c0 .9-.5 1.6-1.2 2"/><path d="M6.2 6.6A2.6 2.6 0 0 0 3 9.1v5.8c0 1.4 1.2 2.6 2.6 2.6h7.3M3 3l18 18"/></g></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h7l4 4V19a1.5 1.5 0 0 1-1.5 1.5h-9.5A1.5 1.5 0 0 1 5.5 19V5A1.5 1.5 0 0 1 7 3.5Z"/><path d="M13.5 3.5V8h4.5M8.5 12h7M8.5 15.5h7"/></g></symbol>
+  <symbol id="i-swap" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 4 7l3 3M4 7h12M17 20l3-3-3-3M20 17H8"/></g></symbol>
   <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></g></symbol>
   <symbol id="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></symbol>
   <symbol id="i-contrast" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17A8.5 8.5 0 0 0 12 3.5Z" fill="currentColor" stroke="none"/></g></symbol>
@@ -556,6 +610,7 @@ label[for]{cursor:pointer}
 
   <div class="dock">
     <div class="dock-in glass">
+      <button class="btn lg" id="camBtn" type="button" aria-label="Abrir a câmera"><svg class="i" aria-hidden="true"><use href="#i-cam"/></svg><span class="cam-t">Câmera</span></button>
       <button class="btn primary lg" id="newBtn" type="button"><svg class="i"><use href="#i-plus"/></svg>Novo roteiro</button>
     </div>
   </div>
@@ -596,6 +651,11 @@ label[for]{cursor:pointer}
   </div>
   <div id="progress"></div>
   <div id="hud">
+    <div class="cam-top">
+      <button class="round gk blur" id="cClose" type="button" aria-label="Sair da câmera"><svg class="i"><use href="#i-close"/></svg></button>
+      <div class="rec-info" id="recInfo"><span class="rec-dot" aria-hidden="true"></span><b id="recTime">00:00</b><span class="rec-takes" id="recTakes"></span><span class="rec-fps" id="recQualTxt"></span></div>
+      <span class="rec-res" id="recQual" role="group" aria-label="Qualidade do vídeo"><button type="button" data-res="4k">4K</button><button type="button" data-res="hd">Full HD</button></span>
+    </div>
     <div class="hud-top">
       <button class="round gk blur" id="pBack" type="button" aria-label="Fechar o prompter"><svg class="i"><use href="#i-close"/></svg></button>
       <div class="p-info glass">
@@ -607,9 +667,10 @@ label[for]{cursor:pointer}
       <button class="round gk blur" id="pSettings" type="button" aria-label="Ajustes"><svg class="i"><use href="#i-gear"/></svg></button>
     </div>
     <div class="hud-bottom">
-      <div class="rec-info" id="recInfo"><span class="rec-dot" aria-hidden="true"></span><b id="recTime">00:00</b><span class="rec-q" id="recQual"></span></div>
       <div class="panel glass">
         <div class="speed">
+          <button class="step gk camf" id="cSmaller" type="button" aria-label="Diminuir letra"><span aria-hidden="true">A−</span></button>
+          <button class="step gk camf" id="cBigger" type="button" aria-label="Aumentar letra"><span aria-hidden="true">A+</span></button>
           <span class="speed-lbl" id="spdLbl">Velocidade</span>
           <button class="step gk" id="spdDown" type="button" aria-label="Mais devagar"><svg aria-hidden="true"><use href="#i-minus"/></svg></button>
           <div class="slider" id="spd" data-set="speed" data-min="1" data-max="60" data-step="1" aria-labelledby="spdLbl"></div>
@@ -617,12 +678,14 @@ label[for]{cursor:pointer}
           <span class="speed-val" id="spdVal">22</span>
         </div>
         <div class="ctl">
+          <button class="cb gk" id="pScript" type="button"><svg aria-hidden="true"><use href="#i-doc"/></svg>Roteiro</button>
           <button class="cb gk" id="pRestart" type="button"><svg aria-hidden="true"><use href="#i-restart"/></svg>Início</button>
           <button class="cb gk" id="pSmaller" type="button" aria-label="Diminuir letra"><span class="aa" aria-hidden="true">A−</span>Letra</button>
           <button class="play" id="pPlay" type="button" aria-label="Rolar"><svg><use href="#i-play"/></svg></button>
           <button class="cb gk" id="pBigger" type="button" aria-label="Aumentar letra"><span class="aa" aria-hidden="true">A+</span>Letra</button>
           <button class="cb gk" id="pMirror" type="button"><svg aria-hidden="true"><use href="#i-mirror"/></svg><span id="pMirrorLbl">Espelho</span></button>
           <button class="cb gk" id="pCamOff" type="button"><svg aria-hidden="true"><use href="#i-cam-off"/></svg>Sair</button>
+          <button class="cb gk" id="pDone" type="button"><svg aria-hidden="true"><use href="#i-check"/></svg>Concluir</button>
         </div>
       </div>
     </div>
@@ -779,6 +842,17 @@ label[for]{cursor:pointer}
   </div>
 </div>
 
+<!-- ============ ROTEIRO NA CÂMERA ============ -->
+<div id="pickWrap" hidden>
+  <div class="sheet pick-sheet" role="dialog" aria-modal="true" aria-labelledby="pickTitle">
+    <div class="sheet-head">
+      <div class="grabber" aria-hidden="true"></div>
+      <div class="sheet-bar"><h2 id="pickTitle">Roteiro na câmera</h2><button class="btn primary sm" id="pickCancel" type="button">Concluir</button></div>
+    </div>
+    <div class="sheet-body"><div class="box pick-box"><div class="fonts pick-list" id="pickList" role="radiogroup" aria-labelledby="pickTitle"></div></div></div>
+  </div>
+</div>
+
 <div id="snack" class="glass" hidden role="status" aria-live="polite"><span id="snackText"></span><button id="snackUndo" type="button">Desfazer</button></div>
 <!-- ============ REVISÃO DA GRAVAÇÃO ============ -->
 <div id="review" hidden>
@@ -805,7 +879,7 @@ label[for]{cursor:pointer}
     get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   };
-  const DEFAULTS = { fontSize: 56, camFont: 34, font: 'inter', lineHeight: 1.3, margin: 6, align: 'left', speed: 22, mirror: 'none',
+  const DEFAULTS = { fontSize: 56, camFont: 34, camRes: '4k', font: 'inter', lineHeight: 1.3, margin: 6, align: 'left', speed: 22, mirror: 'none',
     fg: '#ffffff', bg: '#000000', cue: 30, showCue: true, countdown: 3, tapToggle: true, autoHide: true, dragPauses: true, theme: 'auto' };
   const FONTS = {
     inter: '"Inter", system-ui, sans-serif',
@@ -1095,6 +1169,8 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   });
   $('#search').addEventListener('input', () => renderHome(false));
   $('#newBtn').addEventListener('click', () => openEditor(draft(), 'text'));
+  // Câmera direto da tela inicial, sem roteiro (dá para escolher um lá dentro).
+  $('#camBtn').addEventListener('click', () => openPrompter(null, true));
   $('#importFile').addEventListener('change', (e) => {
     const f = e.target.files && e.target.files[0]; if (!f) return;
     const r = new FileReader();
@@ -1220,7 +1296,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   const P = { pos: 0, max: 0, playing: false, counting: false, last: 0, elapsed: 0, raf: 0, lineH: 0, cueY: 0, cd: 0 };
   const stage = $('#stage'), content = $('#content');
   // Modo câmera: letra própria (menor, numa faixa perto da lente) e nunca espelhado.
-  const cam = { on: false, stream: null, rec: null, chunks: [], t0: 0, tick: 0, mime: '', qual: '' };
+  const cam = { on: false, stream: null, rec: null, chunks: [], tick: 0, mime: '', qual: '', short: '', hide: false, paused: false, takes: 0, acc: 0, seg: 0, fromHome: false };
   const fsz = () => cam.on ? settings.camFont : settings.fontSize;
   const mir = () => cam.on ? 'none' : settings.mirror;
   const pxPerSec = () => settings.speed * fsz() * 0.05;
@@ -1229,21 +1305,22 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   function sleep() { try { if (wl) wl.release(); } catch (e) {} wl = null; }
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && view === 'prompter') wake(); });
 
-  function openPrompter(s) {
-    current = s;
+  function openPrompter(s, withCam) {
+    current = s || null;
     show('prompter', () => {
-      $('#ptext').innerHTML = s.text.trim() ? renderScript(s.text) : '<p class="note">Roteiro vazio. Toque em Editar.</p>';
-      $('#pTitle').textContent = nameOf(s);
+      $('#ptext').innerHTML = !s ? '' : s.text.trim() ? renderScript(s.text) : '<p class="note">Roteiro vazio. Toque em Editar.</p>';
+      $('#pTitle').textContent = s ? nameOf(s) : 'Câmera';
       applyStage();
       P.pos = 0; P.elapsed = 0;
       layout(false);
       setPlaying(false);
       wake();
       cancelAnimationFrame(P.raf); P.last = performance.now(); P.raf = requestAnimationFrame(tick);
+      if (withCam) { cam.fromHome = !s; camOn().then(ok => { if (!ok && !s) closePrompter('home'); }); }
     });
   }
   function closePrompter(to) {
-    if (cam.rec) { stopRec(); return; }
+    if (cam.rec) { finishSession(); return; }
     if (cam.on) camOff(true);
     setPlaying(false); cancelAnimationFrame(P.raf); sleep();
     if (to === 'editor') openEditor(current); else show('home');
@@ -1282,7 +1359,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   }
   function tick(ts) {
     const dt = Math.min(0.1, (ts - P.last) / 1000); P.last = ts;
-    if (P.playing && !P.counting && !drag) {
+    if (P.playing && !P.counting && !drag && !(cam.on && !scriptOn())) {
       P.pos += pxPerSec() * dt; P.elapsed += dt;
       if (P.pos >= P.max) { P.pos = P.max; render(); setPlaying(false); toast('Fim do roteiro'); }
       else render();
@@ -1359,6 +1436,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
 
   document.addEventListener('keydown', (e) => {
     if (!$('#actWrap').hidden) { if (e.key === 'Escape') closeActions(); return; }
+    if (!$('#pickWrap').hidden) { if (e.key === 'Escape') closePick(); return; }
     if (!$('#sheetWrap').hidden) { if (e.key === 'Escape') closeSheet(); return; }
     if (view !== 'prompter') return;
     if (e.target.matches('input, textarea, select')) return;
@@ -1373,37 +1451,82 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
       case 'Escape': closePrompter('home'); break;
     }
   });
-  /* ---------------- gravar com a câmera, lendo o roteiro ----------------
-     Usa a câmera do próprio aparelho pelo navegador, pedindo o máximo que ele entregar
-     (até 4K, taxa de dados alta, voz no volume habitual). A qualidade real aparece na tela. */
-  async function camOn() {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) { toast('Este navegador não grava vídeo'); return; }
-    setPlaying(false);
-    try {
-      cam.stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'user', width: { ideal: 3840 }, height: { ideal: 2160 }, frameRate: { ideal: 30 } },
-        // Volume no nível habitual: deixar o aparelho ajustar o ganho e tirar o ruído de fundo, como os apps de câmera.
-        audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }
-      });
-    } catch (e) { toast('Sem acesso à câmera. Libere a câmera e o microfone para o Telegron'); return; }
-    const v = $('#camView'); v.srcObject = cam.stream; v.hidden = false;
+  /* ---------------- câmera: gravar lendo o roteiro, ou só a câmera ----------------
+     Usa a câmera do próprio aparelho pelo navegador, no máximo que ele entregar (4K ou Full HD, à escolha),
+     taxa de dados alta e voz no volume habitual. A qualidade real aparece na tela.
+     Vários takes viram um vídeo só: o botão de gravar pausa entre os takes e Concluir fecha o vídeo. */
+  const CAN_PAUSE = typeof window.MediaRecorder === 'function' && typeof MediaRecorder.prototype.pause === 'function';
+  const RES = { '4k': { w: 3840, h: 2160 }, hd: { w: 1920, h: 1080 } };
+  const scriptOn = () => !!current && !cam.hide;
+  let take = null;
+  const toTop = () => { P.pos = 0; P.elapsed = 0; render(); };
+  const pad2 = (n) => String(n).padStart(2, '0');
+  function camState() {
+    const pr = $('#prompter');
+    pr.classList.toggle('cam', cam.on);
+    pr.classList.toggle('cam-loading', cam.on && !!cam.loading);
+    pr.classList.toggle('noscript', cam.on && !scriptOn());
+    pr.classList.toggle('session', !!cam.rec);
+    pr.classList.toggle('recording', !!cam.rec && !cam.paused);
+    $('#recQual').classList.toggle('locked', !!cam.rec);
+    $$('#recQual [data-res]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.res === (settings.camRes === 'hd' ? 'hd' : '4k'))));
+    document.documentElement.classList.toggle('cam-on', cam.on);
+  }
+  async function openStream() {
+    const r = RES[settings.camRes] || RES['4k'];
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'user', width: { ideal: r.w }, height: { ideal: r.h }, frameRate: { ideal: 30 } },
+      // Volume no nível habitual: deixar o aparelho ajustar o ganho e tirar o ruído de fundo, como os apps de câmera.
+      audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }
+    });
+    if (cam.stream) cam.stream.getTracks().forEach(t => t.stop());
+    cam.stream = stream;
+    const v = $('#camView'); v.srcObject = stream; v.hidden = false;
     try { await v.play(); } catch (e) {}
-    const st = (cam.stream.getVideoTracks()[0] || { getSettings: () => ({}) }).getSettings();
+    const st = (stream.getVideoTracks()[0] || { getSettings: () => ({}) }).getSettings();
     const short = Math.min(st.width || 0, st.height || 0);
-    cam.qual = [short >= 2160 ? '4K' : short ? short + 'p' : '', st.frameRate ? Math.round(st.frameRate) + ' fps' : ''].filter(Boolean).join(' · ');
-    $('#recQual').textContent = cam.qual;
-    cam.on = true; $('#prompter').classList.add('cam');
-    P.pos = 0; P.elapsed = 0; applyStage(); layout(false); updRecTime();
+    const got = short >= 2160 ? '4K' : short >= 1080 ? 'Full HD' : short ? short + 'p' : '';
+    const fps = st.frameRate ? Math.round(st.frameRate) + ' fps' : '';
+    cam.qual = [got, fps].filter(Boolean).join(' · ');
+    // A escolha fica no seletor; se a câmera não alcança o que foi escolhido, diz até onde ela vai.
+    cam.short = got && short < r.h ? got : '';
+    $('#recQualTxt').textContent = [cam.short ? 'máx. ' + cam.short : '', fps].filter(Boolean).join(' · ');
+    camState();
+  }
+  async function camOn() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) { toast('Este navegador não grava vídeo'); return false; }
+    setPlaying(false);
+    // A tela já vira a da câmera enquanto ela liga: nada de prompter vazio no meio.
+    cam.on = true; cam.loading = true; cam.hide = false;
+    toTop(); applyStage(); camState(); layout(false);
+    try { await openStream(); }
+    catch (e) {
+      cam.on = false; cam.loading = false; camState(); applyStage(); layout(true);
+      toast('Sem acesso à câmera. Libere a câmera e o microfone para o Telegron'); return false;
+    }
+    cam.loading = false; camState(); updRecTime();
+    return true;
   }
   function camOff(quiet) {
-    if (cam.rec) { stopRec(); return; }
+    if (cam.rec) { finishSession(); return; }
     if (cam.stream) cam.stream.getTracks().forEach(t => t.stop());
     cam.stream = null;
     const v = $('#camView'); v.srcObject = null; v.hidden = true;
-    cam.on = false; $('#prompter').classList.remove('cam', 'recording');
+    cam.on = false; camState();
     setPlaying(false);
     if (!quiet) { applyStage(); layout(true); }
   }
+  // 4K ou Full HD: troca só fora de um vídeo em andamento (o arquivo não muda de tamanho no meio).
+  $('#recQual').addEventListener('click', async (e) => {
+    const b = e.target.closest('[data-res]'); if (!b) return;
+    b.blur();
+    if (cam.rec) { toast('Conclua o vídeo para trocar a qualidade'); return; }
+    if (b.dataset.res === settings.camRes) return;
+    settings.camRes = b.dataset.res; saveSettings(true); camState();
+    try { await openStream(); } catch (err) { toast('Não deu para trocar a qualidade'); return; }
+    const hd = settings.camRes === 'hd';
+    toast((hd ? 'Full HD' : '4K') + ' selecionado · cerca de ' + (hd ? '100' : '300') + ' MB por minuto' + (cam.short ? '. Esta câmera vai até ' + cam.short : ''));
+  });
   function pickMime() {
     const c = ['video/mp4;codecs=hvc1,mp4a.40.2', 'video/mp4;codecs=avc1.640028,mp4a.40.2', 'video/mp4;codecs=avc1,mp4a.40.2', 'video/mp4',
       'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
@@ -1414,7 +1537,11 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     const px = (st.width || 1920) * (st.height || 1080), fps = st.frameRate || 30;
     return Math.round(Math.min(40e6, Math.max(10e6, px * fps * 0.22)));
   }
-  function updRecTime() { $('#recTime').textContent = cam.rec ? fmt((performance.now() - cam.t0) / 1000) : '00:00'; }
+  const recMs = () => cam.acc + (cam.rec && !cam.paused ? performance.now() - cam.seg : 0);
+  function updRecTime() {
+    $('#recTime').textContent = fmt(recMs() / 1000);
+    $('#recTakes').textContent = cam.rec ? (cam.takes === 1 ? 'take 1' : cam.takes + ' takes') : '';
+  }
   function startRec() {
     cam.mime = pickMime();
     const opts = { videoBitsPerSecond: bitrate(), audioBitsPerSecond: 192000 };
@@ -1422,49 +1549,65 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     let r;
     try { r = new MediaRecorder(cam.stream, opts); }
     catch (e) { try { r = new MediaRecorder(cam.stream); } catch (e2) { toast('Não deu para gravar neste aparelho'); return false; } }
-    cam.rec = r; cam.chunks = [];
+    cam.rec = r; cam.chunks = []; cam.takes = 1; cam.acc = 0; cam.paused = false;
     r.ondataavailable = (e) => { if (e.data && e.data.size) cam.chunks.push(e.data); };
     r.onstop = finishRec;
     r.start(1000);
-    cam.t0 = performance.now();
-    $('#prompter').classList.add('recording');
+    cam.seg = performance.now();
+    camState();
     clearInterval(cam.tick); cam.tick = setInterval(updRecTime, 250); updRecTime();
     return true;
   }
-  function stopRec() {
-    if (cam.rec && cam.rec.state !== 'inactive') cam.rec.stop();
+  // Fim de um take: o arquivo pausa, não fecha. O próximo take continua o mesmo vídeo.
+  function pauseTake() {
+    if (!cam.rec || cam.paused) return;
+    if (!CAN_PAUSE) { finishSession(); return; }
+    try { cam.rec.pause(); } catch (e) { finishSession(); return; }
+    cam.acc += performance.now() - cam.seg; cam.paused = true;
+    setPlaying(false); camState(); updRecTime();
+    toast('Take ' + cam.takes + ' gravado. Grave o próximo ou toque em Concluir');
+  }
+  function resumeTake() {
+    try { cam.rec.resume(); } catch (e) { toast('Não deu para continuar o vídeo'); return false; }
+    cam.takes++; cam.seg = performance.now(); cam.paused = false;
+    camState(); updRecTime();
+    return true;
+  }
+  function finishSession() {
+    if (!cam.rec) return;
+    if (!cam.paused) cam.acc += performance.now() - cam.seg;
+    cam.paused = true;
     clearInterval(cam.tick);
-    $('#prompter').classList.remove('recording');
     setPlaying(false);
+    if (cam.rec.state !== 'inactive') cam.rec.stop();
   }
   function recToggle() {
-    if (cam.rec) { stopRec(); return; }
     if (P.counting) { setPlaying(false); return; }
-    // Contagem, depois grava e rola junto. Se o texto já foi até o fim, recomeça do topo.
-    if (P.pos >= P.max - 1) { P.pos = 0; render(); }
-    P.elapsed = 0; P.forceCount = true;
-    P.onGo = () => { if (!startRec()) setPlaying(false); };
+    if (cam.rec && !cam.paused) { pauseTake(); return; }
+    // Contagem, depois grava (ou continua o vídeo) e rola junto.
+    if (scriptOn() && P.pos >= P.max - 1) { P.pos = 0; render(); }
+    if (!cam.rec) P.elapsed = 0;
+    P.forceCount = true;
+    P.onGo = () => { const ok = cam.rec ? resumeTake() : startRec(); if (!ok) setPlaying(false); };
     setPlaying(true);
   }
-  // Se o app sair da tela no meio da gravação, o iPhone corta a câmera: fecha o que já foi gravado.
-  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && cam.rec) stopRec(); });
+  // Se o app sair da tela no meio de um vídeo, o iPhone corta a câmera: fecha o que já foi gravado.
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && cam.rec) finishSession(); });
 
-  let take = null;
-  const toTop = () => { P.pos = 0; P.elapsed = 0; render(); };
-  const pad2 = (n) => String(n).padStart(2, '0');
   function finishRec() {
     const r = cam.rec; cam.rec = null;
     const type = (r && r.mimeType) || cam.mime || 'video/mp4';
     const blob = new Blob(cam.chunks, { type }); cam.chunks = [];
-    const dur = (performance.now() - cam.t0) / 1000;
-    updRecTime();
+    const dur = cam.acc / 1000, takes = cam.takes;
+    cam.acc = 0; cam.takes = 0; cam.paused = false;
+    camState(); updRecTime();
     if (!blob.size) { toast('A gravação não chegou a começar'); return; }
     const d = new Date(), ext = /mp4/.test(type) ? 'mp4' : 'webm';
-    const base = (current ? nameOf(current) : 'Roteiro').replace(/[\\/:*?"<>|]+/g, ' ').slice(0, 40).trim();
-    take = { blob, type, url: URL.createObjectURL(blob), saved: false,
+    const base = (current ? nameOf(current) : 'Câmera').replace(/[\\/:*?"<>|]+/g, ' ').slice(0, 40).trim();
+    take = { blob, type, url: URL.createObjectURL(blob),
       name: 'Telegron ' + base + ' ' + d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()) + ' ' + pad2(d.getHours()) + 'h' + pad2(d.getMinutes()) + '.' + ext };
     $('#rvVideo').src = take.url;
-    $('#rvInfo').textContent = [cam.qual, fmt(dur), Math.max(1, Math.round(blob.size / 1048576)) + ' MB'].filter(Boolean).join(' · ');
+    $('#rvInfo').textContent = [takes > 1 ? takes + ' takes' : '', cam.qual, fmt(dur), Math.max(1, Math.round(blob.size / 1048576)) + ' MB'].filter(Boolean).join(' · ');
     $('#review').hidden = false;
   }
   function closeReview() {
@@ -1485,11 +1628,42 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => { closeReview(); toTop(); }, 400); toast('Vídeo baixado');
   });
-  // Gravar de novo já começa a próxima (com a contagem); Excluir apaga e deixa a câmera pronta.
+  // Gravar de novo já começa outro vídeo (com a contagem); Excluir apaga e deixa a câmera pronta.
   $('#rvRetake').addEventListener('click', () => { closeReview(); toTop(); recToggle(); });
   $('#rvDelete').addEventListener('click', () => { closeReview(); toTop(); toast('Vídeo excluído'); });
-  hudBtn('#pCam', camOn);
-  hudBtn('#pCamOff', () => camOff());
+
+  // Roteiro na câmera: escolher qual passa na tela, ou nenhum.
+  function openPick() {
+    if (cam.rec && !cam.paused) { toast('Pause o take para trocar o roteiro'); return; }
+    const on = scriptOn();
+    const row = (id, icon, title, meta, sel) => `<button type="button" role="radio" aria-checked="${sel}" data-pick="${id}"><svg class="pi" aria-hidden="true"><use href="#${icon}"/></svg><span class="fn">${title}</span><span class="fd">${meta}</span><svg class="ck" aria-hidden="true"><use href="#i-check"/></svg></button>`;
+    $('#pickList').innerHTML = row('', 'i-cam', 'Sem roteiro', 'Só a câmera', !on) +
+      scripts.slice().sort((a, b) => b.updated - a.updated).map(s => row(s.id, 'i-doc', esc(nameOf(s)), dur(secs(s.text)) + ' · ' + plural(words(s.text), 'palavra', 'palavras'), on && s === current)).join('');
+    $('#pickWrap').hidden = false;
+  }
+  function closePick() { $('#pickWrap').hidden = true; }
+  $('#pickCancel').addEventListener('click', closePick);
+  $('#pickWrap').addEventListener('click', (e) => { if (e.target.id === 'pickWrap') closePick(); });
+  $('#pickList').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-pick]'); if (!b) return;
+    const id = b.dataset.pick; closePick();
+    if (!id) { cam.hide = true; setPlaying(false); applyStage(); camState(); return; }
+    const s = byId(id); if (!s) return;
+    current = s; cam.hide = false;
+    $('#ptext').innerHTML = s.text.trim() ? renderScript(s.text) : '<p class="note">Roteiro vazio.</p>';
+    $('#pTitle').textContent = nameOf(s);
+    toTop(); applyStage(); camState(); layout(false);
+  });
+
+  hudBtn('#pCam', () => { cam.fromHome = false; camOn(); });
+  hudBtn('#pScript', openPick);
+  hudBtn('#pDone', finishSession);
+  // Sair: quem abriu a câmera pela tela inicial volta para ela; quem veio do roteiro volta para o roteiro.
+  const leaveCam = () => { if (cam.rec) { finishSession(); return; } const home = cam.fromHome || !current; camOff(); if (home) closePrompter('home'); };
+  hudBtn('#pCamOff', leaveCam);
+  hudBtn('#cClose', leaveCam);
+  hudBtn('#cSmaller', () => changeFont(-2));
+  hudBtn('#cBigger', () => changeFont(2));
 
   const ro = new ResizeObserver(() => { if (view === 'prompter') layout(true); });
   ro.observe(stage); ro.observe($('#ptext'));
