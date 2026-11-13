@@ -105,6 +105,11 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--ui);font-si
 /* luz ambiente bem suave, em tons neutros: é o que o vidro deixa ver. Fica parada enquanto a página rola */
 body::before{content:"";position:fixed;inset:0;z-index:-1;background:var(--amb);pointer-events:none}
 [hidden]{display:none!important}
+/* app, não página: segurar o dedo em qualquer lugar não seleciona texto nem abre o menu de copiar do iPhone
+   (no card, o toque longo abre o menu do app e o Safari selecionava a tela inteira por baixo).
+   Só onde se escreve o texto continua selecionável. */
+html{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea,[contenteditable="true"]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
 html.locked,html.locked body{overflow:hidden;overscroll-behavior:none}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer;background:none;border:0;padding:0;margin:0;-webkit-user-select:none;user-select:none;touch-action:manipulation;-webkit-touch-callout:none}
@@ -273,6 +278,11 @@ label[for]{cursor:pointer}
 #cue{opacity:var(--cueIn,1);transition:opacity .12s linear}
 #cue::before{content:"";position:absolute;left:0;top:50%;transform:translate(calc((var(--cueIn,1) - 1) * 14px),-50%);background:var(--grad-sq);clip-path:polygon(0 0,100% 50%,0 100%);width:16px;height:24px}
 #countdown{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--ui);font-weight:800;font-size:min(40vw,40vh);letter-spacing:-.04em;color:var(--accent);background:rgba(0,0,0,.6);pointer-events:none;font-variant-numeric:tabular-nums}
+/* na câmera, quem escurece é a imagem toda (de ponta a ponta, por baixo das barras), não a faixa do roteiro:
+   escurecer só a faixa deixava o alto da tela mais claro durante a contagem */
+#camView{transition:filter .25s ease}
+#prompter.cam #countdown{background:none}
+#prompter.cam.counting #camView{filter:brightness(.42)}
 @supports (-webkit-background-clip:text) or (background-clip:text){#countdown span{background:var(--grad-sq);-webkit-background-clip:text;background-clip:text;color:transparent}}
 #progress{position:absolute;top:0;left:0;height:3px;width:0;background:var(--grad-line);z-index:3;pointer-events:none}
 .hud-top,.hud-bottom{position:absolute;left:0;right:0;z-index:2;transition:opacity .3s}
@@ -397,6 +407,24 @@ label[for]{cursor:pointer}
 .rv{width:100%;max-width:480px;max-height:100%;display:flex;flex-direction:column;gap:12px}
 #rvVideo{width:100%;min-height:0;flex:1 1 auto;max-height:64vh;border-radius:18px;background:#111;object-fit:contain}
 .rv-info{text-align:center;font-size:13.5px;color:rgba(235,235,245,.68);font-variant-numeric:tabular-nums}
+/* escolher os takes: tocar no take passa ele no player; a bolinha diz se ele entra no vídeo */
+.rv.has-takes #rvVideo{max-height:44vh}
+.rv-takes{position:relative;flex:none;max-height:min(34vh,260px);overflow-y:auto;overscroll-behavior:contain;border-radius:18px;background:var(--panel-bg);box-shadow:var(--rim),var(--panel-shadow)}
+.rv-take{position:relative;display:flex;align-items:center;transition:background-color .15s}
+.rv-take + .rv-take::before{content:"";position:absolute;top:0;left:52px;right:0;height:1px;background:var(--hair)}
+.rv-take.playing{background:var(--row-h)}
+.rv-play{flex:1;min-width:0;display:flex;align-items:center;gap:12px;height:52px;padding:0 8px 0 16px;text-align:left;color:var(--fg)}
+.rv-play svg{width:22px;height:22px;flex:none;padding:5px;border-radius:50%;background:var(--key);box-shadow:var(--key-lift);color:var(--fg)}
+.rv-take.playing .rv-play svg{color:var(--accent)}
+.rv-tn{font-size:16px;font-weight:600;letter-spacing:-.01em}
+.rv-td{margin-left:auto;font-size:14px;color:var(--fg-2);font-variant-numeric:tabular-nums}
+.rv-take:not(.on) .rv-tn,.rv-take:not(.on) .rv-td{color:var(--fg-3)}
+.rv-check{display:grid;place-items:center;width:52px;height:52px;flex:none}
+.rv-check i{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--fg-3);color:transparent;transition:background .15s,border-color .15s,color .15s}
+.rv-check svg{width:15px;height:15px}
+.rv-take.on .rv-check i{background:var(--grad-sq) border-box;border-color:transparent;color:#fff}
+@media (hover:hover){.rv-play:hover .rv-tn{color:var(--fg)}.rv-check:hover i{border-color:var(--fg-2)}}
+.rv-play:active svg{transform:scale(.94)}
 .rv-row{display:flex;gap:10px}
 .rv-row .btn{flex:1;padding:0 10px;font-size:15px}
 .rv-del{background:linear-gradient(180deg,#ff6a5f,#e5392e);border-color:rgba(255,140,130,.5);color:#fff;text-shadow:0 1px 1px rgba(120,10,0,.35)}
@@ -1015,6 +1043,7 @@ html.dragging #binBtn.over{transform:scale(1.1);color:var(--accent-text)}
 <div id="review" hidden>
   <div class="rv" role="dialog" aria-modal="true" aria-label="Vídeo gravado">
     <video id="rvVideo" playsinline controls></video>
+    <div class="rv-takes" id="rvTakes" role="group" aria-label="Takes do vídeo" hidden></div>
     <div class="rv-info" id="rvInfo"></div>
     <button class="btn lg primary" id="rvSave" type="button">Salvar vídeo</button>
     <div class="rv-row">
@@ -1743,7 +1772,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     btn.setAttribute('aria-label', on ? 'Pausar' : 'Rolar');
     // No modo câmera os controles não somem: o botão de parar a gravação tem que estar sempre à vista.
     $('#hud').classList.toggle('faded', on && settings.autoHide && !cam.on);
-    clearInterval(P.cd); P.counting = false; $('#countdown').hidden = true;
+    clearInterval(P.cd); P.counting = false; showCount(false);
     const force = P.forceCount; P.forceCount = false;
     if (!on) { P.onGo = null; return; }
     wake();
@@ -1752,10 +1781,11 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     if (settings.countdown > 0 && (P.pos < 2 || force)) {
       let n = settings.countdown; P.counting = true;
       const el = $('#countdown'), put = (v) => { el.innerHTML = '<span>' + v + '</span>'; };
-      put(n); el.hidden = false;
-      P.cd = setInterval(() => { n--; if (n <= 0) { clearInterval(P.cd); el.hidden = true; P.counting = false; go(); } else put(n); }, 1000);
+      put(n); showCount(true);
+      P.cd = setInterval(() => { n--; if (n <= 0) { clearInterval(P.cd); showCount(false); P.counting = false; go(); } else put(n); }, 1000);
     } else go();
   }
+  function showCount(on) { $('#countdown').hidden = !on; $('#prompter').classList.toggle('counting', on); }
   function jump(dy) { P.pos = clamp(P.pos + dy, 0, P.max); render(); }
   function changeSpeed(d) { settings.speed = clamp(settings.speed + d, 1, 60); saveSettings(true); syncSpeed(); render(); }
   function changeFont(d) {
@@ -2261,45 +2291,85 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     camState(); updRecTime();
     if (!list.length) { toast('A gravação não chegou a começar'); return; }
     const type = list[0].type || cam.mime || 'video/mp4';
-    const ms = list.reduce((a, t) => a + t.ms, 0), n = list.length;
-    const blobs = list.map(t => new Blob(t.chunks, { type: t.type || type }));
     const d = new Date(), ext = /mp4/.test(type) ? 'mp4' : 'webm';
     const base = 'TeleGron ' + (current ? nameOf(current) : 'Câmera').replace(/[\\/:*?"<>|]+/g, ' ').slice(0, 40).trim() + ' ' + d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()) + ' ' + pad2(d.getHours()) + 'h' + pad2(d.getMinutes());
-    $('#review').hidden = false; $('#rvSave').disabled = true;
-    $('#rvInfo').textContent = n > 1 ? 'Juntando os ' + n + ' takes…' : '';
-    let files;
-    if (n === 1) files = [{ blob: blobs[0], name: base + '.' + ext }];
-    else {
-      try { files = [{ blob: await MP4.join(blobs, type), name: base + '.' + ext }]; }
-      catch (e) { console.warn('TeleGron: os takes não deram para juntar, vão separados:', e && e.message); files = blobs.map((b, i) => ({ blob: b, name: base + ' take ' + (i + 1) + '.' + ext })); }
-    }
-    const size = files.reduce((a, f) => a + f.blob.size, 0);
-    take = { files, type, url: URL.createObjectURL(files[0].blob) };
-    $('#rvVideo').src = take.url;
-    $('#rvInfo').textContent = [n > 1 ? n + ' takes' + (files.length > 1 ? ' em ' + files.length + ' vídeos' : '') : '', cam.qual, fmt(ms / 1000), Math.max(1, Math.round(size / 1048576)) + ' MB'].filter(Boolean).join(' · ');
-    $('#rvSave').textContent = files.length > 1 ? 'Salvar os ' + files.length + ' vídeos' : 'Salvar vídeo';
-    $('#rvSave').disabled = false;
+    take = { type, ext, base, playing: 0, url: '',
+      takes: list.map(t => ({ blob: new Blob(t.chunks, { type: t.type || type }), ms: t.ms, keep: true })) };
+    const many = take.takes.length > 1;
+    $('.rv').classList.toggle('has-takes', many);
+    $('#rvTakes').hidden = !many;
+    if (many) renderTakes();
+    playTake(0, false);
+    updReview();
+    $('#review').hidden = false;
   }
+  // Lista dos takes na revisão: tocar no take passa ele no player; a bolinha diz se ele entra no vídeo.
+  function renderTakes() {
+    $('#rvTakes').innerHTML = take.takes.map((t, i) =>
+      '<div class="rv-take' + (t.keep ? ' on' : '') + (i === take.playing ? ' playing' : '') + '" data-i="' + i + '">' +
+      '<button class="rv-play" type="button" aria-label="Ver o take ' + (i + 1) + '"><svg aria-hidden="true"><use href="#i-play"/></svg>' +
+      '<span class="rv-tn">Take ' + (i + 1) + '</span><span class="rv-td">' + fmt(t.ms / 1000) + '</span></button>' +
+      '<button class="rv-check" type="button" role="checkbox" aria-checked="' + t.keep + '" aria-label="Usar o take ' + (i + 1) + ' no vídeo"><i><svg aria-hidden="true"><use href="#i-check"/></svg></i></button></div>').join('');
+  }
+  function playTake(i, autoplay) {
+    const v = $('#rvVideo');
+    if (take.url) URL.revokeObjectURL(take.url);
+    take.playing = i; take.url = URL.createObjectURL(take.takes[i].blob);
+    v.src = take.url;
+    if (autoplay) v.play().catch(() => {});
+    $$('#rvTakes .rv-take').forEach(el => el.classList.toggle('playing', +el.dataset.i === i));
+  }
+  function updReview() {
+    const all = take.takes, kept = all.filter(t => t.keep), ms = kept.reduce((a, t) => a + t.ms, 0);
+    const size = kept.reduce((a, t) => a + t.blob.size, 0);
+    $('#rvInfo').textContent = [all.length > 1 ? kept.length + ' de ' + all.length + ' takes' : '', cam.qual, fmt(ms / 1000), kept.length ? Math.max(1, Math.round(size / 1048576)) + ' MB' : ''].filter(Boolean).join(' · ');
+    const btn = $('#rvSave');
+    btn.disabled = !kept.length;
+    btn.textContent = kept.length ? 'Salvar vídeo' : 'Escolha pelo menos um take';
+  }
+  $('#rvTakes').addEventListener('click', (e) => {
+    const row = e.target.closest('.rv-take'); if (!row || !take) return;
+    const i = +row.dataset.i, t = take.takes[i];
+    if (e.target.closest('.rv-check')) {
+      t.keep = !t.keep;
+      row.classList.toggle('on', t.keep);
+      row.querySelector('.rv-check').setAttribute('aria-checked', String(t.keep));
+      updReview();
+    } else playTake(i, true);
+  });
   function closeReview() {
     const v = $('#rvVideo'); v.pause(); v.removeAttribute('src'); v.load();
-    if (take) URL.revokeObjectURL(take.url);
-    take = null; $('#review').hidden = true;
+    if (take && take.url) URL.revokeObjectURL(take.url);
+    take = null; $('#review').hidden = true; $('#rvTakes').innerHTML = '';
   }
+  // Salvar: junta só os takes marcados, na ordem em que foram gravados, num vídeo só e sem regravar.
+  // Se não der para juntar, salva os takes marcados como vídeos separados (nada se perde).
   $('#rvSave').addEventListener('click', async () => {
     if (!take) return;
-    const files = take.files.map(f => new File([f.blob], f.name, { type: take.type }));
+    const kept = take.takes.filter(t => t.keep);
+    if (!kept.length) return;
+    const btn = $('#rvSave'), lbl = btn.textContent;
+    let list;
+    if (kept.length === 1) list = [{ blob: kept[0].blob, name: take.base + '.' + take.ext }];
+    else {
+      btn.disabled = true; btn.textContent = 'Juntando os ' + kept.length + ' takes…';
+      try { list = [{ blob: await MP4.join(kept.map(t => t.blob), take.type), name: take.base + '.' + take.ext }]; }
+      catch (e) { console.warn('TeleGron: os takes não deram para juntar, vão separados:', e && e.message); list = kept.map((t, i) => ({ blob: t.blob, name: take.base + ' take ' + (take.takes.indexOf(t) + 1) + '.' + take.ext })); }
+      btn.disabled = false; btn.textContent = lbl;
+    }
+    const files = list.map(f => new File([f.blob], f.name, { type: take.type }));
     try {
       if (navigator.canShare && navigator.canShare({ files })) {
         await navigator.share({ files, title: files[0].name });
         closeReview(); toTop(); toast(files.length > 1 ? 'Vídeos salvos' : 'Vídeo salvo'); return;
       }
     } catch (e) { if (e && e.name === 'AbortError') return; }
-    for (const f of take.files) {
+    for (const f of list) {
       const u = URL.createObjectURL(f.blob), a = document.createElement('a'); a.href = u; a.download = f.name;
       document.body.appendChild(a); a.click(); a.remove();
       setTimeout(() => URL.revokeObjectURL(u), 4000);
     }
-    setTimeout(() => { closeReview(); toTop(); }, 400); toast(take.files.length > 1 ? 'Vídeos baixados' : 'Vídeo baixado');
+    setTimeout(() => { closeReview(); toTop(); }, 400); toast(list.length > 1 ? 'Vídeos baixados' : 'Vídeo baixado');
   });
   // Gravar de novo já começa outro vídeo (com a contagem); Excluir apaga e deixa a câmera pronta.
   $('#rvRetake').addEventListener('click', () => { closeReview(); toTop(); recToggle(); });
