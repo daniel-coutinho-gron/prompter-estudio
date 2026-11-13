@@ -25,11 +25,12 @@
   document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]').content = light ? 'default' : 'black';
 })();
 </script>
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<link rel="icon" href="favicon.ico" sizes="32x32 48x48 64x64">
-<link rel="icon" type="image/svg+xml" href="icon.svg">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<!-- ícones com versão no endereço: o navegador e o iPhone guardam ícone pelo endereço; trocar o ícone pede trocar o ?v -->
+<link rel="manifest" href="manifest.webmanifest?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2">
+<link rel="icon" href="favicon.ico?v=2" sizes="32x32 48x48 64x64">
+<link rel="icon" type="image/svg+xml" href="icon.svg?v=2">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Atkinson+Hyperlegible:wght@400;700&family=Inter:opsz,wght@14..32,400..800&family=Manrope:wght@400..800&display=swap">
@@ -220,8 +221,15 @@ label[for]{cursor:pointer}
 .item-main:focus-visible{outline-offset:-2px;border-radius:16px}
 .item-title{font-size:16px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .item-meta{font-size:13px;color:var(--fg-2);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.item-play{display:grid;place-items:center;width:42px;height:42px;margin-right:12px;border-radius:50%;color:var(--accent-text);flex:none}
-.item-play svg{width:18px;height:18px;margin-left:2px}
+/* play da lista: aro de tecla (o mesmo vidro das outras) com um miolo no degradê GRON e o play branco.
+   O miolo tem o relevo do botão laranja; no hover clareia, ao tocar afunda. Sem brilho, sem pulso. */
+.item-play{position:relative;display:grid;place-items:center;width:44px;height:44px;margin-right:11px;border-radius:50%;color:#fff;flex:none}
+.item-play::before{content:"";position:absolute;inset:5px;border-radius:50%;background:var(--grad-sheen),var(--grad-sq);box-shadow:var(--grad-lift);transition:filter .15s}
+/* centro óptico: o desenho do play já fica à direita na caixa dele; meio pixel para a esquerda põe o
+   centro de massa do triângulo no centro do círculo (medido: 0,15 px), sobrando um fio à direita para a ponta */
+.item-play svg{position:relative;width:15px;height:15px;transform:translateX(-.5px)}
+@media (hover:hover){.item-play:hover::before{filter:brightness(1.07) saturate(1.05)}}
+.item-play:active::before{filter:brightness(.92)}
 @media (hover:hover){.item:has(.item-main:hover){background:var(--row-h)}}
 .none{color:var(--fg-2);text-align:center;padding:40px 0 8px;margin:0}
 .empty{text-align:center;padding:36px 12px 8px}
