@@ -1,5 +1,5 @@
 // TeleGron: funciona sem internet depois da primeira abertura.
-const CACHE = 'telegron-v39';
+const CACHE = 'telegron-v40';
 const CORE = ['./', './index.html', './manifest.webmanifest?v=2', './icon-192.png?v=2', './icon-512.png?v=2', './icon-maskable-512.png?v=2', './icon.svg?v=2', './apple-touch-icon.png?v=2', './favicon.ico?v=2'];
 
 self.addEventListener('install', (e) => {

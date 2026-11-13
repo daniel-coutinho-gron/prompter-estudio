@@ -527,6 +527,8 @@ label[for]{cursor:pointer}
 .box{border-radius:18px;background:var(--panel-bg);box-shadow:var(--card-lift);padding:0 16px}
 .row{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:56px;padding:12px 0;border-bottom:1px solid var(--hair)}
 .row:last-child{border-bottom:0}
+.row-t{display:flex;flex-direction:column;gap:3px;min-width:0}
+.row-t small{font-size:13px;font-weight:500;line-height:1.35;color:var(--fg-2)}
 .row.stack{flex-direction:column;align-items:stretch;gap:12px;padding:16px 0}
 .row.slide{flex-direction:column;align-items:stretch;gap:2px;padding:16px 0 6px}
 .lbl{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
@@ -746,6 +748,7 @@ html.dragging #binBtn.over{transform:scale(1.1);color:var(--accent-text)}
   <symbol id="i-keyboard" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><path d="M6.5 10h.01M10 10h.01M13.5 10h.01M17 10h.01M8 14h8"/></g></symbol>
   <symbol id="i-trash" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 7h15"/><path d="M9.4 7V5.6c0-.9.7-1.6 1.6-1.6h2c.9 0 1.6.7 1.6 1.6V7"/><path d="M6.3 7l.8 11.3c.1 1.2 1 2.2 2.2 2.2h5.4c1.2 0 2.1-1 2.2-2.2L17.7 7"/><path d="M10.2 11v5.5M13.8 11v5.5"/></g></symbol>
   <symbol id="i-flip" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5.6 7.5h1.9l1.3-2h6.4l1.3 2h1.9A2.6 2.6 0 0 1 21 10.1v7.3a2.6 2.6 0 0 1-2.6 2.6H5.6A2.6 2.6 0 0 1 3 17.4v-7.3a2.6 2.6 0 0 1 2.6-2.6Z"/><path d="M8.4 13.3a3.6 3.6 0 0 1 6.5-2.1"/><path d="M15.6 13.9a3.6 3.6 0 0 1-6.5 2.1"/><path d="M15.3 9.4v2h-2"/><path d="M8.7 17.8v-2h2"/></g></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" d="M12 15V4m0 0L8 8m4-4 4 4M5 19h14"/></symbol>
   <symbol id="i-takes" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="8.5" width="13.5" height="11.5" rx="2.4"/><path d="M7.5 5h10.5a2.5 2.5 0 0 1 2.5 2.5V16"/><path d="M8.6 11.6v4.8l3.9-2.4z" fill="currentColor"/></g></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
   <symbol id="i-cam" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6.5" width="12.5" height="11" rx="2.6"/><path d="m15.5 10.6 4.1-2.5c.6-.4 1.4.1 1.4.8v6.2c0 .7-.8 1.2-1.4.8l-4.1-2.5"/></g></symbol>
@@ -1022,7 +1025,8 @@ html.dragging #binBtn.over{transform:scale(1.1);color:var(--accent-text)}
       <div class="group">
         <h3 class="group-h"><svg aria-hidden="true"><use href="#i-folder"/></svg>Roteiros</h3>
         <div class="box">
-          <div class="row"><span>Importar arquivo .txt</span><label class="btn sm" for="importFile"><svg aria-hidden="true"><use href="#i-file"/></svg>Escolher</label><input id="importFile" type="file" accept=".txt,text/plain" hidden></div>
+          <div class="row"><span class="row-t">Salvar cópia de todos<small id="exportInfo">Roteiros e Lixeira num arquivo só, para guardar ou levar a outro aparelho</small></span><button class="btn sm" id="exportAll" type="button"><svg aria-hidden="true"><use href="#i-file"/></svg>Salvar</button></div>
+          <div class="row"><span class="row-t">Importar<small>Uma cópia salva ou um arquivo de texto</small></span><label class="btn sm" for="importFile"><svg aria-hidden="true"><use href="#i-upload"/></svg>Escolher</label><input id="importFile" type="file" accept=".json,.txt,application/json,text/plain" hidden></div>
         </div>
       </div>
 
@@ -1448,10 +1452,64 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   });
   // Câmera direto da tela inicial, sem roteiro (dá para escolher um lá dentro).
   $('#camBtn').addEventListener('click', () => openPrompter(null, true));
+  /* Cópia de todos os roteiros: os dados só existem no aparelho (no iPhone, o app da tela de início tem os
+     dele, separados do Safari). Salvar gera um arquivo com os roteiros e a Lixeira; importar devolve sem
+     apagar nem sobrescrever nada: o que já está aqui igual é pulado, e roteiro com o mesmo id mas texto
+     diferente entra como outro roteiro. */
+  const BACKUP = 'telegron-roteiros';
+  const pick = ({ id, title, text, updated, deleted }) => ({ id, title, text, updated, ...(deleted ? { deleted } : {}) });
+  $('#exportAll').addEventListener('click', async (e) => {
+    e.currentTarget.blur();
+    const d = new Date(), ymd = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    const name = 'TeleGron roteiros ' + ymd + '.json';
+    const data = { tipo: BACKUP, versao: 1, salvo: d.toISOString(), roteiros: scripts.filter(hasContent).map(pick), lixeira: trash.map(pick) };
+    const n = data.roteiros.length;
+    const file = new File([JSON.stringify(data, null, 2)], name, { type: 'application/json' });
+    // Celular: a folha de compartilhar (Salvar em Arquivos, AirDrop, WhatsApp). Computador: baixa o arquivo.
+    try {
+      if (matchMedia('(pointer:coarse)').matches && navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: name });
+        toast('Cópia salva: ' + plural(n, 'roteiro', 'roteiros')); return;
+      }
+    } catch (err) { if (err && err.name === 'AbortError') return; }
+    const u = URL.createObjectURL(file), a = document.createElement('a'); a.href = u; a.download = name;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 4000);
+    toast('Cópia baixada: ' + plural(n, 'roteiro', 'roteiros'));
+  });
+  function importBackup(data) {
+    const ok = (r) => r && typeof r.text === 'string' && written(r.text);
+    const same = (a, b) => a.text === b.text && (a.title || '') === (b.title || '');
+    const all = () => scripts.concat(trash);
+    let novos = 0, iguais = 0;
+    for (const r of (Array.isArray(data.roteiros) ? data.roteiros : []).filter(ok)) {
+      const s = { id: String(r.id || uid()), title: String(r.title || ''), text: r.text, updated: +r.updated || Date.now() };
+      if (all().some(x => same(x, s))) { iguais++; continue; }
+      if (all().some(x => x.id === s.id)) s.id = uid();
+      scripts.push(s); novos++;
+    }
+    for (const r of (Array.isArray(data.lixeira) ? data.lixeira : []).filter(ok)) {
+      const s = { id: String(r.id || uid()), title: String(r.title || ''), text: r.text, updated: +r.updated || Date.now(), deleted: +r.deleted || Date.now() };
+      if (all().some(x => same(x, s))) continue;
+      if (all().some(x => x.id === s.id)) s.id = uid();
+      trash.push(s);
+    }
+    saveScripts(); saveTrash(); binState(false); renderHome(false);
+    toast(novos ? plural(novos, 'roteiro importado', 'roteiros importados') + (iguais ? ' · ' + iguais + ' já estavam aqui' : '')
+      : iguais ? 'Nada novo: ' + plural(iguais, 'roteiro já estava', 'roteiros já estavam') + ' aqui' : 'Nenhum roteiro neste arquivo');
+  }
   $('#importFile').addEventListener('change', (e) => {
     const f = e.target.files && e.target.files[0]; if (!f) return;
     const r = new FileReader();
-    r.onload = () => { e.target.value = ''; closeSheet(); const s = draft(String(r.result || ''), f.name.replace(/\.[^.]+$/, '')); keep(s); saveScripts(); openPrompter(s); toast('Roteiro importado'); };
+    r.onload = () => {
+      e.target.value = ''; closeSheet();
+      const txt = String(r.result || '');
+      // A cópia salva aqui é reconhecida pelo conteúdo, não só pelo nome (o iPhone às vezes renomeia).
+      if (/^\s*\{/.test(txt)) {
+        let data = null; try { data = JSON.parse(txt); } catch (err) {}
+        if (data && data.tipo === BACKUP) { importBackup(data); return; }
+      }
+      const s = draft(txt, f.name.replace(/\.[^.]+$/, '')); keep(s); saveScripts(); openPrompter(s); toast('Roteiro importado');
+    };
     r.readAsText(f);
   });
 
