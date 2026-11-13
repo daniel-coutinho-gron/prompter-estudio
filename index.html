@@ -220,44 +220,32 @@ label[for]{cursor:pointer}
   .home-in.solo #listSec .sec-label{margin-top:28px}
 }
 
-/* ---------- editor ---------- */
-.ed-head{position:sticky;top:0;z-index:5;padding:calc(var(--st) + 4px) var(--gr) 10px var(--gl);background:color-mix(in srgb,var(--bg) 74%,transparent);-webkit-backdrop-filter:blur(20px) saturate(170%);backdrop-filter:blur(20px) saturate(170%);border-bottom:1px solid transparent;transition:border-color .2s}
-.ed-head.scrolled{border-bottom-color:var(--hair)}
-.ed-nav{max-width:720px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:48px}
-.back{display:inline-flex;align-items:center;gap:2px;height:40px;padding:0 12px 0 2px;margin-left:-6px;border-radius:12px;color:var(--accent-text);font-size:17px;font-weight:500;transition:background-color .15s}
-.back svg{width:24px;height:24px}
-.back:active{background:var(--well-h)}
-@media (hover:hover){.back:hover{background:var(--well-h)}}
-.ed-nav .btn{height:38px;padding:0 16px;border-radius:12px;font-size:15px}
-.ed-nav .btn svg{width:16px;height:16px}
-.tools{max-width:720px;margin:6px auto 0;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:3px}
-.tools::-webkit-scrollbar{display:none}
-@media (max-width:752px){.tools{margin-left:calc(-1 * var(--gl));margin-right:calc(-1 * var(--gr));padding:0 var(--gr) 3px var(--gl)}.tools::after{content:"";flex:0 0 1px}}
+/* ---------- chips de inserir no texto e campo ---------- */
 .chip{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 13px;border-radius:11px;font-size:14px;font-weight:600;white-space:nowrap;flex:none}
 .chip svg{width:16px;height:16px;color:var(--accent-text)}
 .chip .b{font-weight:800;color:var(--accent-text);font-size:15px;width:16px;text-align:center}
-.ed-body{max-width:720px;margin:0 auto;padding:6px var(--gr) calc(var(--sb) + 48px) var(--gl)}
-.field-l{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:18px 4px 8px;font-size:13px;font-weight:600;color:var(--fg-2)}
-.field-l:first-child{margin-top:10px}
-.ed-stats{font-size:13px;font-weight:500;color:var(--fg-3);font-variant-numeric:tabular-nums;white-space:nowrap}
 .field{display:block;width:100%;margin:0;background:var(--field);border:1px solid var(--hair-2);border-radius:16px;box-shadow:var(--field-shadow);color:var(--fg);outline:none;transition:border-color .15s,background-color .15s}
 @media (hover:hover){.field:hover{border-color:var(--fg-3)}}
 .field:focus,.field:focus-visible{outline:none;border-color:var(--fg-2)}
 .field::placeholder{color:var(--fg-3)}
-#edTitle{height:56px;padding:0 16px;font-size:20px;font-weight:700;letter-spacing:-.015em}
-#edText{min-height:52vh;padding:16px;font-size:18px;line-height:1.65;resize:none;overflow:hidden}
-.ed-foot{margin-top:28px;padding-top:18px;border-top:1px solid var(--hair);display:flex;flex-direction:column;align-items:flex-start;gap:16px}
-.help{margin:0;font-size:13.5px;line-height:1.55;color:var(--fg-2)}
-.help code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.5px;color:var(--accent-text)}
-.del{height:42px;padding:0 16px;border-radius:12px;color:var(--danger);font-size:15px;font-weight:600}
-.del.armed{background:linear-gradient(180deg,#ff6c61,#e5392e);border-color:transparent;color:#fff}
+
+/* ---------- card do roteiro novo: primeiro o título ---------- */
+#newWrap{position:fixed;inset:0;z-index:46;display:flex;align-items:flex-start;justify-content:center;padding:calc(var(--st) + 14vh) var(--gr) 24px var(--gl);background:var(--scrim)}
+.nw{width:100%;max-width:420px;display:flex;flex-direction:column;gap:14px;padding:20px;border-radius:24px;animation:sheet-in .28s var(--ease)}
+.nw.glass::before{background:var(--glass-strong)}
+.nw h2{margin:0 2px;font-size:20px;font-weight:800;letter-spacing:-.02em}
+#newTitle{height:54px;padding:0 16px;font-size:18px;font-weight:600}
+.nw-row{display:flex;gap:10px}
+.nw-row .btn{flex:1}
+.nw-row .btn:disabled{opacity:.45;pointer-events:none}
 
 /* ---------- prompter (sempre escuro: é a tela que vai para o vidro) ---------- */
 #prompter{position:fixed;inset:0;z-index:20;background:#000;overflow:hidden;color:var(--fg);-webkit-user-select:none;user-select:none}
 #stage{position:absolute;inset:0;overflow:hidden;touch-action:none;cursor:grab;-webkit-touch-callout:none}
 #content{will-change:transform;font-weight:600}
 #cue{position:absolute;left:0;right:0;transform:translateY(-50%);pointer-events:none;background:linear-gradient(90deg,rgba(248,108,0,.17),rgba(248,108,0,.05) 60%,transparent)}
-#cue::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);background:var(--grad-sq);clip-path:polygon(0 0,100% 50%,0 100%);width:16px;height:24px}
+#cue{opacity:var(--cueIn,1);transition:opacity .12s linear}
+#cue::before{content:"";position:absolute;left:0;top:50%;transform:translate(calc((var(--cueIn,1) - 1) * 14px),-50%);background:var(--grad-sq);clip-path:polygon(0 0,100% 50%,0 100%);width:16px;height:24px}
 #countdown{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--ui);font-weight:800;font-size:min(40vw,40vh);letter-spacing:-.04em;color:var(--accent);background:rgba(0,0,0,.6);pointer-events:none;font-variant-numeric:tabular-nums}
 @supports (-webkit-background-clip:text) or (background-clip:text){#countdown span{background:var(--grad-sq);-webkit-background-clip:text;background-clip:text;color:transparent}}
 #progress{position:absolute;top:0;left:0;height:3px;width:0;background:var(--grad-line);z-index:3;pointer-events:none}
@@ -284,6 +272,22 @@ label[for]{cursor:pointer}
 .play{display:grid;place-items:center;width:68px;height:68px;border-radius:50%;flex:none}
 .play svg{width:28px;height:28px}
 #hud.faded .hud-top,#hud.faded .hud-bottom{opacity:0;pointer-events:none}
+/* ---------- escrever o roteiro no próprio prompter ---------- */
+#pEditText{display:none}
+.p-title-in,.edit-bar{display:none}
+#prompter.editing #stage,#prompter.editing #progress{visibility:hidden}
+#prompter.editing .hud-bottom,#prompter.editing #pCam{display:none}
+#prompter.editing #pEditText{display:block;position:absolute;left:0;right:0;top:calc(var(--st) + 64px);bottom:0;z-index:1;width:100%;margin:0;border:0;outline:none;resize:none;background:transparent;font-weight:600;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;caret-color:var(--accent);padding-top:14px;padding-bottom:calc(var(--sb) + 120px + var(--kb,0px));-webkit-user-select:text;user-select:text}
+#pEditText::placeholder{color:currentColor;opacity:.38}
+#prompter.editing .p-title{display:none}
+#prompter.editing .p-title-in{display:block;width:100%;min-width:0;height:20px;padding:0;margin:0;border:0;outline:none;background:none;color:var(--fg);font:600 14.5px var(--ui);text-overflow:ellipsis}
+.p-title-in::placeholder{color:var(--fg-3)}
+#prompter.editing #pEdit{background:var(--grad);border-color:rgba(255,170,90,.55);color:#fff}
+#prompter.editing .edit-bar{display:block;position:absolute;left:0;right:0;z-index:3;bottom:calc(var(--sb) + 12px + var(--kb,0px));padding:0 var(--gr) 0 var(--gl)}
+.edit-bar .panel{padding:10px 12px}
+.edit-bar .cb .aa{font-weight:800}
+/* espaço dentro do roteiro: o texto chega à linha de leitura alguns segundos depois */
+.ptx .gap{height:calc(3em * var(--lh,1.3))}
 /* modo câmera: a câmera ocupa a tela, o roteiro passa numa faixa no alto, perto da lente */
 #camView{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1);background:#000}
 #prompter.cam #stage{top:calc(var(--st) + 66px);bottom:auto;height:42%;transform:none!important;background:linear-gradient(to bottom,rgba(0,0,0,.84) 0%,rgba(0,0,0,.74) 45%,rgba(0,0,0,.45) 72%,rgba(0,0,0,.14) 88%,rgba(0,0,0,0) 100%);-webkit-mask-image:linear-gradient(to bottom,#000 0,#000 62%,rgba(0,0,0,.55) 80%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0,#000 62%,rgba(0,0,0,.55) 80%,transparent 100%)}
@@ -331,6 +335,8 @@ label[for]{cursor:pointer}
 .rec-res button[aria-pressed="true"]{background:var(--grad);color:#fff;text-shadow:0 1px 1px rgba(110,25,0,.35)}
 .rec-res.locked{opacity:.5}
 .rec-fps{color:rgba(255,255,255,.72);font-weight:500;white-space:nowrap}
+/* celular estreito: sem o fps, seletor compacto; gravando, o seletor (que fica travado) sai e o tempo cabe */
+@media (max-width:370px){.rec-fps{display:none}.rec-res button{padding:0 8px;font-size:12px}#prompter.session .rec-res{display:none}}
 #pScript,#pDone{display:none}
 #prompter.cam #pScript{display:flex}
 #prompter.cam #pRestart{display:none}
@@ -394,11 +400,16 @@ label[for]{cursor:pointer}
   #sheetWrap.over-stage{align-items:flex-end;padding-bottom:16px}
 }
 @media (orientation:landscape) and (max-height:520px){#sheetWrap.over-stage .sheet,.sheet{max-height:calc(100% - var(--st) - 8px)}}
-.sheet-head{flex:none;padding:8px var(--gr) 14px var(--gl);border-bottom:1px solid transparent;transition:border-color .2s}
+.sheet-head{flex:none;padding:8px var(--gr) 14px var(--gl);border-bottom:1px solid transparent;transition:border-color .2s;touch-action:none;cursor:grab}
 .sheet-head.scrolled{border-bottom-color:var(--hair)}
-.grabber{width:36px;height:5px;border-radius:3px;background:var(--hair-2);margin:0 auto 12px}
-.sheet-bar{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.sheet-bar h2{margin:0;font-size:22px;font-weight:800;letter-spacing:-.025em}
+.grabber{width:40px;height:5px;border-radius:3px;background:var(--hair-2);margin:0 auto 10px}
+.sheet-bar{display:grid;grid-template-columns:34px 1fr 34px;align-items:center;gap:8px}
+.sheet-bar h2{grid-column:2;margin:0;text-align:center;font-size:18px;font-weight:800;letter-spacing:-.02em}
+.sheet-x{grid-column:3;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--well);box-shadow:var(--well-shadow);color:var(--fg-2);transition:background-color .15s,color .15s}
+.sheet-x svg{width:16px;height:16px}
+@media (hover:hover){.sheet-x:hover{background:var(--well-h);color:var(--fg)}}
+.sheet-x:active{background:var(--well-h);transform:translateY(1px)}
+.sheet.dragging{transition:none!important}
 .pv{position:relative;height:84px;margin-top:14px;overflow:hidden;border-radius:16px;border:1px solid var(--hair-2);display:flex;align-items:center;box-shadow:inset 0 1px 3px rgba(0,0,0,.4)}
 .pv-inner{width:100%;font-weight:600;white-space:nowrap;overflow:hidden}
 .pv-cue{position:absolute;left:0;top:50%;transform:translateY(-50%);width:12px;height:18px;background:var(--grad-sq);clip-path:polygon(0 0,100% 50%,0 100%);z-index:1}
@@ -442,6 +453,18 @@ label[for]{cursor:pointer}
 .mi-arrow{width:20px;height:20px;color:var(--accent-text);flex:none;margin-top:18px}
 .mi-text{margin:0;font-size:13.5px;line-height:1.5;color:var(--fg-2)}
 .mi-text b,.mi-tip{color:var(--fg);font-weight:600}
+/* fonte do roteiro: recolhida, abre no chevron */
+.row.fontpick{gap:0;padding:6px 0}
+.fp-head{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;text-align:left;color:var(--fg)}
+.fp-lbl{flex:1;min-width:0}
+.fp-cur{max-width:52%;font-size:16px;font-weight:600;color:var(--accent-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-synthesis:none}
+.fp-chev{width:18px;height:18px;flex:none;color:var(--fg-2);transition:transform .25s var(--ease)}
+.fp-head[aria-expanded="true"] .fp-chev{transform:rotate(180deg)}
+@media (hover:hover){.fp-head:hover .fp-chev{color:var(--fg)}}
+.fp-wrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s var(--ease)}
+.fp-wrap.open{grid-template-rows:1fr}
+.fp-in{min-height:0;overflow:hidden}
+.fp-in .fonts{margin:6px 0 10px}
 .fonts{display:flex;flex-direction:column;border-radius:14px;border:1px solid var(--hair);overflow:hidden;background:var(--well)}
 .fonts button{display:grid;grid-template-columns:1fr auto;grid-template-areas:"n c" "d c";align-items:center;column-gap:12px;row-gap:1px;min-height:58px;padding:9px 14px;text-align:left;border-bottom:1px solid var(--hair);transition:background-color .15s}
 .fonts button:last-child{border-bottom:0}
@@ -543,6 +566,8 @@ html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
   <symbol id="i-cam-off" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6.5h3c1.4 0 2.5 1.1 2.5 2.5v1.6l4.1-2.5c.6-.4 1.4.1 1.4.8v6.2c0 .5-.3.8-.7.9M15.5 15v.9c0 .9-.5 1.6-1.2 2"/><path d="M6.2 6.6A2.6 2.6 0 0 0 3 9.1v5.8c0 1.4 1.2 2.6 2.6 2.6h7.3M3 3l18 18"/></g></symbol>
   <symbol id="i-doc" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h7l4 4V19a1.5 1.5 0 0 1-1.5 1.5h-9.5A1.5 1.5 0 0 1 5.5 19V5A1.5 1.5 0 0 1 7 3.5Z"/><path d="M13.5 3.5V8h4.5M8.5 12h7M8.5 15.5h7"/></g></symbol>
   <symbol id="i-swap" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 4 7l3 3M4 7h12M17 20l3-3-3-3M20 17H8"/></g></symbol>
+  <symbol id="i-gap" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5h14M5 19.5h14"/><path d="M12 8v8m-2.6-2.6L12 16l2.6-2.6M9.4 10.6 12 8l2.6 2.6"/></g></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></symbol>
   <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></g></symbol>
   <symbol id="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></symbol>
   <symbol id="i-contrast" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17A8.5 8.5 0 0 0 12 3.5Z" fill="currentColor" stroke="none"/></g></symbol>
@@ -609,34 +634,10 @@ html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
   </div>
 </main>
 
-<!-- ============ EDITOR ============ -->
-<section id="editor" hidden>
-  <div class="ed-head" id="edHead">
-    <div class="ed-nav">
-      <button class="back" id="edBack" type="button"><svg aria-hidden="true"><use href="#i-back"/></svg>Roteiros</button>
-      <button class="btn primary" id="edPlay" type="button"><svg aria-hidden="true"><use href="#i-play"/></svg>Ler</button>
-    </div>
-    <div class="tools" id="edTools" role="toolbar" aria-label="Inserir no texto">
-      <button class="chip" type="button" data-ins="pause"><svg aria-hidden="true"><use href="#i-pausemark"/></svg>Pausa</button>
-      <button class="chip" type="button" data-ins="look"><svg aria-hidden="true"><use href="#i-eye"/></svg>Olhar para a lente</button>
-      <button class="chip" type="button" data-ins="bold"><span class="b" aria-hidden="true">B</span>Negrito</button>
-    </div>
-  </div>
-  <div class="ed-body">
-    <div class="field-l"><label for="edTitle">Título</label></div>
-    <input id="edTitle" class="field" type="text" autocomplete="off" enterkeyhint="next">
-    <div class="field-l"><label for="edText">Roteiro</label><span class="ed-stats" id="edStats"></span></div>
-    <textarea id="edText" class="field" placeholder="Escreva ou cole o roteiro aqui."></textarea>
-    <div class="ed-foot">
-      <p class="help">Linha em branco separa parágrafos. <code>**palavra**</code> fica em negrito. Texto entre colchetes, como <code>[pausa]</code>, vira uma marcação amarela que não conta no tempo. O roteiro só é salvo depois que tiver algum texto.</p>
-      <button class="del" id="edDelete" type="button">Apagar roteiro</button>
-    </div>
-  </div>
-</section>
-
 <!-- ============ PROMPTER ============ -->
 <section id="prompter" hidden>
   <video id="camView" playsinline muted autoplay hidden></video>
+  <textarea id="pEditText" aria-label="Texto do roteiro" placeholder="Cole ou escreva o roteiro aqui" autocapitalize="sentences"></textarea>
   <div id="stage">
     <div id="content" class="ptx"><div id="padTop"></div><div id="ptext"></div><div id="padBot"></div></div>
     <div id="cue"></div>
@@ -653,11 +654,23 @@ html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
       <button class="round gk blur" id="pBack" type="button" aria-label="Fechar o prompter"><svg class="i"><use href="#i-close"/></svg></button>
       <div class="p-info glass">
         <div class="p-title" id="pTitle"></div>
+        <input class="p-title-in" id="pTitleIn" type="text" aria-label="Título do roteiro" placeholder="Título do roteiro" autocomplete="off" enterkeyhint="next">
         <div class="p-time"><b id="tElapsed">00:00</b> · <span id="tLeft">faltam 00:00</span></div>
       </div>
       <button class="round gk blur" id="pCam" type="button" aria-label="Gravar com a câmera"><svg class="i"><use href="#i-cam"/></svg></button>
       <button class="round gk blur" id="pEdit" type="button" aria-label="Editar roteiro"><svg class="i"><use href="#i-edit"/></svg></button>
       <button class="round gk blur" id="pSettings" type="button" aria-label="Ajustes"><svg class="i"><use href="#i-gear"/></svg></button>
+    </div>
+    <div class="edit-bar" id="editBar">
+      <div class="panel glass">
+        <div class="ctl" id="ebTools" role="toolbar" aria-label="Inserir no texto">
+          <button class="cb gk" type="button" data-ins="gap" aria-label="Espaço em branco"><svg aria-hidden="true"><use href="#i-gap"/></svg>Espaço</button>
+          <button class="cb gk" type="button" data-ins="pause"><svg aria-hidden="true"><use href="#i-pausemark"/></svg>Pausa</button>
+          <button class="play" id="ebDone" type="button" aria-label="Pronto"><svg><use href="#i-check"/></svg></button>
+          <button class="cb gk" type="button" data-ins="look" aria-label="Olhar para a lente"><svg aria-hidden="true"><use href="#i-eye"/></svg>Lente</button>
+          <button class="cb gk" type="button" data-ins="bold" aria-label="Negrito"><span class="aa" aria-hidden="true">B</span>Negrito</button>
+        </div>
+      </div>
     </div>
     <div class="hud-bottom">
       <div class="panel glass">
@@ -690,7 +703,7 @@ html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
     <div class="sheet-head" id="sheetHead">
       <div class="grabber" aria-hidden="true"></div>
-      <div class="sheet-bar"><h2 id="sheetTitle">Ajustes</h2><button class="btn primary sm" id="sheetDone" type="button">Concluir</button></div>
+      <div class="sheet-bar"><h2 id="sheetTitle">Ajustes</h2><button class="sheet-x" id="sheetDone" type="button" aria-label="Fechar os ajustes"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
       <div class="pv" id="pv"><span class="pv-cue" aria-hidden="true"></span><div class="pv-inner ptx" id="pvInner">Assim fica o texto no prompter, no tamanho de verdade.</div></div>
     </div>
 
@@ -700,6 +713,9 @@ html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
         <div class="box">
           <div class="row slide"><div class="lbl"><span id="lSpeed">Velocidade</span><span class="v" id="vSpeed"></span></div><div class="slider" data-set="speed" data-min="1" data-max="60" data-step="1" aria-labelledby="lSpeed"></div></div>
           <div class="row slide"><div class="lbl"><span id="lFont">Tamanho da letra</span><span class="v" id="vFont"></span></div><div class="slider" data-set="fontSize" data-min="24" data-max="160" data-step="2" aria-labelledby="lFont"></div></div>
+          <div class="row stack"><span>Tempo antes do texto</span>
+            <div class="seg" data-seg="leadIn" role="group" aria-label="Tempo antes do texto"><button type="button" data-v="0">Sem</button><button type="button" data-v="3">3 s</button><button type="button" data-v="5">5 s</button><button type="button" data-v="10">10 s</button></div>
+          </div>
           <div class="row stack"><span>Contagem antes de rolar</span>
             <div class="seg" data-seg="countdown" role="group" aria-label="Contagem antes de rolar"><button type="button" data-v="0">Sem</button><button type="button" data-v="3">3 s</button><button type="button" data-v="5">5 s</button><button type="button" data-v="10">10 s</button></div>
           </div>
@@ -734,7 +750,11 @@ html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
       <div class="group">
         <h3 class="group-h"><svg aria-hidden="true"><use href="#i-type"/></svg>Texto</h3>
         <div class="box">
-          <div class="row stack"><span id="lFace">Fonte do roteiro</span>
+          <div class="row stack fontpick">
+            <button class="fp-head" id="fpHead" type="button" aria-expanded="false" aria-controls="fpList">
+              <span class="fp-lbl" id="lFace">Fonte do roteiro</span><span class="fp-cur" id="fpCur"></span><svg class="fp-chev" aria-hidden="true"><use href="#i-chev"/></svg>
+            </button>
+            <div class="fp-wrap" id="fpList"><div class="fp-in">
             <div class="fonts" role="radiogroup" aria-labelledby="lFace" data-radio="font">
               <button type="button" role="radio" data-v="inter"><span class="fn" style="font-family:'Inter',system-ui,sans-serif">Inter</span><span class="fd">Padrão, limpa</span><svg class="ck" aria-hidden="true"><use href="#i-check"/></svg></button>
               <button type="button" role="radio" data-v="atkinson"><span class="fn" style="font-family:'Atkinson Hyperlegible',sans-serif">Atkinson Hyperlegible</span><span class="fd">Feita para ler de longe</span><svg class="ck" aria-hidden="true"><use href="#i-check"/></svg></button>
@@ -742,6 +762,7 @@ html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
               <button type="button" role="radio" data-v="black"><span class="fn" style="font-family:'Archivo Black','Arial Black',sans-serif;font-weight:400">Archivo Black</span><span class="fd">Extra forte, para letra grande</span><svg class="ck" aria-hidden="true"><use href="#i-check"/></svg></button>
               <button type="button" role="radio" data-v="georgia"><span class="fn" style="font-family:Georgia,'Noto Serif','Times New Roman',serif">Georgia</span><span class="fd">Com serifa</span><svg class="ck" aria-hidden="true"><use href="#i-check"/></svg></button>
             </div>
+            </div></div>
           </div>
           <div class="row slide"><div class="lbl"><span id="lLH">Espaço entre linhas</span><span class="v" id="vLH"></span></div><div class="slider" data-set="lineHeight" data-min="1" data-max="1.9" data-step="0.05" aria-labelledby="lLH"></div></div>
           <div class="row slide"><div class="lbl"><span id="lMargin">Margens laterais</span><span class="v" id="vMargin"></span></div><div class="slider" data-set="margin" data-min="0" data-max="30" data-step="1" aria-labelledby="lMargin"></div></div>
@@ -835,12 +856,21 @@ html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
   </div>
 </div>
 
+<!-- ============ ROTEIRO NOVO: PRIMEIRO O TÍTULO ============ -->
+<div id="newWrap" hidden>
+  <form class="nw glass" id="newForm" role="dialog" aria-modal="true" aria-labelledby="newLbl" autocomplete="off">
+    <h2 id="newLbl">Novo roteiro</h2>
+    <input class="field" id="newTitle" type="text" placeholder="Título do roteiro" aria-label="Título do roteiro" enterkeyhint="go" maxlength="120">
+    <div class="nw-row"><button class="btn" id="newCancel" type="button">Cancelar</button><button class="btn primary" id="newGo" type="submit" disabled>Continuar</button></div>
+  </form>
+</div>
+
 <!-- ============ ROTEIRO NA CÂMERA ============ -->
 <div id="pickWrap" hidden>
   <div class="sheet pick-sheet" role="dialog" aria-modal="true" aria-labelledby="pickTitle">
     <div class="sheet-head">
       <div class="grabber" aria-hidden="true"></div>
-      <div class="sheet-bar"><h2 id="pickTitle">Roteiro na câmera</h2><button class="btn primary sm" id="pickCancel" type="button">Concluir</button></div>
+      <div class="sheet-bar"><h2 id="pickTitle">Roteiro na câmera</h2><button class="sheet-x" id="pickCancel" type="button" aria-label="Fechar"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
     </div>
     <div class="sheet-body"><div class="box pick-box"><div class="fonts pick-list" id="pickList" role="radiogroup" aria-labelledby="pickTitle"></div></div></div>
   </div>
@@ -872,7 +902,7 @@ html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
     get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   };
-  const DEFAULTS = { fontSize: 56, camFont: 34, camRes: '4k', font: 'inter', lineHeight: 1.3, margin: 6, align: 'left', speed: 22, mirror: 'none',
+  const DEFAULTS = { fontSize: 56, camFont: 34, camRes: '4k', leadIn: 3, font: 'inter', lineHeight: 1.3, margin: 6, align: 'left', speed: 22, mirror: 'none',
     fg: '#ffffff', bg: '#000000', cue: 30, showCue: true, countdown: 3, tapToggle: true, autoHide: true, dragPauses: true, theme: 'auto' };
   const FONTS = {
     inter: '"Inter", system-ui, sans-serif',
@@ -907,7 +937,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   const lightMQ = window.matchMedia('(prefers-color-scheme: light)');
   // Só conta como escrito se houver letra ou número: traço, sublinhado ou espaço não salvam roteiro.
   const written = (t) => /[\p{L}\p{N}]/u.test(t || '');
-  const hasContent = (s) => written(s.text) || written(s.title);
+  const hasContent = (s) => written(s.text);
 
   let settings = Object.assign({}, DEFAULTS, store.get('pe.settings', {}));
   let scripts = store.get('pe.scripts', null);
@@ -935,7 +965,11 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   const secs = (t) => words(t) / WPM * 60;
   const dur = (s) => { s = Math.max(0, Math.round(s)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
   const plural = (n, um, varios) => n + ' ' + (n === 1 ? um : varios);
-  const renderScript = (text) => text.trim().split(/\n\s*\n/).map(p =>
+  // [espaço] sozinho na linha vira um intervalo em branco: o texto chega à seta alguns segundos depois.
+  const GAP = '\u0000gap\u0000', GAP_RE = /^[ \t]*\[espa[çc]o\][ \t]*$/gim;
+  // Texto do prompter: o respiro do começo + o roteiro. A altura do respiro sai dos segundos escolhidos (ver layout).
+  const stageHTML = (text) => '<div class="gap lead" aria-hidden="true"></div>' + renderScript(text);
+  const renderScript = (text) => text.replace(GAP_RE, '\n\n' + GAP + '\n\n').trim().split(/\n\s*\n/).map(p => p.trim() === GAP ? '<div class="gap" aria-hidden="true"></div>' :
     '<p>' + esc(p).replace(/\n/g, '<br>').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[([^\]\n]+)\]/g, '<span class="note">$1</span>') + '</p>').join('');
   const plain = (t) => t.replace(/\[[^\]\n]*\]/g, ' ').replace(/\*\*/g, '').replace(/\s+/g, ' ').trim();
   function autoTitle(text) {
@@ -1061,12 +1095,12 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   }
 
   /* ---------------- troca de tela ---------------- */
-  const ORDER = { home: 0, editor: 1, prompter: 2 };
+  const ORDER = { home: 0, prompter: 1 };
   let view = 'home';
   function show(next, after, instant) {
     const prev = view;
     const apply = () => {
-      ['home', 'editor', 'prompter'].forEach(v => { $('#' + v).hidden = v !== next; });
+      ['home', 'prompter'].forEach(v => { $('#' + v).hidden = v !== next; });
       document.documentElement.classList.toggle('locked', next === 'prompter');
       view = next;
       window.scrollTo(0, 0);
@@ -1084,7 +1118,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   let enterT;
   // Texto que enche a miniatura: parágrafos inteiros até passar do que cabe, sem deixar ** ou [ abertos no corte.
   function previewText(text) {
-    const paras = text.trim().split(/\n\s*\n/);
+    const paras = text.replace(GAP_RE, '').trim().split(/\n\s*\n/);
     let out = [], n = 0;
     for (const p of paras) { out.push(p); n += p.length; if (n >= 420) break; }
     let t = out.join('\n\n');
@@ -1158,77 +1192,34 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     if (lpFired) { lpFired = false; e.preventDefault(); return; }
     const dl = e.target.closest('[data-del]'); if (dl) { const s = byId(dl.dataset.del); if (s) removeScript(s); return; }
     const p = e.target.closest('[data-play]'); if (p) { const s = byId(p.dataset.play); if (s) openPrompter(s); return; }
-    const ed = e.target.closest('[data-edit]'); if (ed) { const s = byId(ed.dataset.edit); if (s) openEditor(s); }
+    const ed = e.target.closest('[data-edit]'); if (ed) { const s = byId(ed.dataset.edit); if (s) openPrompter(s, false, true); }
   });
   $('#search').addEventListener('input', () => renderHome(false));
-  $('#newBtn').addEventListener('click', () => openEditor(draft(), 'text'));
+  // Roteiro novo: primeiro o título, num card; depois o prompter abre pronto para colar o texto.
+  const nt = $('#newTitle');
+  function openNew() { nt.value = ''; $('#newGo').disabled = true; $('#newWrap').hidden = false; nt.focus(); }
+  function closeNew() { $('#newWrap').hidden = true; nt.blur(); }
+  $('#newBtn').addEventListener('click', openNew);
+  nt.addEventListener('input', () => { $('#newGo').disabled = !written(nt.value); });
+  $('#newCancel').addEventListener('click', closeNew);
+  $('#newWrap').addEventListener('click', (e) => { if (e.target.id === 'newWrap') closeNew(); });
+  $('#newForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!written(nt.value)) return;
+    const s = draft('', nt.value.trim());
+    $('#newWrap').hidden = true;
+    openPrompter(s, false, 'focus');
+  });
   // Câmera direto da tela inicial, sem roteiro (dá para escolher um lá dentro).
   $('#camBtn').addEventListener('click', () => openPrompter(null, true));
   $('#importFile').addEventListener('change', (e) => {
     const f = e.target.files && e.target.files[0]; if (!f) return;
     const r = new FileReader();
-    r.onload = () => { e.target.value = ''; closeSheet(); const s = draft(String(r.result || ''), f.name.replace(/\.[^.]+$/, '')); keep(s); saveScripts(); openEditor(s); toast('Roteiro importado'); };
+    r.onload = () => { e.target.value = ''; closeSheet(); const s = draft(String(r.result || ''), f.name.replace(/\.[^.]+$/, '')); keep(s); saveScripts(); openPrompter(s); toast('Roteiro importado'); };
     r.readAsText(f);
   });
 
-  /* ---------------- editor ---------------- */
   let current = null;
-  const ta = $('#edText');
-  function grow() { ta.style.height = 'auto'; ta.style.height = (ta.scrollHeight + 2) + 'px'; }
-  const headState = () => $('#edHead').classList.toggle('scrolled', window.scrollY > 4);
-  window.addEventListener('scroll', () => { if (view === 'editor') headState(); }, { passive: true });
-  function openEditor(s, focus) {
-    current = s;
-    show('editor', () => {
-      $('#edTitle').value = s.title; ta.value = s.text; delete ta.dataset.touched;
-      ta.style.fontFamily = FONTS[settings.font] || FONTS.inter;
-      resetDelete(); edStats(); grow(); headState();
-      $('#edDelete').hidden = !scripts.includes(s);
-      if (focus) $(focus === 'title' ? '#edTitle' : '#edText').focus();
-    }, !!focus);
-  }
-  function edStats() {
-    const w = words(current.text);
-    $('#edStats').textContent = plural(w, 'palavra', 'palavras') + ' · ' + dur(secs(current.text)) + ' de leitura';
-    $('#edTitle').placeholder = autoTitle(current.text) || 'Título do roteiro';
-  }
-  function edited() {
-    current.updated = Date.now();
-    keep(current);
-    $('#edDelete').hidden = !scripts.includes(current);
-    saveScripts(true);
-  }
-  $('#edTitle').addEventListener('input', (e) => { current.title = e.target.value; edited(); });
-  $('#edTitle').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); ta.focus(); } });
-  ta.addEventListener('input', () => { current.text = ta.value; edited(); edStats(); grow(); });
-  ta.addEventListener('focus', () => { ta.dataset.touched = '1'; });
-  function leaveEditor() { if (current) keep(current); saveScripts(); }
-  $('#edBack').addEventListener('click', () => { leaveEditor(); show('home'); });
-  $('#edPlay').addEventListener('click', () => { leaveEditor(); openPrompter(current); });
-
-  $('#edTools').addEventListener('pointerdown', (e) => { if (e.target.closest('[data-ins]')) e.preventDefault(); });
-  $('#edTools').addEventListener('click', (e) => { const b = e.target.closest('[data-ins]'); if (b) insert(b.dataset.ins); });
-  function insert(kind) {
-    const touched = document.activeElement === ta || ta.dataset.touched;
-    const s = touched ? ta.selectionStart : ta.value.length, e = touched ? ta.selectionEnd : s;
-    const sel = ta.value.slice(s, e);
-    ta.focus();
-    if (kind === 'bold') {
-      const inner = sel || 'destaque';
-      ta.setRangeText('**' + inner + '**', s, e, 'end');
-      if (!sel) ta.setSelectionRange(s + 2, s + 2 + inner.length);
-    } else {
-      const tag = kind === 'pause' ? '[pausa]' : '[olhar para a lente]';
-      const before = ta.value.slice(0, s), after = ta.value.slice(e);
-      const pre = before && !/\s$/.test(before) ? ' ' : '';
-      const post = after && !/^\s/.test(after) ? ' ' : '';
-      ta.setRangeText(pre + tag + post, s, e, 'end');
-    }
-    ta.dispatchEvent(new Event('input', { bubbles: true }));
-  }
-
-  function resetDelete() {}
-  $('#edDelete').addEventListener('click', () => { const s = current; show('home', () => removeScript(s)); });
 
   /* ---------------- apagar com desfazer, e o menu de segurar o card ---------------- */
   let undoT = 0, lastDeleted = null;
@@ -1260,7 +1251,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   $('#actCancel').addEventListener('click', closeActions);
   $('#actWrap').addEventListener('click', (e) => { if (e.target.id === 'actWrap') closeActions(); });
   $('#actRead').addEventListener('click', () => { const s = actFor; closeActions(); if (s) openPrompter(s); });
-  $('#actEdit').addEventListener('click', () => { const s = actFor; closeActions(); if (s) openEditor(s); });
+  $('#actEdit').addEventListener('click', () => { const s = actFor; closeActions(); if (s) openPrompter(s, false, true); });
   $('#actDel').addEventListener('click', () => { const s = actFor; closeActions(); if (s) removeScript(s); });
   // Segurar meio segundo no card ou numa linha abre o menu. No Android e no computador, o menu do sistema vira o nosso.
   let lp = null, lpFired = false;
@@ -1298,10 +1289,11 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   function sleep() { try { if (wl) wl.release(); } catch (e) {} wl = null; }
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && view === 'prompter') wake(); });
 
-  function openPrompter(s, withCam) {
+  function openPrompter(s, withCam, edit) {
     current = s || null;
+    // Em edição a troca é imediata: o teclado do iPhone só abre se o foco vier no mesmo toque.
     show('prompter', () => {
-      $('#ptext').innerHTML = !s ? '' : s.text.trim() ? renderScript(s.text) : '<p class="note">Roteiro vazio. Toque em Editar.</p>';
+      $('#ptext').innerHTML = !s ? '' : written(s.text) ? stageHTML(s.text) : '<p class="note">Roteiro vazio. Toque no lápis para escrever.</p>';
       $('#pTitle').textContent = s ? nameOf(s) : 'Câmera';
       applyStage();
       P.pos = 0; P.elapsed = 0;
@@ -1310,13 +1302,15 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
       wake();
       cancelAnimationFrame(P.raf); P.last = performance.now(); P.raf = requestAnimationFrame(tick);
       if (withCam) { cam.fromHome = !s; camOn().then(ok => { if (!ok && !s) closePrompter('home'); }); }
-    });
+      if (edit && s) enterEdit(edit === 'focus');
+    }, !!edit);
   }
   function closePrompter(to) {
     if (cam.rec) { finishSession(); return; }
     if (cam.on) camOff(true);
+    if (P.editing) leaveEdit(true);
     setPlaying(false); cancelAnimationFrame(P.raf); sleep();
-    if (to === 'editor') openEditor(current); else show('home');
+    show('home');
   }
   function syncSpeed() { setSliders('speed', settings.speed); $('#spdVal').textContent = settings.speed; }
   function applyStage() {
@@ -1325,6 +1319,12 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     Object.assign(content.style, {
       color: cam.on ? '#ffffff' : settings.fg, fontFamily: FONTS[settings.font] || FONTS.inter, fontSize: fsz() + 'px',
       lineHeight: settings.lineHeight, paddingLeft: settings.margin + '%', paddingRight: settings.margin + '%', textAlign: settings.align
+    });
+    content.style.setProperty('--lh', settings.lineHeight);
+    // Escrevendo: as cores e a fonte do prompter, sem espelho, letra no máximo 40 para dar para digitar.
+    Object.assign($('#pEditText').style, {
+      color: settings.fg, fontFamily: FONTS[settings.font] || FONTS.inter, fontSize: Math.min(settings.fontSize, 40) + 'px',
+      lineHeight: settings.lineHeight, paddingLeft: 'max(' + settings.margin + '%, var(--gl))', paddingRight: 'max(' + settings.margin + '%, var(--gr))', textAlign: settings.align
     });
     $('#cue').hidden = !settings.showCue;
     $('#pMirror').classList.toggle('on', mir() !== 'none');
@@ -1336,23 +1336,41 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     const h = stage.clientHeight || window.innerHeight;
     P.lineH = fsz() * settings.lineHeight;
     P.cueY = h * settings.cue / 100;
+    const lead = $('#ptext .lead');
+    if (lead) lead.style.height = Math.round((+settings.leadIn || 0) * pxPerSec()) + 'px';
     $('#padTop').style.height = Math.max(0, P.cueY - P.lineH / 2) + 'px';
     $('#padBot').style.height = h + 'px';
     P.max = Math.max(0, $('#ptext').offsetHeight - P.lineH);
     P.pos = keepPos ? ratio * P.max : clamp(P.pos, 0, P.max);
     const cue = $('#cue'); cue.style.top = P.cueY + 'px'; cue.style.height = P.lineH + 'px';
+    const pt = $('#ptext'), base = pt.getBoundingClientRect().top;
+    P.gaps = [];
+    pt.querySelectorAll('.gap').forEach(g => {
+      const r = g.getBoundingClientRect(), t = r.top - base, b = t + r.height, last = P.gaps[P.gaps.length - 1];
+      if (last && t - last[1] <= 1) last[1] = b; else P.gaps.push([t, b]);
+    });
     render();
   }
   let lastClock = '';
   function render() {
     content.style.transform = `translate3d(0,${-P.pos}px,0)`;
+    // Seta e faixa só aparecem quando há texto na linha de leitura: no espaço em branco, somem.
+    // Some quando mais da metade da linha de leitura está no branco: volta quando o texto já ocupa a linha.
+    const a = P.pos, b = P.pos + P.lineH;
+    const blank = (P.gaps || []).reduce((sum, [t, bt]) => sum + Math.max(0, Math.min(b, bt) - Math.max(a, t)), 0);
+    // A seta surge aos poucos conforme o texto entra na linha (e some do mesmo jeito ao sair para um espaço).
+    const f = clamp(1 - blank / (P.lineH || 1), 0, 1), cueIn = Math.round(f * f * (3 - 2 * f) * 100) / 100;
+    if (cueIn !== P.cueIn) {
+      P.cueIn = cueIn;
+      const c = $('#cue'); c.style.setProperty('--cueIn', cueIn); c.classList.toggle('off', cueIn < 0.5);
+    }
     $('#progress').style.width = (P.max ? P.pos / P.max * 100 : 0) + '%';
     const e = fmt(P.elapsed), l = 'faltam ' + fmt((P.max - P.pos) / pxPerSec());
     if (e + l !== lastClock) { lastClock = e + l; $('#tElapsed').textContent = e; $('#tLeft').textContent = l; }
   }
   function tick(ts) {
     const dt = Math.min(0.1, (ts - P.last) / 1000); P.last = ts;
-    if (P.playing && !P.counting && !drag && !(cam.on && !scriptOn())) {
+    if (P.playing && !P.counting && !drag && !P.editing && !(cam.on && !scriptOn())) {
       P.pos += pxPerSec() * dt; P.elapsed += dt;
       if (P.pos >= P.max) { P.pos = P.max; render(); setPlaying(false); toast('Fim do roteiro'); }
       else render();
@@ -1413,7 +1431,93 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   const hudBtn = (id, fn) => $(id).addEventListener('click', (e) => { e.currentTarget.blur(); fn(); });
   hudBtn('#pPlay', () => { if (cam.on) recToggle(); else setPlaying(!P.playing); });
   hudBtn('#pBack', () => closePrompter('home'));
-  hudBtn('#pEdit', () => closePrompter('editor'));
+  /* ---------------- escrever o roteiro no próprio prompter ---------------- */
+  const et = $('#pEditText'), ti = $('#pTitleIn');
+  function editStats() {
+    const w = words(et.value);
+    $('#tElapsed').textContent = plural(w, 'palavra', 'palavras');
+    $('#tLeft').textContent = dur(secs(et.value)) + ' de leitura';
+  }
+  function enterEdit(focus) {
+    if (!current || cam.on) return;
+    setPlaying(false);
+    P.editing = true;
+    P.editOrig = current.text;
+    et.value = current.text; ti.value = current.title;
+    et.dataset.touched = focus ? '1' : '';
+    $('#prompter').classList.add('editing');
+    $('#pEdit').setAttribute('aria-label', 'Terminar de editar');
+    applyStage(); editStats(); kbFit();
+    et.scrollTop = 0;
+    // Cursor no começo: tocar em Espaço logo de cara cria o respiro antes do texto.
+    // Para pôr um espaço no meio, basta tocar no ponto do texto antes.
+    if (focus) { et.focus(); et.setSelectionRange(0, 0); et.scrollTop = 0; }
+  }
+  // Grava o que foi escrito. Sem texto, o roteiro não fica salvo.
+  function commitEdit() {
+    current.text = et.value; current.title = ti.value.trim();
+    current.updated = Date.now();
+    keep(current); saveScripts();
+  }
+  function leaveEdit(closing) {
+    commitEdit();
+    P.editing = false;
+    et.blur(); ti.blur();
+    $('#prompter').classList.remove('editing');
+    $('#pEdit').setAttribute('aria-label', 'Editar roteiro');
+    if (closing) {
+      if (written(current.text)) return;
+      // Roteiro que já tinha texto e foi esvaziado: some, mas com Desfazer (volta o texto de antes).
+      if (written(P.editOrig)) { current.text = P.editOrig; keep(current); removeScript(current); }
+      else toast('Roteiro sem texto não foi salvo');
+      return;
+    }
+    $('#ptext').innerHTML = stageHTML(current.text);
+    $('#pTitle').textContent = nameOf(current);
+    lastClock = ''; P.pos = 0; P.elapsed = 0; layout(false);
+  }
+  function doneEdit() {
+    if (!written(et.value)) { toast('Cole ou escreva o roteiro'); et.focus(); return; }
+    leaveEdit(false);
+  }
+  et.addEventListener('focus', () => { et.dataset.touched = '1'; });
+  et.addEventListener('input', () => { current.text = et.value; current.updated = Date.now(); keep(current); saveScripts(true); editStats(); });
+  ti.addEventListener('input', () => { current.title = ti.value; current.updated = Date.now(); saveScripts(true); });
+  ti.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); et.focus(); } });
+  hudBtn('#pEdit', () => { if (P.editing) doneEdit(); else enterEdit(true); });
+  $('#ebDone').addEventListener('click', doneEdit);
+  // Tocar num botão de inserir não tira o foco do texto (o teclado fica aberto).
+  $('#ebTools').addEventListener('pointerdown', (e) => { if (e.target.closest('[data-ins]')) e.preventDefault(); });
+  $('#ebTools').addEventListener('click', (e) => { const b = e.target.closest('[data-ins]'); if (b) insert(b.dataset.ins); });
+  function insert(kind) {
+    const focused = document.activeElement === et || et.dataset.touched === '1';
+    const s = focused ? et.selectionStart : (kind === 'gap' ? 0 : et.value.length), e = focused ? et.selectionEnd : s;
+    const sel = et.value.slice(s, e), before = et.value.slice(0, s), after = et.value.slice(e);
+    et.focus();
+    if (kind === 'bold') {
+      const inner = sel || 'destaque';
+      et.setRangeText('**' + inner + '**', s, e, 'end');
+      if (!sel) et.setSelectionRange(s + 2, s + 2 + inner.length);
+    } else if (kind === 'gap') {
+      // Espaço fica numa linha só dele, separado do texto por linha em branco.
+      const pre = !before ? '' : before.endsWith('\n\n') ? '' : before.endsWith('\n') ? '\n' : '\n\n';
+      const post = !after ? '\n\n' : after.startsWith('\n\n') ? '' : after.startsWith('\n') ? '\n' : '\n\n';
+      et.setRangeText(pre + '[espaço]' + post, s, e, 'end');
+    } else {
+      const tag = kind === 'pause' ? '[pausa]' : '[olhar para a lente]';
+      const pre = before && !/\s$/.test(before) ? ' ' : '';
+      const post = after && !/^\s/.test(after) ? ' ' : '';
+      et.setRangeText(pre + tag + post, s, e, 'end');
+    }
+    et.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+  // Teclado do iPhone: a barra de inserir sobe junto, acima das teclas.
+  function kbFit() {
+    const vv = window.visualViewport;
+    const kb = vv ? Math.max(0, window.innerHeight - vv.height - vv.offsetTop) : 0;
+    $('#prompter').style.setProperty('--kb', (P.editing ? kb : 0) + 'px');
+  }
+  if (window.visualViewport) { visualViewport.addEventListener('resize', kbFit); visualViewport.addEventListener('scroll', kbFit); }
   hudBtn('#pRestart', () => { P.pos = 0; P.elapsed = 0; render(); });
   hudBtn('#pSmaller', () => changeFont(-4));
   hudBtn('#pBigger', () => changeFont(4));
@@ -1428,10 +1532,12 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   hudBtn('#pSettings', () => { setPlaying(false); openSheet(true); });
 
   document.addEventListener('keydown', (e) => {
+    if (!$('#newWrap').hidden) { if (e.key === 'Escape') closeNew(); return; }
     if (!$('#actWrap').hidden) { if (e.key === 'Escape') closeActions(); return; }
     if (!$('#pickWrap').hidden) { if (e.key === 'Escape') closePick(); return; }
     if (!$('#sheetWrap').hidden) { if (e.key === 'Escape') closeSheet(); return; }
     if (view !== 'prompter') return;
+    if (P.editing) { if (e.key === 'Escape') { e.preventDefault(); doneEdit(); } return; }
     if (e.target.matches('input, textarea, select')) return;
     const h = stage.clientHeight;
     switch (e.key) {
@@ -1636,6 +1742,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   }
   function closePick() { $('#pickWrap').hidden = true; }
   $('#pickCancel').addEventListener('click', closePick);
+  setTimeout(() => swipeToClose($('#pickWrap .sheet'), closePick));
   $('#pickWrap').addEventListener('click', (e) => { if (e.target.id === 'pickWrap') closePick(); });
   $('#pickList').addEventListener('click', (e) => {
     const b = e.target.closest('[data-pick]'); if (!b) return;
@@ -1643,7 +1750,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     if (!id) { cam.hide = true; setPlaying(false); applyStage(); camState(); return; }
     const s = byId(id); if (!s) return;
     current = s; cam.hide = false;
-    $('#ptext').innerHTML = s.text.trim() ? renderScript(s.text) : '<p class="note">Roteiro vazio.</p>';
+    $('#ptext').innerHTML = s.text.trim() ? stageHTML(s.text) : '<p class="note">Roteiro vazio.</p>';
     $('#pTitle').textContent = nameOf(s);
     toTop(); applyStage(); camState(); layout(false);
   });
@@ -1669,6 +1776,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     $('#pv').hidden = !!overStage;
     $('#sheetWrap').hidden = false;
     body.scrollTop = 0; $('#sheetHead').classList.remove('scrolled');
+    fpOpen(false);
     syncForm();
   }
   function closeSheet() { $('#sheetWrap').hidden = true; if (setT) saveSettings(); if (view === 'home') renderHome(false); }
@@ -1690,6 +1798,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   function syncForm() {
     Object.keys(SL).forEach(k => setSliders(k, settings[k]));
     $$('[data-set]:not(.slider)').forEach(el => { const k = el.dataset.set; if (el.type === 'checkbox') el.checked = !!settings[k]; else if (el.value !== String(settings[k])) el.value = settings[k]; });
+    { const b = $('#fpList [data-v="' + settings.font + '"] .fn'); const c = $('#fpCur'); c.textContent = b ? b.textContent : ''; c.style.fontFamily = FONTS[settings.font] || FONTS.inter; }
     $$('[data-radio]').forEach(g => { const k = g.dataset.radio; $$('[data-v]', g).forEach(b => b.setAttribute('aria-checked', String(settings[k] === b.dataset.v))); });
     $$('.seg[data-seg]').forEach(seg => { const k = seg.dataset.seg; $$('button', seg).forEach(b => b.setAttribute('aria-pressed', String(String(settings[k]) === b.dataset.v))); });
     $$('[data-preset]').forEach(b => { const [fg, bg] = b.dataset.preset.split(','); b.setAttribute('aria-pressed', String(fg === String(settings.fg).toLowerCase() && bg === String(settings.bg).toLowerCase())); });
@@ -1719,9 +1828,12 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     const b = e.target.closest('button'); if (!b) return;
     const k = seg.dataset.seg; settings[k] = typeof DEFAULTS[k] === 'number' ? +b.dataset.v : b.dataset.v; changed(k);
   }));
+  const fpOpen = (on) => { $('#fpList').classList.toggle('open', on); $('#fpHead').setAttribute('aria-expanded', String(on)); };
+  $('#fpHead').addEventListener('click', () => fpOpen($('#fpHead').getAttribute('aria-expanded') !== 'true'));
   $$('[data-radio]').forEach(g => g.addEventListener('click', (e) => {
     const b = e.target.closest('[data-v]'); if (!b) return;
     settings[g.dataset.radio] = b.dataset.v; changed(g.dataset.radio);
+    if (g.closest('.fontpick')) setTimeout(() => fpOpen(false), 180);
   }));
   $$('[data-preset]').forEach(b => b.addEventListener('click', () => { const [fg, bg] = b.dataset.preset.split(','); settings.fg = fg; settings.bg = bg; changed('fg'); }));
   let resetArmed = false, resetT;
@@ -1732,6 +1844,50 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     settings = Object.assign({}, DEFAULTS); changed('all'); toast('Ajustes restaurados');
   });
   $('#sheetDone').addEventListener('click', closeSheet);
+  // Arrastar para baixo fecha: pelo topo da folha, ou pelo conteúdo quando ele já está no começo.
+  function swipeToClose(sheet, close) {
+    const head = sheet.querySelector('.sheet-head'), scroller = sheet.querySelector('.sheet-body');
+    let g = null;
+    const start = (x, y, fromBody) => { g = { x, y, dy: 0, t: performance.now(), fromBody, on: false }; };
+    const move = (x, y, e) => {
+      if (!g) return;
+      const dx = x - g.x, dy = y - g.y;
+      if (!g.on) {
+        if (Math.abs(dy) < 6 && Math.abs(dx) < 6) return;
+        // Só vira arrasto de fechar se for para baixo, mais vertical que lateral, e o conteúdo estiver no topo.
+        if (dy <= 0 || Math.abs(dx) > Math.abs(dy) || (g.fromBody && scroller.scrollTop > 0)) { g = null; return; }
+        g.on = true; sheet.classList.add('dragging');
+      }
+      if (e.cancelable) e.preventDefault();
+      g.dy = Math.max(0, dy);
+      sheet.style.transform = 'translateY(' + g.dy + 'px)';
+    };
+    const end = () => {
+      if (!g) return;
+      const was = g; g = null;
+      if (!was.on) return;
+      sheet.classList.remove('dragging');
+      const v = was.dy / Math.max(1, performance.now() - was.t);
+      sheet.style.transition = 'transform .22s var(--ease)';
+      if (was.dy > 110 || (was.dy > 36 && v > 0.55)) {
+        sheet.style.transform = 'translateY(105%)';
+        setTimeout(() => { sheet.style.transition = ''; sheet.style.transform = ''; close(); }, 210);
+      } else {
+        sheet.style.transform = '';
+        setTimeout(() => { sheet.style.transition = ''; }, 230);
+      }
+    };
+    head.addEventListener('touchstart', (e) => start(e.touches[0].clientX, e.touches[0].clientY, false), { passive: true });
+    scroller.addEventListener('touchstart', (e) => { if (e.target.closest('.slider')) return; start(e.touches[0].clientX, e.touches[0].clientY, true); }, { passive: true });
+    sheet.addEventListener('touchmove', (e) => move(e.touches[0].clientX, e.touches[0].clientY, e), { passive: false });
+    sheet.addEventListener('touchend', end);
+    sheet.addEventListener('touchcancel', end);
+    // Mouse: arrastar pelo topo.
+    head.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse' || e.target.closest('button')) return; start(e.clientX, e.clientY, false); head.setPointerCapture(e.pointerId); });
+    head.addEventListener('pointermove', (e) => { if (e.pointerType === 'mouse') move(e.clientX, e.clientY, e); });
+    head.addEventListener('pointerup', (e) => { if (e.pointerType === 'mouse') end(); });
+  }
+  swipeToClose($('#sheetWrap .sheet'), closeSheet);
   $('#sheetWrap').addEventListener('click', (e) => { if (e.target.id === 'sheetWrap') closeSheet(); });
   $('#homeSettings').addEventListener('click', () => openSheet(false));
 
