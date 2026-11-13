@@ -286,8 +286,8 @@ label[for]{cursor:pointer}
 #prompter.editing .edit-bar{display:block;position:absolute;left:0;right:0;z-index:3;bottom:calc(var(--sb) + 12px + var(--kb,0px));padding:0 var(--gr) 0 var(--gl)}
 .edit-bar .panel{padding:10px 12px}
 .edit-bar .cb .aa{font-weight:800}
-/* espaço dentro do roteiro: o texto chega à linha de leitura alguns segundos depois */
-.ptx .gap{height:calc(3em * var(--lh,1.3))}
+/* espaço dentro do roteiro: --n linhas em branco (cada Enter a mais é uma; [espaço] vale 3) */
+.ptx .gap{height:calc(var(--n,3) * 1em * var(--lh,1.3))}
 /* modo câmera: a câmera ocupa a tela, o roteiro passa numa faixa no alto, perto da lente */
 #camView{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1);background:#000}
 #prompter.cam #stage{top:calc(var(--st) + 66px);bottom:auto;height:42%;transform:none!important;background:linear-gradient(to bottom,rgba(0,0,0,.84) 0%,rgba(0,0,0,.74) 45%,rgba(0,0,0,.45) 72%,rgba(0,0,0,.14) 88%,rgba(0,0,0,0) 100%);-webkit-mask-image:linear-gradient(to bottom,#000 0,#000 62%,rgba(0,0,0,.55) 80%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0,#000 62%,rgba(0,0,0,.55) 80%,transparent 100%)}
@@ -713,9 +713,6 @@ html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
         <div class="box">
           <div class="row slide"><div class="lbl"><span id="lSpeed">Velocidade</span><span class="v" id="vSpeed"></span></div><div class="slider" data-set="speed" data-min="1" data-max="60" data-step="1" aria-labelledby="lSpeed"></div></div>
           <div class="row slide"><div class="lbl"><span id="lFont">Tamanho da letra</span><span class="v" id="vFont"></span></div><div class="slider" data-set="fontSize" data-min="24" data-max="160" data-step="2" aria-labelledby="lFont"></div></div>
-          <div class="row stack"><span>Tempo antes do texto</span>
-            <div class="seg" data-seg="leadIn" role="group" aria-label="Tempo antes do texto"><button type="button" data-v="0">Sem</button><button type="button" data-v="3">3 s</button><button type="button" data-v="5">5 s</button><button type="button" data-v="10">10 s</button></div>
-          </div>
           <div class="row stack"><span>Contagem antes de rolar</span>
             <div class="seg" data-seg="countdown" role="group" aria-label="Contagem antes de rolar"><button type="button" data-v="0">Sem</button><button type="button" data-v="3">3 s</button><button type="button" data-v="5">5 s</button><button type="button" data-v="10">10 s</button></div>
           </div>
@@ -902,7 +899,7 @@ html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
     get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   };
-  const DEFAULTS = { fontSize: 56, camFont: 34, camRes: '4k', leadIn: 3, font: 'inter', lineHeight: 1.3, margin: 6, align: 'left', speed: 22, mirror: 'none',
+  const DEFAULTS = { fontSize: 56, camFont: 34, camRes: '4k', font: 'inter', lineHeight: 1.3, margin: 6, align: 'left', speed: 22, mirror: 'none',
     fg: '#ffffff', bg: '#000000', cue: 30, showCue: true, countdown: 3, tapToggle: true, autoHide: true, dragPauses: true, theme: 'auto' };
   const FONTS = {
     inter: '"Inter", system-ui, sans-serif',
@@ -940,6 +937,8 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   const hasContent = (s) => written(s.text);
 
   let settings = Object.assign({}, DEFAULTS, store.get('pe.settings', {}));
+  // O respiro automático no começo saiu: espaço em branco só onde o roteiro tiver [espaço].
+  delete settings.leadIn;
   let scripts = store.get('pe.scripts', null);
   const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
   if (!Array.isArray(scripts)) {
@@ -965,12 +964,27 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   const secs = (t) => words(t) / WPM * 60;
   const dur = (s) => { s = Math.max(0, Math.round(s)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
   const plural = (n, um, varios) => n + ' ' + (n === 1 ? um : varios);
-  // [espaço] sozinho na linha vira um intervalo em branco: o texto chega à seta alguns segundos depois.
-  const GAP = '\u0000gap\u0000', GAP_RE = /^[ \t]*\[espa[çc]o\][ \t]*$/gim;
-  // Texto do prompter: o respiro do começo + o roteiro. A altura do respiro sai dos segundos escolhidos (ver layout).
-  const stageHTML = (text) => '<div class="gap lead" aria-hidden="true"></div>' + renderScript(text);
-  const renderScript = (text) => text.replace(GAP_RE, '\n\n' + GAP + '\n\n').trim().split(/\n\s*\n/).map(p => p.trim() === GAP ? '<div class="gap" aria-hidden="true"></div>' :
-    '<p>' + esc(p).replace(/\n/g, '<br>').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[([^\]\n]+)\]/g, '<span class="note">$1</span>') + '</p>').join('');
+  // Espaço em branco no prompter é o que o roteiro tiver, nada automático.
+  // Cada Enter a mais vira uma linha em branco: no começo dá tempo de respirar antes do texto,
+  // entre partes dá uma pausa. Uma linha vazia entre parágrafos é só a separação normal.
+  // [espaço] sozinho na linha (botão Espaço e roteiros antigos) vale 3 linhas em branco.
+  const GAP_RE = /^[ \t]*\[espa[çc]o\][ \t]*$/gim, GAP_LINE = /^[ \t]*\[espa[çc]o\][ \t]*$/i;
+  const paraHTML = (lines) => '<p>' + esc(lines.join('\n')).replace(/\n/g, '<br>').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[([^\]\n]+)\]/g, '<span class="note">$1</span>') + '</p>';
+  function renderScript(text) {
+    const out = [];
+    let para = [], blanks = 0, started = false;
+    const gap = (n) => { if (n > 0) out.push('<div class="gap" style="--n:' + n + '" aria-hidden="true"></div>'); };
+    const flush = () => { if (para.length) { out.push(paraHTML(para)); para = []; } };
+    // Linhas vazias antes de um bloco: no começo todas contam; depois de um bloco, a primeira é a separação.
+    const before = () => { gap(started ? blanks - 1 : blanks); blanks = 0; started = true; };
+    for (const line of String(text).replace(/\r\n?/g, '\n').replace(/\s+$/, '').split('\n')) {
+      if (!line.trim()) { flush(); blanks++; }
+      else if (GAP_LINE.test(line)) { flush(); before(); gap(3); }
+      else { if (!para.length) before(); para.push(line); }
+    }
+    flush();
+    return out.join('');
+  }
   const plain = (t) => t.replace(/\[[^\]\n]*\]/g, ' ').replace(/\*\*/g, '').replace(/\s+/g, ' ').trim();
   function autoTitle(text) {
     const line = plain(((text || '').trim().split('\n')[0]) || '');
@@ -1293,7 +1307,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     current = s || null;
     // Em edição a troca é imediata: o teclado do iPhone só abre se o foco vier no mesmo toque.
     show('prompter', () => {
-      $('#ptext').innerHTML = !s ? '' : written(s.text) ? stageHTML(s.text) : '<p class="note">Roteiro vazio. Toque no lápis para escrever.</p>';
+      $('#ptext').innerHTML = !s ? '' : written(s.text) ? renderScript(s.text) : '<p class="note">Roteiro vazio. Toque no lápis para escrever.</p>';
       $('#pTitle').textContent = s ? nameOf(s) : 'Câmera';
       applyStage();
       P.pos = 0; P.elapsed = 0;
@@ -1331,14 +1345,27 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     $('#pMirrorLbl').textContent = MIRROR_LBL[settings.mirror];
     syncSpeed();
   }
+  // Onde a primeira linha fica parada antes do play. Com a seta, nela: é a linha de leitura.
+  // Sem a seta, logo abaixo da barra do topo, no mesmo lugar em que o texto aparece na edição:
+  // nada de faixa preta em cima que o roteiro não pediu. Espelho vertical vira a tela, então mede de baixo.
+  function textTop() {
+    const atCue = Math.max(0, P.cueY - P.lineH / 2);
+    if (cam.on || settings.showCue) return atCue;
+    const sr = stage.getBoundingClientRect();
+    if (/v/.test(mir())) {
+      const bot = $('#prompter .hud-bottom');
+      const r = bot && bot.getBoundingClientRect();
+      return r && r.height ? Math.max(0, sr.bottom - r.top) + 12 : atCue;
+    }
+    const r = $('#prompter .hud-top').getBoundingClientRect();
+    return r.height ? Math.max(0, r.bottom - sr.top) + 24 : atCue;
+  }
   function layout(keepPos) {
     const ratio = P.max ? P.pos / P.max : 0;
     const h = stage.clientHeight || window.innerHeight;
     P.lineH = fsz() * settings.lineHeight;
     P.cueY = h * settings.cue / 100;
-    const lead = $('#ptext .lead');
-    if (lead) lead.style.height = Math.round((+settings.leadIn || 0) * pxPerSec()) + 'px';
-    $('#padTop').style.height = Math.max(0, P.cueY - P.lineH / 2) + 'px';
+    $('#padTop').style.height = textTop() + 'px';
     $('#padBot').style.height = h + 'px';
     P.max = Math.max(0, $('#ptext').offsetHeight - P.lineH);
     P.pos = keepPos ? ratio * P.max : clamp(P.pos, 0, P.max);
@@ -1472,7 +1499,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
       else toast('Roteiro sem texto não foi salvo');
       return;
     }
-    $('#ptext').innerHTML = stageHTML(current.text);
+    $('#ptext').innerHTML = renderScript(current.text);
     $('#pTitle').textContent = nameOf(current);
     lastClock = ''; P.pos = 0; P.elapsed = 0; layout(false);
   }
@@ -1750,7 +1777,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     if (!id) { cam.hide = true; setPlaying(false); applyStage(); camState(); return; }
     const s = byId(id); if (!s) return;
     current = s; cam.hide = false;
-    $('#ptext').innerHTML = s.text.trim() ? stageHTML(s.text) : '<p class="note">Roteiro vazio.</p>';
+    $('#ptext').innerHTML = s.text.trim() ? renderScript(s.text) : '<p class="note">Roteiro vazio.</p>';
     $('#pTitle').textContent = nameOf(s);
     toTop(); applyStage(); camState(); layout(false);
   });
