@@ -38,36 +38,47 @@
    ações embaixo no alcance do polegar, teclas com relevo, vidro sobre o texto do prompter.
    Tema escuro ou claro (automático segue o celular); a tela de leitura é sempre a do roteiro. */
 :root,#prompter,#review,:root[data-theme="light"] .feature .f-row{
-  --bg:#09090b; --surface:#141417; --surface-2:#1c1c20; --surface-3:#28282d; --field:#131316;
+  --bg:#09090b; --surface:rgba(255,255,255,.055); --surface-2:rgba(255,255,255,.085); --surface-3:rgba(255,255,255,.12); --field:rgba(255,255,255,.045);
   --hair:rgba(255,255,255,.075); --hair-2:rgba(255,255,255,.13);
+  /* vidro: aro de luz vetorial (acompanha a curva, sem degrau), mais forte em cima à esquerda */
+  --rim:inset 1px 1px 0 rgba(255,255,255,.16),inset -1px -1px 0 rgba(255,255,255,.055),inset 0 0 0 1px rgba(255,255,255,.06),inset 0 0 26px rgba(255,255,255,.025);
+  --panel-bg:linear-gradient(150deg,rgba(255,255,255,.065),rgba(255,255,255,0) 46%),rgba(255,255,255,.042);
+  --panel-shadow:0 16px 36px -20px rgba(0,0,0,.9),0 1px 2px rgba(0,0,0,.3);
+  --row-h:rgba(255,255,255,.045); --lift-fill:rgba(32,32,37,.94);
   --fg:#f5f5f7; --fg-2:rgba(235,235,245,.64); --fg-3:rgba(235,235,245,.38);
   --accent-text:#FF8A1E; --danger:#ff5d52;
-  --card-lift:inset 0 1px 0 rgba(255,255,255,.035),0 1px 2px rgba(0,0,0,.35);
-  --key:linear-gradient(180deg,#2c2c32,#1f1f24); --key-h:linear-gradient(180deg,#35353c,#28282e); --key-p:linear-gradient(180deg,#1c1c21,#222227);
-  --key-edge:rgba(255,255,255,.085);
-  --key-lift:inset 0 1px 0 rgba(255,255,255,.075),0 1px 1.5px rgba(0,0,0,.55),0 3px 8px -2px rgba(0,0,0,.5);
-  --key-sunk:inset 0 1.5px 3px rgba(0,0,0,.5);
-  --well:rgba(0,0,0,.34); --well-h:rgba(255,255,255,.07); --well-shadow:inset 0 1px 2px rgba(0,0,0,.5),inset 0 0 0 1px rgba(255,255,255,.045);
-  --field-shadow:inset 0 1px 2px rgba(0,0,0,.4);
-  --glass:rgba(30,30,36,.55); --glass-strong:rgba(22,22,27,.78); --glass-edge:rgba(255,255,255,.12);
-  --glass-lift:inset 0 1px 0 rgba(255,255,255,.09),0 14px 34px -10px rgba(0,0,0,.65);
+  --card-lift:var(--rim),var(--panel-shadow);
+  --key:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.055)); --key-h:linear-gradient(180deg,rgba(255,255,255,.17),rgba(255,255,255,.09)); --key-p:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.09));
+  --key-edge:transparent;
+  --key-lift:inset 1px 1px 0 rgba(255,255,255,.22),inset -1px -1px 0 rgba(255,255,255,.08),inset 0 0 0 1px rgba(255,255,255,.05),inset 0 12px 16px -14px rgba(255,255,255,.22),inset 0 -10px 14px -12px rgba(0,0,0,.35),0 4px 12px -5px rgba(0,0,0,.6);
+  --key-sunk:var(--key-lift);
+  --well:rgba(0,0,0,.26); --well-h:rgba(255,255,255,.07); --well-shadow:inset 0 1px 1.5px rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.05);
+  --field-shadow:inset 1px 1px 0 rgba(255,255,255,.06);
+  --glass:rgba(26,26,31,.42); --glass-strong:rgba(28,28,33,.72); --glass-edge:rgba(255,255,255,.1);
+  --glass-lift:inset 1px 1px 0 rgba(255,255,255,.13),inset -1px -1px 0 rgba(255,255,255,.04),0 18px 40px -14px rgba(0,0,0,.75);
+  --amb:radial-gradient(90% 55% at 0% 0%,rgba(150,150,170,.2),transparent 62%),radial-gradient(70% 50% at 100% 42%,rgba(170,142,112,.12),transparent 66%),radial-gradient(90% 55% at 18% 100%,rgba(105,115,140,.17),transparent 66%);
   --scrim:rgba(0,0,0,.6);
   color-scheme:dark;
 }
 :root[data-theme="light"]{
-  --bg:#f2f2f6; --surface:#ffffff; --surface-2:#f4f4f7; --surface-3:#e6e6eb; --field:#ffffff;
+  --bg:#eceef2; --surface:rgba(255,255,255,.62); --surface-2:rgba(255,255,255,.8); --surface-3:rgba(255,255,255,.92); --field:rgba(255,255,255,.62);
   --hair:rgba(0,0,0,.08); --hair-2:rgba(0,0,0,.15);
+  --rim:inset 1px 1px 0 #fff,inset -1px -1px 0 rgba(255,255,255,.7),inset 0 0 0 1px rgba(255,255,255,.5);
+  --panel-bg:linear-gradient(150deg,rgba(255,255,255,.9),rgba(255,255,255,.5) 55%,rgba(255,255,255,.6));
+  --panel-shadow:0 0 0 1px rgba(0,0,0,.075),0 12px 30px -16px rgba(0,0,0,.2);
+  --row-h:rgba(0,0,0,.035); --lift-fill:rgba(255,255,255,.95);
   --fg:#111114; --fg-2:rgba(60,60,67,.76); --fg-3:rgba(60,60,67,.46);
   --accent-text:#EE3A00; --danger:#d42f25;
-  --card-lift:0 1px 2px rgba(0,0,0,.05),0 4px 14px -6px rgba(0,0,0,.1);
-  --key:linear-gradient(180deg,#ffffff,#f2f2f5); --key-h:linear-gradient(180deg,#fbfbfd,#e9e9ee); --key-p:linear-gradient(180deg,#e6e6eb,#eeeef2);
-  --key-edge:rgba(0,0,0,.1);
-  --key-lift:inset 0 1px 0 #fff,0 1px 1.5px rgba(0,0,0,.12),0 3px 8px -3px rgba(0,0,0,.16);
-  --key-sunk:inset 0 1.5px 3px rgba(0,0,0,.14);
-  --well:rgba(0,0,0,.06); --well-h:rgba(0,0,0,.1); --well-shadow:inset 0 1px 2px rgba(0,0,0,.09);
-  --field-shadow:inset 0 1px 2px rgba(0,0,0,.05);
-  --glass:rgba(255,255,255,.6); --glass-strong:rgba(249,249,251,.82); --glass-edge:rgba(255,255,255,.8);
-  --glass-lift:inset 0 1px 0 rgba(255,255,255,.9),0 0 0 1px rgba(0,0,0,.05),0 14px 34px -12px rgba(0,0,0,.25);
+  --card-lift:var(--rim),var(--panel-shadow);
+  --key:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,255,255,.58)); --key-h:linear-gradient(180deg,#fff,rgba(255,255,255,.8)); --key-p:linear-gradient(180deg,rgba(236,237,241,.92),rgba(255,255,255,.7));
+  --key-edge:transparent;
+  --key-lift:inset 1px 1px 0 #fff,inset -1px -1px 0 rgba(255,255,255,.8),inset 0 0 0 1px rgba(255,255,255,.45),inset 0 -10px 14px -12px rgba(0,0,0,.09),0 0 0 .5px rgba(0,0,0,.13),0 3px 10px -4px rgba(0,0,0,.2);
+  --key-sunk:var(--key-lift);
+  --well:rgba(0,0,0,.05); --well-h:rgba(0,0,0,.08); --well-shadow:inset 0 1px 1.5px rgba(0,0,0,.06),inset 0 0 0 .5px rgba(0,0,0,.06);
+  --field-shadow:inset 1px 1px 0 #fff;
+  --glass:rgba(255,255,255,.5); --glass-strong:rgba(250,250,252,.74); --glass-edge:rgba(255,255,255,.75);
+  --glass-lift:inset 1px 1px 0 #fff,0 0 0 .5px rgba(0,0,0,.08),0 18px 40px -16px rgba(0,0,0,.25);
+  --amb:radial-gradient(90% 55% at 0% 0%,#fff,rgba(255,255,255,0) 62%),radial-gradient(70% 50% at 100% 42%,rgba(234,222,205,.8),rgba(234,222,205,0) 66%),radial-gradient(90% 55% at 18% 100%,rgba(204,212,228,.85),rgba(204,212,228,0) 66%);
   --scrim:rgba(0,0,0,.3);
   color-scheme:light;
 }
@@ -77,9 +88,11 @@
   --grad:linear-gradient(115deg,#FFA200 0%,#F86C00 52%,#EE3A00 100%);
   --grad-sq:linear-gradient(135deg,#FFA200 0%,#F86C00 52%,#EE3A00 100%);
   --grad-line:linear-gradient(90deg,#FFA200,#EE3A00);
-  --grad-lift:inset 0 1px 0 rgba(255,255,255,.34),inset 0 -1px 0 rgba(110,25,0,.3),0 1px 1.5px rgba(0,0,0,.4),0 3px 8px -2px rgba(0,0,0,.4);
-  --grad-sunk:inset 0 1.5px 3px rgba(100,20,0,.5);
-  --toast-bg:rgba(36,36,42,.86);
+  --grad-lift:inset 1px 1px 0 rgba(255,244,228,.72),inset -1px -1px 0 rgba(255,205,160,.32),inset 0 0 0 1px rgba(255,205,160,.16),inset 0 12px 16px -14px rgba(255,255,255,.42),inset 0 -10px 14px -12px rgba(140,30,0,.3),0 4px 12px -5px rgba(0,0,0,.5);
+  --grad-sunk:var(--grad-lift);
+  --grad-sheen:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,0) 50%);
+  --kt:.4s cubic-bezier(.3,1.6,.5,1);
+  --toast-bg:rgba(34,34,40,.68);
   /* fonte do app; a do roteiro é escolhida nos Ajustes e não depende desta */
   --ui:"Manrope",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
   --gl:max(16px,env(safe-area-inset-left,0px)); --gr:max(16px,env(safe-area-inset-right,0px));
@@ -89,6 +102,8 @@
 *{box-sizing:border-box}
 html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--ui);font-size:16px;font-weight:500;line-height:1.4;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+/* luz ambiente bem suave, em tons neutros: é o que o vidro deixa ver. Fica parada enquanto a página rola */
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:var(--amb);pointer-events:none}
 [hidden]{display:none!important}
 html.locked,html.locked body{overflow:hidden;overscroll-behavior:none}
 button,input,select,textarea{font:inherit;color:inherit}
@@ -99,13 +114,14 @@ label[for]{cursor:pointer}
 .i{width:20px;height:20px;flex:none}
 
 /* ---------- teclas: um molde só, com relevo, para todo botão do app ---------- */
-.btn,.round,.chip,.step,.color,.item-play,.del{background:var(--key);border:1px solid var(--key-edge);box-shadow:var(--key-lift);color:var(--fg);transition:background .15s,box-shadow .15s,transform .1s,color .15s}
+.btn,.round,.chip,.step,.color,.item-play,.del{background:var(--key);border:0;box-shadow:var(--key-lift);color:var(--fg);transition:background .15s,box-shadow .15s,transform var(--kt),color .15s}
 @media (hover:hover){.btn:hover,.round:hover,.chip:hover,.step:hover,.color:hover,.item-play:hover,.del:hover{background:var(--key-h)}}
-.btn:active,.round:active,.chip:active,.step:active,.color:active,.item-play:active,.del:active{background:var(--key-p);box-shadow:var(--key-sunk);transform:translateY(1px)}
-.btn.primary,.play{background:var(--grad);border:1px solid rgba(255,170,90,.55);color:var(--accent-ink);box-shadow:var(--grad-lift);text-shadow:0 1px 1px rgba(110,25,0,.35);transition:filter .15s,box-shadow .15s,transform .1s}
-.play{background:var(--grad-sq)}
+.btn:active,.round:active,.chip:active,.step:active,.color:active,.item-play:active,.del:active{--kt:.1s ease;background:var(--key-p);transform:scale(.96)}
+/* degradê com border-box: cobre a borda também; sem isso ele se repete por baixo da borda translúcida e desenha um quadrado dentro do botão redondo */
+.btn.primary,.play{background:var(--grad-sheen),var(--grad);border:0;color:var(--accent-ink);box-shadow:var(--grad-lift);text-shadow:0 1px 1px rgba(110,25,0,.25);transition:filter .15s,box-shadow .15s,transform var(--kt)}
+.play{background:var(--grad-sheen),var(--grad-sq)}
 @media (hover:hover){.btn.primary:hover,.play:hover{filter:brightness(1.07) saturate(1.04)}}
-.btn.primary:active,.play:active{filter:brightness(.93);box-shadow:var(--grad-sunk);transform:translateY(1px)}
+.btn.primary:active,.play:active{--kt:.1s ease;filter:brightness(.94);transform:scale(.96)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 18px;border-radius:14px;font-size:16px;font-weight:600;letter-spacing:-.01em;white-space:nowrap}
 .btn.lg{height:54px;border-radius:16px;font-size:17px;padding:0 20px}
 .btn.sm{height:36px;padding:0 14px;border-radius:11px;font-size:15px}
@@ -113,15 +129,17 @@ label[for]{cursor:pointer}
 .btn-danger{color:var(--danger)}
 .round{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;flex:none;padding:0}
 /* tecla de vidro, para os controles que ficam sobre o texto */
-.gk{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.11);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 1px 2px rgba(0,0,0,.3);color:var(--fg)}
-@media (hover:hover){.gk:hover{background:rgba(255,255,255,.15)}}
-.gk:active{background:rgba(255,255,255,.04);box-shadow:inset 0 1.5px 3px rgba(0,0,0,.45);transform:translateY(1px)}
+.gk{background:var(--key);border:0;box-shadow:var(--key-lift);color:var(--fg)}
+@media (hover:hover){.gk:hover{background:var(--key-h)}}
+.gk:active{--kt:.1s ease;background:var(--key-p);transform:scale(.95)}
 
 /* ---------- vidro: o desfoque fica num pseudo-elemento (não prende nada que seja fixed) ---------- */
 .blur,.glass{position:relative;isolation:isolate}
-.blur::before,.glass::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;-webkit-backdrop-filter:blur(24px) saturate(170%);backdrop-filter:blur(24px) saturate(170%);pointer-events:none}
+.blur::before,.glass::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);pointer-events:none}
 .glass::before{background:var(--glass)}
-.glass{border:1px solid var(--glass-edge);box-shadow:var(--glass-lift)}
+.glass{border:0;box-shadow:0 18px 40px -14px rgba(0,0,0,.6)}
+/* o aro fica por cima do vidro desfocado (no próprio elemento ele ficaria por baixo) */
+.glass::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:var(--rim);pointer-events:none}
 
 /* ---------- texto do prompter (tela, miniatura e prévia) ---------- */
 .ptx{font-synthesis:none}
@@ -133,6 +151,12 @@ label[for]{cursor:pointer}
 .home{min-height:100%;padding:calc(var(--st) + 8px) var(--gr) calc(var(--sb) + 110px) var(--gl)}
 .home-in{max-width:640px;margin:0 auto}
 .appbar{display:flex;align-items:center;justify-content:flex-end;gap:12px;height:52px}
+/* como no iPhone: os botões do topo flutuam em vidro e a página rola por baixo deles.
+   A faixa vazia da barra não pega toque; só os botões. */
+.appbar{position:sticky;top:calc(var(--st) + 8px);z-index:9;pointer-events:none}
+.appbar > *{pointer-events:auto}
+/* rente ao alto da tela o conteúdo se apaga de leve, para não brigar com os botões */
+.home::before{content:"";position:fixed;left:0;right:0;top:0;height:calc(var(--st) + 66px);z-index:8;pointer-events:none;background:linear-gradient(to bottom,color-mix(in srgb,var(--bg) 70%,transparent),color-mix(in srgb,var(--bg) 0%,transparent))}
 .top-actions{display:flex;align-items:center;gap:10px;flex:none}
 .theme-t{position:relative;display:inline-flex;align-items:center;justify-content:space-between;width:70px;height:38px;padding:0 10px;border-radius:99px;background:var(--well);box-shadow:var(--well-shadow);border:1px solid var(--hair);color:var(--fg-3);flex:none;transition:background-color .2s}
 @media (hover:hover){.theme-t:hover{background:var(--well-h)}}
@@ -154,8 +178,9 @@ label[for]{cursor:pointer}
 .sec-label{margin:28px 4px 10px;font-size:13px;font-weight:600;color:var(--fg-2);letter-spacing:.01em}
 .sec-label.first{margin-top:0}
 
-.feature{border-radius:20px;background:var(--surface);border:1px solid var(--hair);box-shadow:var(--card-lift);overflow:hidden;transition:border-color .15s}
-@media (hover:hover){.feature:has(.screen:hover){border-color:var(--hair-2)}}
+.feature{position:relative;border-radius:20px;background:var(--panel-bg);box-shadow:var(--panel-shadow);overflow:hidden}
+/* aro de vidro por cima da prévia e da faixa, para não ser coberto por elas */
+.feature::after,.list::after{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;box-shadow:var(--rim);pointer-events:none}
 .screen{position:relative;display:block;width:100%;height:124px;overflow:hidden;text-align:left;background:#000}
 .screen:focus-visible{outline-offset:-3px}
 .screen-text{position:absolute;inset:0;padding:18px 18px 0 32px;font-size:19px;font-weight:600;-webkit-mask-image:linear-gradient(to bottom,#000 0,#000 52%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0,#000 52%,transparent 100%);overflow-wrap:anywhere}
@@ -177,24 +202,24 @@ label[for]{cursor:pointer}
 @media (hover:hover){.f-del:hover{color:var(--danger);background:linear-gradient(180deg,rgba(255,93,82,.18),rgba(255,93,82,.1))}}
 /* modo claro: prévia branca em cima, faixa preta embaixo, borda sutil mais escura */
 :root[data-theme="light"] .feature .f-row{background:#141417;color:var(--fg);border-top-color:transparent}
-:root[data-theme="light"] .feature,:root[data-theme="light"] .list{border-color:rgba(0,0,0,.14)}
+
 @media (max-width:519px){
   .f-row{flex-direction:column;align-items:stretch;gap:12px}
   .f-actions .btn{flex:1}
 }
 .feature,.item{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 
-.list{list-style:none;margin:0;padding:0;border-radius:18px;background:var(--surface);border:1px solid var(--hair);box-shadow:var(--card-lift);overflow:hidden}
+.list{position:relative;list-style:none;margin:0;padding:0;border-radius:18px;background:var(--panel-bg);box-shadow:var(--panel-shadow);overflow:hidden}
 .item{position:relative;display:flex;align-items:center;transition:background-color .15s}
 .item + .item::before{content:"";position:absolute;top:0;left:16px;right:0;height:1px;background:var(--hair)}
-.item:has(.item-main:active){background:var(--surface-2)}
+.item:has(.item-main:active){background:var(--row-h)}
 .item-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;padding:14px 8px 14px 16px;text-align:left}
 .item-main:focus-visible{outline-offset:-2px;border-radius:16px}
 .item-title{font-size:16px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .item-meta{font-size:13px;color:var(--fg-2);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .item-play{display:grid;place-items:center;width:42px;height:42px;margin-right:12px;border-radius:50%;color:var(--accent-text);flex:none}
 .item-play svg{width:18px;height:18px;margin-left:2px}
-@media (hover:hover){.item:has(.item-main:hover){background:var(--surface-2)}}
+@media (hover:hover){.item:has(.item-main:hover){background:var(--row-h)}}
 .none{color:var(--fg-2);text-align:center;padding:40px 0 8px;margin:0}
 .empty{text-align:center;padding:36px 12px 8px}
 
@@ -204,8 +229,9 @@ label[for]{cursor:pointer}
 
 .dock{position:fixed;left:0;right:0;bottom:0;z-index:10;padding:0 var(--gr) calc(var(--sb) + 12px) var(--gl);pointer-events:none}
 .dock-in{max-width:520px;margin:0 auto;display:flex;gap:8px;padding:8px;border-radius:24px;pointer-events:auto}
-.dock .primary{flex:1}
-@media (max-width:340px){.dock .cam-t{display:none}#camBtn{width:54px;padding:0}}
+#newBtn{flex:1}
+/* no celular a Câmera fica só com o ícone, para caber a Lixeira */
+@media (max-width:559px){.dock .cam-t{display:none}#camBtn{width:54px;padding:0}}
 
 @media (min-width:960px){
   .home{padding-top:calc(var(--st) + 24px)}
@@ -282,7 +308,7 @@ label[for]{cursor:pointer}
 #prompter.editing .p-title{display:none}
 #prompter.editing .p-title-in{display:block;width:100%;min-width:0;height:20px;padding:0;margin:0;border:0;outline:none;background:none;color:var(--fg);font:600 14.5px var(--ui);text-overflow:ellipsis}
 .p-title-in::placeholder{color:var(--fg-3)}
-#prompter.editing #pEdit{background:var(--grad);border-color:rgba(255,170,90,.55);color:#fff}
+#prompter.editing #pEdit{background:var(--grad) border-box;border-color:rgba(255,170,90,.55);color:#fff}
 #prompter.editing .edit-bar{display:block;position:absolute;left:0;right:0;z-index:3;bottom:calc(var(--sb) + 12px + var(--kb,0px));padding:0 var(--gr) 0 var(--gl)}
 .edit-bar .panel{padding:10px 12px}
 .edit-bar .cb .aa{font-weight:800}
@@ -298,25 +324,25 @@ label[for]{cursor:pointer}
 /* câmera no padrão de app de câmera: barra no topo, controles soltos embaixo sobre um escurecido */
 .cam-top,.camf{display:none}
 #prompter.cam .cam-top{position:absolute;left:0;right:0;top:0;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:calc(var(--st) + 10px) var(--gr) 14px var(--gl);background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,0))}
-#prompter.cam .cam-top .round{width:44px;height:44px;background:rgba(18,18,22,.62);border-color:rgba(255,255,255,.14)}
-@media (hover:hover){#prompter.cam .cam-top .round:hover{background:rgba(40,40,46,.75)}}
+#prompter.cam .cam-top .round{width:44px;height:44px;background:rgba(22,22,26,.38);box-shadow:inset 1px 1px 0 rgba(255,255,255,.22),inset -1px -1px 0 rgba(255,255,255,.06),inset 0 0 0 1px rgba(255,255,255,.08)}
+@media (hover:hover){#prompter.cam .cam-top .round:hover{background:rgba(50,50,56,.5)}}
 /* na câmera, o tamanho da letra fica na barra fina junto da velocidade */
 #prompter.cam #pSmaller,#prompter.cam #pBigger{display:none}
 #prompter.cam .camf{display:grid;font-size:15px;font-weight:700}
-.rec-info{display:flex;align-items:center;gap:8px;height:34px;padding:0 13px;border-radius:99px;background:rgba(18,18,22,.62);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
-#prompter.recording .rec-info{background:rgba(200,30,20,.82);border-color:rgba(255,120,110,.5)}
+.rec-info{display:flex;align-items:center;gap:8px;height:34px;padding:0 13px;border-radius:99px;background:rgba(22,22,26,.38);box-shadow:inset 1px 1px 0 rgba(255,255,255,.22),inset -1px -1px 0 rgba(255,255,255,.06),inset 0 0 0 1px rgba(255,255,255,.08);color:#fff;font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;-webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%)}
+#prompter.recording .rec-info{background:rgba(200,30,20,.8);box-shadow:inset 1px 1px 0 rgba(255,190,180,.5),inset 0 0 0 1px rgba(255,120,110,.35)}
 #prompter.cam .hud-bottom{padding:44px var(--gr) calc(var(--sb) + 20px) var(--gl);background:linear-gradient(to top,rgba(0,0,0,.62),rgba(0,0,0,.3) 60%,rgba(0,0,0,0))}
 #prompter.cam .panel{max-width:440px;padding:0;background:none;border:0;box-shadow:none}
-#prompter.cam .panel::before{display:none}
-#prompter.cam .speed{gap:6px;margin:0 auto 22px;padding:5px 8px 5px 6px;border:1px solid rgba(255,255,255,.12);border-radius:99px;background:rgba(18,18,22,.58);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+#prompter.cam .panel::before,#prompter.cam .panel::after{display:none}
+#prompter.cam .speed{gap:6px;margin:0 auto 22px;padding:5px 8px 5px 6px;border:0;border-radius:99px;background:rgba(22,22,26,.38);box-shadow:inset 1px 1px 0 rgba(255,255,255,.22),inset -1px -1px 0 rgba(255,255,255,.06),inset 0 0 0 1px rgba(255,255,255,.08);-webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%)}
 #prompter.cam .speed .step{width:34px;height:34px;border-radius:50%}
 #prompter.cam .speed-lbl{display:none}
 #prompter.cam .ctl{max-width:340px;margin:0 auto;justify-content:space-between;align-items:flex-start}
 #prompter.cam .cb{width:72px;height:auto;gap:7px;padding:0;background:none;border:0;box-shadow:none;color:rgba(255,255,255,.88);font-size:12px;text-shadow:0 1px 3px rgba(0,0,0,.6)}
-#prompter.cam .cb svg{box-sizing:border-box;width:54px;height:54px;padding:15px;border-radius:50%;background:rgba(18,18,22,.58);border:1px solid rgba(255,255,255,.14);color:#fff;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);transition:background-color .15s,transform .1s}
-@media (hover:hover){#prompter.cam .cb:hover svg{background:rgba(40,40,46,.72)}}
-#prompter.cam .cb:active svg{transform:translateY(1px);background:rgba(10,10,12,.7)}
-#prompter.cam #pDone svg{background:var(--grad);border-color:rgba(255,170,90,.55)}
+#prompter.cam .cb svg{box-sizing:border-box;width:54px;height:54px;padding:15px;border-radius:50%;background:rgba(22,22,26,.38);box-shadow:inset 1px 1px 0 rgba(255,255,255,.22),inset -1px -1px 0 rgba(255,255,255,.06),inset 0 0 0 1px rgba(255,255,255,.08);color:#fff;-webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);transition:background-color .15s,transform var(--kt)}
+@media (hover:hover){#prompter.cam .cb:hover svg{background:rgba(50,50,56,.5)}}
+#prompter.cam .cb:active svg{transform:scale(.95);background:rgba(10,10,12,.5)}
+#prompter.cam #pDone svg{background:var(--grad-sheen),var(--grad);box-shadow:var(--grad-lift)}
 #prompter.cam .play{width:80px;height:80px;margin-top:-6px;background:rgba(255,255,255,.12);border:4px solid #fff;box-shadow:0 4px 18px rgba(0,0,0,.45);text-shadow:none;filter:none}
 #prompter.cam .play svg{display:none}
 #prompter.cam .play::after{content:"";width:62px;height:62px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff6a5e,#e8261b 70%);box-shadow:inset 0 -2px 4px rgba(120,0,0,.35);transition:width .22s var(--ease),height .22s var(--ease),border-radius .22s var(--ease)}
@@ -327,16 +353,27 @@ label[for]{cursor:pointer}
 #prompter.cam-loading::after{content:"Ligando a câmera…";position:absolute;inset:0;z-index:4;display:grid;place-items:center;color:rgba(255,255,255,.72);font:600 15px var(--ui)}
 .rec-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.45)}
 #prompter.recording .rec-dot{background:#ff3b30}
-.rec-takes{color:rgba(255,255,255,.72);font-weight:600}
+.rec-takes{color:rgba(255,255,255,.72);font-weight:600;white-space:nowrap}
+/* durante o vídeo, em tela de celular, o fps sai da barra para caber o Apagar take (antes de gravar ele aparece) */
+@media (max-width:430px){#prompter.session .rec-fps{display:none}}
 .rec-takes:empty{display:none}
-.rec-res{display:inline-flex;gap:2px;height:34px;align-items:center;padding:3px;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-radius:99px;background:rgba(18,18,22,.62);border:1px solid rgba(255,255,255,.12)}
+.rec-res{display:inline-flex;gap:2px;height:34px;align-items:center;padding:3px;-webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);border-radius:99px;background:rgba(22,22,26,.38);box-shadow:inset 1px 1px 0 rgba(255,255,255,.22),inset -1px -1px 0 rgba(255,255,255,.06),inset 0 0 0 1px rgba(255,255,255,.08)}
 .rec-res button{height:26px;padding:0 11px;border-radius:99px;color:rgba(255,255,255,.72);font-size:12.5px;font-weight:700;white-space:nowrap;transition:background-color .15s,color .15s}
 @media (hover:hover){.rec-res button:not([aria-pressed="true"]):hover{background:rgba(255,255,255,.14);color:#fff}}
-.rec-res button[aria-pressed="true"]{background:var(--grad);color:#fff;text-shadow:0 1px 1px rgba(110,25,0,.35)}
+.rec-res button[aria-pressed="true"]{background:var(--grad-sheen),var(--grad);box-shadow:inset 1px 1px 0 rgba(255,240,222,.5);color:#fff;text-shadow:0 1px 1px rgba(110,25,0,.25)}
 .rec-res.locked{opacity:.5}
 .rec-fps{color:rgba(255,255,255,.72);font-weight:500;white-space:nowrap}
+/* apagar o último take: aparece no lugar da qualidade (que fica travada durante o vídeo), só com o take pausado.
+   Neutro em repouso, vermelho só no hover e ao tocar. Gravando, some sem mexer no resto da barra. */
+.cam-del{display:none}
+#prompter.cam.session .rec-res{display:none}
+#prompter.cam.session .cam-del{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 13px 0 11px;border-radius:99px;background:rgba(22,22,26,.38);box-shadow:inset 1px 1px 0 rgba(255,255,255,.22),inset -1px -1px 0 rgba(255,255,255,.06),inset 0 0 0 1px rgba(255,255,255,.08);color:#fff;font-size:13.5px;font-weight:600;white-space:nowrap;-webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);transition:background-color .15s,transform var(--kt)}
+#prompter.cam.session.recording .cam-del{visibility:hidden}
+.cam-del svg{width:16px;height:16px}
+@media (hover:hover){#prompter.cam .cam-del:hover{background:rgba(220,38,30,.85)}}
+#prompter.cam .cam-del:active{--kt:.1s ease;transform:scale(.95);background:rgba(220,38,30,.85)}
 /* celular estreito: sem o fps, seletor compacto; gravando, o seletor (que fica travado) sai e o tempo cabe */
-@media (max-width:370px){.rec-fps{display:none}.rec-res button{padding:0 8px;font-size:12px}#prompter.session .rec-res{display:none}}
+@media (max-width:370px){#prompter.cam.session .cam-del{width:34px;padding:0;justify-content:center}.cam-del span{display:none}.rec-fps{display:none}.rec-res button{padding:0 8px;font-size:12px}#prompter.session .rec-res{display:none}}
 #pScript,#pDone{display:none}
 #prompter.cam #pScript{display:flex}
 #prompter.cam #pRestart{display:none}
@@ -347,7 +384,7 @@ label[for]{cursor:pointer}
 #prompter.cam.noscript .speed,#prompter.cam.noscript #pSmaller,#prompter.cam.noscript #pBigger{display:none}
 #prompter.cam.noscript .ctl{justify-content:space-around}
 #pickWrap{position:fixed;inset:0;z-index:45;display:flex;align-items:flex-end;justify-content:center;background:var(--scrim)}
-@media (min-width:640px){#pickWrap{align-items:center;padding:24px}#pickWrap .pick-sheet{border-radius:26px;border-bottom:1px solid var(--glass-edge)}}
+@media (min-width:640px){#pickWrap{align-items:center;padding:24px}#pickWrap .pick-sheet{border-radius:26px}}
 #pickWrap .pick-sheet{max-height:min(74%,calc(100% - var(--st) - 12px))}
 #pickWrap .pick-box{padding:0;margin-top:6px;overflow:hidden}
 #pickList{border:0;border-radius:0;background:none}
@@ -391,12 +428,12 @@ label[for]{cursor:pointer}
 /* ---------- ajustes ---------- */
 #sheetWrap{position:fixed;inset:0;z-index:40;display:flex;align-items:flex-end;justify-content:center;background:var(--scrim)}
 #sheetWrap.over-stage{background:rgba(0,0,0,.22)}
-.sheet{display:flex;flex-direction:column;width:100%;max-width:560px;max-height:min(90%,calc(100% - var(--st) - 12px));background:var(--glass-strong);-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);border:1px solid var(--glass-edge);border-bottom:0;box-shadow:var(--glass-lift);border-radius:26px 26px 0 0;animation:sheet-in .3s var(--ease);overflow:hidden}
+.sheet{display:flex;flex-direction:column;width:100%;max-width:560px;max-height:min(90%,calc(100% - var(--st) - 12px));background:var(--glass-strong);-webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%);border:0;box-shadow:var(--glass-lift);border-radius:26px 26px 0 0;animation:sheet-in .3s var(--ease);overflow:hidden}
 #sheetWrap.over-stage .sheet{max-height:62%}
 @keyframes sheet-in{from{transform:translateY(24px);opacity:0}}
 @media (min-width:640px){
   #sheetWrap{align-items:center;padding:24px}
-  .sheet{border-radius:26px;border-bottom:1px solid var(--glass-edge);max-height:min(860px,100%)}
+  .sheet{border-radius:26px;max-height:min(860px,100%)}
   #sheetWrap.over-stage{align-items:flex-end;padding-bottom:16px}
 }
 @media (orientation:landscape) and (max-height:520px){#sheetWrap.over-stage .sheet,.sheet{max-height:calc(100% - var(--st) - 8px)}}
@@ -405,10 +442,10 @@ label[for]{cursor:pointer}
 .grabber{width:40px;height:5px;border-radius:3px;background:var(--hair-2);margin:0 auto 10px}
 .sheet-bar{display:grid;grid-template-columns:34px 1fr 34px;align-items:center;gap:8px}
 .sheet-bar h2{grid-column:2;margin:0;text-align:center;font-size:18px;font-weight:800;letter-spacing:-.02em}
-.sheet-x{grid-column:3;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--well);box-shadow:var(--well-shadow);color:var(--fg-2);transition:background-color .15s,color .15s}
+.sheet-x{grid-column:3;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--key);box-shadow:var(--key-lift);color:var(--fg-2);transition:background .15s,color .15s,transform var(--kt)}
 .sheet-x svg{width:16px;height:16px}
-@media (hover:hover){.sheet-x:hover{background:var(--well-h);color:var(--fg)}}
-.sheet-x:active{background:var(--well-h);transform:translateY(1px)}
+@media (hover:hover){.sheet-x:hover{background:var(--key-h);color:var(--fg)}}
+.sheet-x:active{--kt:.1s ease;background:var(--key-p);transform:scale(.94)}
 .sheet.dragging{transition:none!important}
 .pv{position:relative;height:84px;margin-top:14px;overflow:hidden;border-radius:16px;border:1px solid var(--hair-2);display:flex;align-items:center;box-shadow:inset 0 1px 3px rgba(0,0,0,.4)}
 .pv-inner{width:100%;font-weight:600;white-space:nowrap;overflow:hidden}
@@ -420,8 +457,7 @@ label[for]{cursor:pointer}
 .group:first-child{margin-top:10px}
 .group-h{display:flex;align-items:center;gap:8px;margin:0 4px 10px;font-size:13px;font-weight:600;color:var(--fg-2)}
 .group-h svg{width:15px;height:15px;color:var(--accent-text);flex:none}
-.box{border-radius:18px;background:var(--surface);border:1px solid var(--hair);box-shadow:var(--card-lift);padding:0 16px}
-.sheet .box{background:color-mix(in srgb,var(--surface) 70%,transparent)}
+.box{border-radius:18px;background:var(--panel-bg);box-shadow:var(--card-lift);padding:0 16px}
 .row{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:56px;padding:12px 0;border-bottom:1px solid var(--hair)}
 .row:last-child{border-bottom:0}
 .row.stack{flex-direction:column;align-items:stretch;gap:12px;padding:16px 0}
@@ -471,7 +507,7 @@ label[for]{cursor:pointer}
 .fonts .fn{grid-area:n;font-size:19px;font-weight:600;line-height:1.2;color:var(--fg);font-synthesis:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .fonts .fd{grid-area:d;font-size:12.5px;font-weight:500;color:var(--fg-2)}
 .fonts .ck{grid-area:c;width:20px;height:20px;color:var(--accent-text);opacity:0;transition:opacity .15s}
-.fonts button[aria-checked="true"]{background:var(--surface)}
+.fonts button[aria-checked="true"]{background:var(--surface-2)}
 .fonts button[aria-checked="true"] .ck{opacity:1}
 .fonts button:active{background:var(--well-h)}
 @media (hover:hover){.fonts button:not([aria-checked="true"]):hover{background:var(--well-h)}}
@@ -497,28 +533,107 @@ label[for]{cursor:pointer}
 .keys kbd{font-family:var(--ui);font-size:12.5px;font-weight:600;background:var(--key);border:1px solid var(--key-edge);box-shadow:var(--key-lift);border-radius:7px;padding:2px 7px;color:var(--fg);white-space:nowrap}
 .ver{margin:22px 0 0;text-align:center;font-size:12px;color:var(--fg-3)}
 
-#toast{position:fixed;left:50%;bottom:calc(var(--sb) + 100px);transform:translateX(-50%);z-index:60;max-width:min(86vw,420px);padding:11px 16px;border-radius:14px;background:var(--toast-bg);-webkit-backdrop-filter:blur(20px) saturate(170%);backdrop-filter:blur(20px) saturate(170%);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:14px;font-weight:600;text-align:center;pointer-events:none;opacity:0;transition:opacity .25s}
+#toast{position:fixed;left:50%;bottom:calc(var(--sb) + 100px);transform:translateX(-50%);z-index:60;max-width:min(86vw,420px);padding:11px 16px;border-radius:16px;background:var(--toast-bg);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:0;box-shadow:inset 1px 1px 0 rgba(255,255,255,.16),inset 0 0 0 1px rgba(255,255,255,.07),0 14px 30px -12px rgba(0,0,0,.6);color:#fff;font-size:14px;font-weight:600;text-align:center;pointer-events:none;opacity:0;transition:opacity .25s}
 #toast.show{opacity:1}
 html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
-#actWrap{position:fixed;inset:0;z-index:45;display:flex;align-items:flex-end;justify-content:center;padding:0 var(--gr) calc(var(--sb) + 12px) var(--gl);background:var(--scrim)}
-@media (min-width:640px){#actWrap{align-items:center}}
-.act{width:100%;max-width:440px;display:flex;flex-direction:column;gap:10px;animation:sheet-in .28s var(--ease)}
-.act-card{border-radius:22px;overflow:hidden}
-.act-card.glass::before{background:var(--glass-strong)}
-.act-head{padding:16px 18px 13px;border-bottom:1px solid var(--hair);text-align:center}
-.act-title{font-size:15px;font-weight:700;letter-spacing:-.01em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
-.act-meta{margin-top:3px;font-size:12.5px;color:var(--fg-2);font-variant-numeric:tabular-nums}
-.act-btn{display:flex;align-items:center;gap:12px;width:100%;height:56px;padding:0 18px;font-size:17px;font-weight:500;color:var(--fg);border-bottom:1px solid var(--hair);transition:background-color .15s}
-.act-btn:last-child{border-bottom:0}
-.act-btn svg{width:20px;height:20px;color:var(--accent-text);flex:none}
-.act-btn.danger,.act-btn.danger svg{color:var(--danger)}
-.act-btn:active{background:var(--well-h)}
-@media (hover:hover){.act-btn:hover{background:var(--well-h)}}
-.act-cancel{width:100%;font-weight:700}
-#snack{position:fixed;left:50%;bottom:calc(var(--sb) + 100px);transform:translateX(-50%);z-index:61;display:flex;align-items:center;gap:14px;width:max-content;max-width:min(92vw,440px);padding:7px 7px 7px 16px;border-radius:16px;color:var(--fg);font-size:14.5px;font-weight:600;animation:sheet-in .25s var(--ease)}
-#snack span{min-width:0;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
-#snack button{flex:none;height:36px;padding:0 14px;border-radius:11px;background:var(--well-h);color:var(--accent-text);font-weight:700;transition:background-color .15s}
-@media (hover:hover){#snack button:hover{background:var(--hair-2)}}
+/* ---------- segurar o card: o fundo escurece e desfoca, o card levanta, o menu nasce junto dele ---------- */
+#ctx{position:fixed;inset:0;z-index:45;background:var(--scrim);-webkit-backdrop-filter:blur(10px) saturate(120%);backdrop-filter:blur(10px) saturate(120%);animation:fade-in .2s ease both;transition:opacity .2s}
+#ctx.out{opacity:0}
+#safe{position:fixed;top:0;left:0;width:0;height:0;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px);visibility:hidden;pointer-events:none}
+#lift{position:fixed;left:0;top:0;z-index:48;pointer-events:none;will-change:transform}
+#lift.settle{transition:transform .26s var(--ease)}
+.lift-in{height:100%;transform-origin:var(--ox,50%) var(--oy,50%);transition:transform .22s var(--ease),opacity .2s,box-shadow .22s;border-radius:20px}
+.lift-in.up{transform:scale(1.03);box-shadow:0 24px 50px -16px rgba(0,0,0,.75)}
+:root[data-theme="light"] .lift-in.up{box-shadow:0 24px 50px -18px rgba(0,0,0,.35)}
+.lift-in > .feature{height:100%}
+.lift-in.row{border-radius:18px;overflow:hidden;background:var(--lift-fill);box-shadow:var(--rim)}
+.lift-in > .feature{background:var(--lift-fill)}
+.lift-in.row > .item{height:100%}
+.lifted{visibility:hidden}
+#ctxMenu{position:fixed;z-index:49;width:min(264px,calc(100vw - 24px));border-radius:20px;overflow:hidden;background:var(--glass-strong);-webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%);border:0;box-shadow:var(--rim),0 22px 50px -14px rgba(0,0,0,.7),0 2px 6px rgba(0,0,0,.3);transform-origin:var(--ox,24px) var(--oy,0px);animation:ctx-in .24s var(--ease) both}
+:root[data-theme="light"] #ctxMenu{box-shadow:var(--rim),0 0 0 .5px rgba(0,0,0,.08),0 22px 50px -16px rgba(0,0,0,.3),0 2px 6px rgba(0,0,0,.08)}
+#ctxMenu.out{opacity:0;transform:scale(.9);transition:opacity .14s,transform .14s;animation:none;pointer-events:none}
+@keyframes ctx-in{from{opacity:0;transform:scale(.86)}}
+@keyframes fade-in{from{opacity:0}}
+.ctx-btn{display:flex;align-items:center;gap:12px;width:100%;height:52px;padding:0 16px;font-size:16px;font-weight:600;letter-spacing:-.01em;color:var(--fg);text-align:left;transition:background-color .15s}
+.ctx-btn + .ctx-btn{border-top:1px solid var(--hair)}
+.ctx-btn svg{width:20px;height:20px;flex:none;color:var(--accent-text)}
+.ctx-btn.danger,.ctx-btn.danger svg{color:var(--danger)}
+.ctx-btn:active{background:var(--row-h)}
+@media (hover:hover){.ctx-btn:hover{background:var(--row-h)}}
+
+/* ---------- arrastando: a barra de baixo vira a Lixeira, o alvo de soltar ---------- */
+.dock-in{transition:opacity .2s,transform .2s var(--ease)}
+html.dragging #home .dock{z-index:46}
+html.dragging,html.dragging *{cursor:grabbing!important;-webkit-user-select:none!important;user-select:none!important}
+/* a Lixeira é uma lixeirinha com tampa: a tampa sobe um pouco quando um card está sendo arrastado,
+   e o fundo enche quando há roteiro dentro. Uma cor só; laranja apenas com o card em cima. */
+#binBtn{width:52px;padding:0;flex:none;transition:background .15s,box-shadow .15s,transform .24s var(--ease),color .2s}
+.bin-svg{width:26px;height:26px;overflow:visible}
+.bin-lid{transform-box:view-box;transform-origin:12px 7px;transition:transform .26s var(--ease)}
+.bin-rim{opacity:0;transition:opacity .1s .16s}
+.bin-fill{fill:currentColor;opacity:.32;transform-box:view-box;transform-origin:12px 20.5px;transform:scaleY(0);transition:transform .42s var(--ease) .06s}
+#binBtn.full .bin-fill{transform:none}
+#binBtn.open .bin-lid{transform:translateY(-3px) rotate(-12deg)}
+#binBtn.open .bin-rim{opacity:1;transition-delay:0s}
+#binBtn.open.over .bin-lid{transform:translateY(-4.6px) rotate(-18deg)}
+#camBtn,#newBtn{transition:opacity .2s,transform var(--kt),background .15s,box-shadow .15s}
+html.dragging #camBtn,html.dragging #newBtn{opacity:.28;pointer-events:none}
+html.dragging #binBtn{transform:scale(1.04)}
+html.dragging #binBtn.over{transform:scale(1.1);color:var(--accent-text)}
+
+/* ---------- Lixeira ---------- */
+.tr-bar{justify-content:space-between}
+#trash .home-in{max-width:640px}
+.tr-main{flex-direction:row;align-items:center;gap:14px;padding-right:16px}
+.tr-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.tr-check{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;flex:none;border:1.5px solid var(--fg-3);color:transparent;transition:background .15s,border-color .15s,color .15s}
+.tr-check svg{width:14px;height:14px}
+.item.on .tr-check{background:var(--grad-sq) border-box;border-color:transparent;color:var(--accent-ink)}
+.item.gone{opacity:0;transform:translateX(-12px);transition:opacity .18s,transform .18s}
+
+/* ---------- vidro que flutua sobre o conteúdo: barra de baixo e topo ----------
+   Desfoque de verdade no próprio botão, tinta leve e aro de luz vetorial (1 px, acompanha a curva).
+   Sem máscara, sem sombra no texto, sem brilho animado. Apertar afunda e volta com mola curta. */
+:root{--gl-fill:linear-gradient(180deg,rgba(255,255,255,.11),rgba(255,255,255,.035));--gl-fill-h:linear-gradient(180deg,rgba(255,255,255,.19),rgba(255,255,255,.1));--gl-fill-p:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.1));
+  --gl-shadow:inset 1px 1px 0 rgba(255,255,255,.34),inset -1px -1px 0 rgba(255,255,255,.13),inset 0 0 0 1px rgba(255,255,255,.06),inset 0 14px 18px -16px rgba(255,255,255,.3),inset 0 -12px 16px -14px rgba(255,255,255,.08),0 10px 26px -10px rgba(0,0,0,.7),0 2px 5px -2px rgba(0,0,0,.4);
+  --gl-danger-shadow:inset 1px 1px 0 rgba(255,170,160,.5),inset -1px -1px 0 rgba(255,93,82,.25),inset 0 0 0 1px rgba(255,93,82,.3),0 10px 26px -10px rgba(0,0,0,.7),0 2px 5px -2px rgba(0,0,0,.4)}
+:root[data-theme="light"]{--gl-fill:linear-gradient(180deg,rgba(255,255,255,.72),rgba(255,255,255,.36));--gl-fill-h:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,255,255,.72));--gl-fill-p:linear-gradient(180deg,rgba(238,239,243,.85),rgba(255,255,255,.6));
+  --gl-shadow:inset 1px 1px 0 #fff,inset -1px -1px 0 rgba(255,255,255,.85),inset 0 0 0 1px rgba(255,255,255,.4),inset 0 -12px 16px -14px rgba(0,0,0,.08),0 0 0 .5px rgba(0,0,0,.13),0 10px 26px -12px rgba(0,0,0,.28),0 2px 5px -2px rgba(0,0,0,.1);
+  --gl-danger-shadow:inset 1px 1px 0 #fff,inset 0 0 0 1px rgba(212,47,37,.35),0 0 0 .5px rgba(212,47,37,.25),0 10px 26px -12px rgba(0,0,0,.28),0 2px 5px -2px rgba(0,0,0,.1)}
+.gl{background:var(--gl-fill);border:0;box-shadow:var(--gl-shadow);color:var(--fg);-webkit-backdrop-filter:blur(10px) saturate(190%);backdrop-filter:blur(10px) saturate(190%);transition:background .18s,box-shadow .18s,transform var(--kt),color .18s}
+@media (hover:hover){.gl:hover{background:var(--gl-fill-h)}}
+.gl:active{--kt:.1s ease;background:var(--gl-fill-p);transform:scale(.95)}
+/* laranja: a ação principal, quase cheio, com o mesmo aro */
+.gl-accent,.gl-accent:active{background:var(--grad-sheen),linear-gradient(115deg,rgba(255,162,0,.94),rgba(248,108,0,.92) 52%,rgba(238,58,0,.94));color:#fff;text-shadow:0 1px 1px rgba(110,25,0,.25);box-shadow:var(--grad-lift),0 10px 24px -10px rgba(0,0,0,.55)}
+@media (hover:hover){.gl-accent:hover{background:linear-gradient(180deg,rgba(255,255,255,.27),rgba(255,255,255,0) 55%),linear-gradient(115deg,rgba(255,162,0,.94),rgba(248,108,0,.92) 52%,rgba(238,58,0,.94))}}
+/* perigo: aro e texto vermelhos; vermelho cheio só no hover e ao apertar */
+.gl-danger{color:var(--danger);box-shadow:var(--gl-danger-shadow)}
+@media (hover:hover){.gl-danger:hover{background:var(--grad-sheen),var(--danger);color:#fff}}
+.gl-danger:active{background:var(--grad-sheen),var(--danger);color:#fff}
+/* desligado: o vidro continua inteiro, só o ícone e o texto se apagam */
+.gl:disabled{pointer-events:none;color:var(--fg-3)}
+.gl-danger:disabled{color:color-mix(in srgb,var(--danger) 42%,transparent)}
+
+/* barras de baixo: botões soltos, sem cápsula em volta */
+.dock .dock-in{gap:10px;padding:0;background:none;border:0;box-shadow:none}
+/* o conteúdo passa por trás dos botões (é o que faz o vidro aparecer) e só se apaga de leve rente à borda da tela */
+.dock::before{content:"";position:absolute;left:0;right:0;bottom:0;height:calc(var(--sb) + 104px);z-index:-1;background:linear-gradient(to bottom,transparent,color-mix(in srgb,var(--bg) 30%,transparent) 55%,color-mix(in srgb,var(--bg) 78%,transparent));pointer-events:none}
+.dock .btn.gl{height:54px;border-radius:27px;padding:0 20px;font-size:16px;font-weight:600;letter-spacing:-.012em}
+#newBtn{gap:10px}
+.plus{display:grid;place-items:center;width:26px;height:26px;margin-left:-4px;border-radius:50%;background:rgba(255,255,255,.24);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+.plus svg{width:15px;height:15px}
+#camBtn{flex:none}
+#binBtn{width:54px}
+#trRestore{flex:none}
+@media (min-width:560px){#trRestore{flex:1}}
+#trPurge{flex:1}
+#trash .dock .btn.gl{padding:0 18px}
+@media (max-width:389px){#trash .dock .btn .i{display:none}#trash .dock .btn.gl{padding:0 14px}}
+/* topo: voltar, Selecionar tudo, tema e Ajustes também em vidro */
+#trBack,#homeSettings{width:42px;height:42px;border-radius:50%}
+#trAll{height:36px;padding:0 16px;border-radius:18px;color:var(--accent-text);font-size:14.5px;font-weight:600;letter-spacing:-.005em}
+.theme-t.gl:active{transform:scale(.96)}
 
 /* ---------- troca de tela: sai a velha, depois entra a nova ---------- */
 ::view-transition-old(root),::view-transition-new(root){mix-blend-mode:normal}
@@ -578,12 +693,12 @@ html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
   <div class="home-in" id="homeIn">
     <header class="appbar">
       <div class="top-actions">
-        <button class="theme-t" id="themeToggle" type="button" role="switch" aria-label="Tema escuro">
+        <button class="theme-t gl" id="themeToggle" type="button" role="switch" aria-label="Tema escuro">
           <span class="knob" aria-hidden="true"></span>
           <svg class="sun" aria-hidden="true"><use href="#i-sun"/></svg>
           <svg class="moon" aria-hidden="true"><use href="#i-moon"/></svg>
         </button>
-        <button class="round" id="homeSettings" type="button" aria-label="Ajustes"><svg class="i"><use href="#i-gear"/></svg></button>
+        <button class="round gl" id="homeSettings" type="button" aria-label="Ajustes"><svg class="i"><use href="#i-gear"/></svg></button>
       </div>
     </header>
     <h1 class="lt">Roteiros</h1>
@@ -623,13 +738,38 @@ html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
       <h2>Nenhum roteiro ainda</h2>
       <p>Toque em Novo roteiro e escreva ou cole o texto.</p>
     </div>
-    <p class="foot-note">Segure um roteiro para ver as opções. Tudo fica salvo neste aparelho, neste navegador.</p>
+    <p class="foot-note">Segure um roteiro para ver as opções ou arraste até a Lixeira. Tudo fica salvo neste aparelho, neste navegador.</p>
   </div>
 
   <div class="dock">
-    <div class="dock-in glass">
-      <button class="btn lg" id="camBtn" type="button" aria-label="Abrir a câmera"><svg class="i" aria-hidden="true"><use href="#i-cam"/></svg><span class="cam-t">Câmera</span></button>
-      <button class="btn primary lg" id="newBtn" type="button"><svg class="i"><use href="#i-plus"/></svg>Novo roteiro</button>
+    <div class="dock-in">
+      <button class="btn lg gl" id="camBtn" type="button" aria-label="Abrir a câmera"><svg class="i" aria-hidden="true"><use href="#i-cam"/></svg><span class="cam-t">Câmera</span></button>
+      <button class="btn lg gl gl-accent" id="newBtn" type="button"><span class="plus" aria-hidden="true"><svg><use href="#i-plus"/></svg></span>Novo roteiro</button>
+      <button class="btn lg gl" id="binBtn" type="button" aria-label="Lixeira vazia"><svg class="bin-svg" viewBox="0 0 24 24" aria-hidden="true"><path class="bin-fill" d="M6.72 12.6h10.56l-.38 5.7c-.1 1.2-1 2.2-2.2 2.2H9.3c-1.2 0-2.1-1-2.2-2.2z"/><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="bin-rim" d="M5.6 8h12.8"/><path d="M6.4 8l.7 10.3c.1 1.2 1 2.2 2.2 2.2h5.4c1.2 0 2.1-1 2.2-2.2L17.6 8"/><path d="M10.2 11.6v5.2M13.8 11.6v5.2"/><g class="bin-lid"><path d="M4.5 7h15"/><path d="M9.4 7V5.6c0-.9.7-1.6 1.6-1.6h2c.9 0 1.6.7 1.6 1.6V7"/></g></g></svg></button>
+    </div>
+  </div>
+</main>
+
+<!-- ============ LIXEIRA ============ -->
+<main id="trash" class="home" hidden>
+  <div class="home-in">
+    <header class="appbar tr-bar">
+      <button class="round gl" id="trBack" type="button" aria-label="Voltar para os roteiros"><svg class="i"><use href="#i-back"/></svg></button>
+      <button class="btn sm gl" id="trAll" type="button">Selecionar tudo</button>
+    </header>
+    <h1 class="lt">Lixeira</h1>
+    <p class="lt-sub" id="trCount"></p>
+    <ul class="list" id="trList"></ul>
+    <div class="empty" id="trEmpty" hidden>
+      <h2>A Lixeira está vazia</h2>
+      <p>Roteiro apagado vem para cá. Daqui ele volta para os roteiros ou é excluído para sempre.</p>
+    </div>
+    <p class="foot-note" id="trNote">Toque nos roteiros para selecionar.</p>
+  </div>
+  <div class="dock" id="trDock">
+    <div class="dock-in">
+      <button class="btn lg gl" id="trRestore" type="button" disabled><svg class="i" aria-hidden="true"><use href="#i-restart"/></svg>Restaurar</button>
+      <button class="btn lg gl gl-danger" id="trPurge" type="button" disabled><svg class="i" aria-hidden="true"><use href="#i-trash"/></svg>Excluir para sempre</button>
     </div>
   </div>
 </main>
@@ -648,6 +788,7 @@ html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
     <div class="cam-top">
       <button class="round gk blur" id="cClose" type="button" aria-label="Sair da câmera"><svg class="i"><use href="#i-close"/></svg></button>
       <div class="rec-info" id="recInfo"><span class="rec-dot" aria-hidden="true"></span><b id="recTime">00:00</b><span class="rec-takes" id="recTakes"></span><span class="rec-fps" id="recQualTxt"></span></div>
+      <button class="cam-del" id="cDelTake" type="button" aria-label="Apagar o último take"><svg class="i" aria-hidden="true"><use href="#i-trash"/></svg><span>Apagar take</span></button>
       <span class="rec-res" id="recQual" role="group" aria-label="Qualidade do vídeo"><button type="button" data-res="4k">4K</button><button type="button" data-res="hd">Full HD</button></span>
     </div>
     <div class="hud-top">
@@ -840,18 +981,15 @@ html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
   </div>
 </div>
 
-<!-- ============ MENU DO ROTEIRO (segurar o card) ============ -->
-<div id="actWrap" hidden>
-  <div class="act" role="dialog" aria-modal="true" aria-labelledby="actTitle">
-    <div class="act-card glass">
-      <div class="act-head"><div class="act-title" id="actTitle"></div><div class="act-meta" id="actMeta"></div></div>
-      <button class="act-btn" id="actRead" type="button"><svg aria-hidden="true"><use href="#i-play"/></svg>Ler no prompter</button>
-      <button class="act-btn" id="actEdit" type="button"><svg aria-hidden="true"><use href="#i-edit"/></svg>Editar</button>
-      <button class="act-btn danger" id="actDel" type="button"><svg aria-hidden="true"><use href="#i-trash"/></svg>Apagar roteiro</button>
-    </div>
-    <button class="btn lg act-cancel" id="actCancel" type="button">Cancelar</button>
-  </div>
+<!-- ============ SEGURAR O CARD: ele levanta, o menu aparece junto; arrastar leva para a Lixeira ============ -->
+<div id="ctx" hidden></div>
+<div id="lift" hidden></div>
+<div id="ctxMenu" role="menu" aria-label="Opções do roteiro" hidden>
+  <button class="ctx-btn" id="ctxRead" type="button" role="menuitem"><svg aria-hidden="true"><use href="#i-play"/></svg>Ler no prompter</button>
+  <button class="ctx-btn" id="ctxEdit" type="button" role="menuitem"><svg aria-hidden="true"><use href="#i-edit"/></svg>Editar</button>
+  <button class="ctx-btn danger" id="ctxDel" type="button" role="menuitem"><svg aria-hidden="true"><use href="#i-trash"/></svg>Mover para a Lixeira</button>
 </div>
+<div id="safe" aria-hidden="true"></div>
 
 <!-- ============ ROTEIRO NOVO: PRIMEIRO O TÍTULO ============ -->
 <div id="newWrap" hidden>
@@ -873,7 +1011,6 @@ html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
   </div>
 </div>
 
-<div id="snack" class="glass" hidden role="status" aria-live="polite"><span id="snackText"></span><button id="snackUndo" type="button">Desfazer</button></div>
 <!-- ============ REVISÃO DA GRAVAÇÃO ============ -->
 <div id="review" hidden>
   <div class="rv" role="dialog" aria-modal="true" aria-label="Vídeo gravado">
@@ -1109,16 +1246,17 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   }
 
   /* ---------------- troca de tela ---------------- */
-  const ORDER = { home: 0, prompter: 1 };
+  const ORDER = { home: 0, trash: 1, prompter: 1 };
   let view = 'home';
   function show(next, after, instant) {
     const prev = view;
     const apply = () => {
-      ['home', 'prompter'].forEach(v => { $('#' + v).hidden = v !== next; });
+      ['home', 'prompter', 'trash'].forEach(v => { $('#' + v).hidden = v !== next; });
       document.documentElement.classList.toggle('locked', next === 'prompter');
       view = next;
       window.scrollTo(0, 0);
       if (next === 'home') renderHome(prev !== 'home');
+      if (next === 'trash') renderTrash();
       if (after) after();
     };
     if (!instant && prev !== next && document.startViewTransition && !reduceMotion.matches) {
@@ -1204,7 +1342,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   }
   home.addEventListener('click', (e) => {
     if (lpFired) { lpFired = false; e.preventDefault(); return; }
-    const dl = e.target.closest('[data-del]'); if (dl) { const s = byId(dl.dataset.del); if (s) removeScript(s); return; }
+    const dl = e.target.closest('[data-del]'); if (dl) { const s = byId(dl.dataset.del); if (s) trashScript(s); return; }
     const p = e.target.closest('[data-play]'); if (p) { const s = byId(p.dataset.play); if (s) openPrompter(s); return; }
     const ed = e.target.closest('[data-edit]'); if (ed) { const s = byId(ed.dataset.edit); if (s) openPrompter(s, false, true); }
   });
@@ -1235,66 +1373,259 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
 
   let current = null;
 
-  /* ---------------- apagar com desfazer, e o menu de segurar o card ---------------- */
-  let undoT = 0, lastDeleted = null;
-  function removeScript(s) {
+  /* ---------------- Lixeira: apagar leva o roteiro para lá; de lá ele volta ou sai para sempre ---------------- */
+  let trash = store.get('pe.trash', []);
+  if (!Array.isArray(trash)) trash = [];
+  const saveTrash = () => store.set('pe.trash', trash);
+  // A lixeirinha da barra de baixo fica cheia com roteiro dentro e vazia quando a Lixeira esvazia.
+  const bin = $('#binBtn');
+  function binState(gulp) {
+    const n = trash.length;
+    bin.classList.toggle('full', n > 0);
+    bin.setAttribute('aria-label', n ? 'Lixeira, ' + plural(n, 'roteiro', 'roteiros') : 'Lixeira vazia');
+    // Apagado pelo menu ou pela lixeira do card: a tampa abre e fecha, como quem jogou o papel dentro.
+    if (gulp && !reduceMotion.matches) { bin.classList.add('open'); setTimeout(() => bin.classList.remove('open'), 320); }
+  }
+  binState(false);
+  function trashScript(s, quiet) {
     const i = scripts.indexOf(s); if (i < 0) return;
     scripts.splice(i, 1); saveScripts();
-    lastDeleted = s;
+    s.deleted = Date.now(); trash.unshift(s); saveTrash(); binState(!quiet);
     if (view === 'home') renderHome(false);
-    $('#snackText').textContent = '\u201c' + nameOf(s) + '\u201d apagado';
-    $('#snack').hidden = false; clearTimeout(undoT);
-    undoT = setTimeout(() => { $('#snack').hidden = true; lastDeleted = null; }, 5000);
+    toast('“' + nameOf(s) + '” foi para a Lixeira');
   }
-  $('#snackUndo').addEventListener('click', () => {
-    clearTimeout(undoT); $('#snack').hidden = true;
-    if (lastDeleted && !scripts.includes(lastDeleted)) { scripts.push(lastDeleted); saveScripts(); if (view === 'home') renderHome(false); toast('Roteiro de volta'); }
-    lastDeleted = null;
+  bin.addEventListener('click', () => show('trash'));
+  $('#trBack').addEventListener('click', () => show('home'));
+  // Na Lixeira, tocar no roteiro marca ou desmarca. Os botões de baixo agem só nos marcados.
+  const picked = new Set();
+  const trashSorted = () => trash.slice().sort((a, b) => (b.deleted || 0) - (a.deleted || 0));
+  function trashSync() {
+    const n = trash.length, k = picked.size;
+    $('#trCount').textContent = !n ? '' : k ? plural(k, 'selecionado', 'selecionados') + ' de ' + n : plural(n, 'roteiro', 'roteiros');
+    $('#trAll').hidden = !n;
+    $('#trAll').textContent = n && k === n ? 'Desmarcar' : 'Selecionar tudo';
+    $('#trRestore').disabled = !k; $('#trPurge').disabled = !k;
+  }
+  function renderTrash() {
+    for (const id of [...picked]) if (!trash.some(s => s.id === id)) picked.delete(id);
+    const list = trashSorted(), n = list.length;
+    $('#trList').hidden = !n; $('#trEmpty').hidden = !!n; $('#trNote').hidden = !n; $('#trDock').hidden = !n;
+    $('#trList').innerHTML = list.map(s => {
+      const on = picked.has(s.id), w = words(s.text);
+      return `<li class="item${on ? ' on' : ''}" data-tid="${s.id}">
+        <button class="item-main tr-main" type="button" role="checkbox" aria-checked="${on}"><span class="tr-check" aria-hidden="true"><svg><use href="#i-check"/></svg></span><span class="tr-txt"><span class="item-title">${esc(nameOf(s))}</span><span class="item-meta">Apagado ${ago(s.deleted || Date.now())} · ${dur(secs(s.text))} · ${plural(w, 'palavra', 'palavras')}</span></span></button>
+      </li>`;
+    }).join('');
+    trashSync();
+  }
+  $('#trList').addEventListener('click', (e) => {
+    const li = e.target.closest('[data-tid]'); if (!li) return;
+    const id = li.dataset.tid, on = !picked.has(id);
+    if (on) picked.add(id); else picked.delete(id);
+    li.classList.toggle('on', on); li.querySelector('[role="checkbox"]').setAttribute('aria-checked', String(on));
+    trashSync();
   });
-  let actFor = null;
-  function openActions(id) {
-    const s = byId(id); if (!s || !$('#actWrap').hidden) return;
-    actFor = s;
-    const w = words(s.text);
-    $('#actTitle').textContent = nameOf(s);
-    $('#actMeta').textContent = [dur(secs(s.text)), plural(w, 'palavra', 'palavras'), ago(s.updated)].join(' · ');
-    $('#actWrap').hidden = false;
+  $('#trAll').addEventListener('click', () => {
+    if (picked.size === trash.length) picked.clear(); else trash.forEach(s => picked.add(s.id));
+    renderTrash();
+  });
+  // Os marcados saem da lista com um esmaecer curto, depois a lista se refaz.
+  function leaveTrash(after) {
+    const ids = new Set(picked);
+    $$('#trList [data-tid]').forEach(li => { if (ids.has(li.dataset.tid)) li.classList.add('gone'); });
+    setTimeout(() => { after(ids); picked.clear(); renderTrash(); binState(false); }, reduceMotion.matches ? 0 : 190);
+  }
+  $('#trRestore').addEventListener('click', () => {
+    if (!picked.size) return;
+    leaveTrash((ids) => {
+      const back = trash.filter(s => ids.has(s.id));
+      trash = trash.filter(s => !ids.has(s.id));
+      back.forEach(s => { delete s.deleted; if (!scripts.some(x => x.id === s.id)) scripts.push(s); });
+      saveScripts(); saveTrash();
+      toast(back.length === 1 ? '“' + nameOf(back[0]) + '” voltou para os roteiros' : back.length + ' roteiros voltaram para os roteiros');
+    });
+  });
+  // Excluir para sempre é a ação de marcar e apertar: sem pergunta de confirmação, o botão diz o que faz.
+  $('#trPurge').addEventListener('click', () => {
+    if (!picked.size) return;
+    leaveTrash((ids) => {
+      const n = ids.size;
+      trash = trash.filter(s => !ids.has(s.id)); saveTrash();
+      toast(n === 1 ? 'Roteiro excluído para sempre' : n + ' roteiros excluídos para sempre');
+    });
+  });
+
+  /* ---------------- segurar o card: ele levanta e o menu aparece; arrastar leva para a Lixeira ---------------- */
+  const ctxEl = $('#ctx'), menu = $('#ctxMenu'), lift = $('#lift');
+  const dragOn = () => { document.documentElement.classList.add('dragging'); bin.classList.add('open'); };
+  let C = null; // o card levantado: roteiro, elemento, posição, toque inicial, se o dedo ainda está na tela e se está arrastando
+  const safe = () => { const cs = getComputedStyle($('#safe')); return { t: parseFloat(cs.paddingTop) || 0, b: parseFloat(cs.paddingBottom) || 0 }; };
+  const moveLift = (x, y) => { lift.style.transform = `translate3d(${x}px,${y}px,0)`; };
+  // dragNow: mouse que clicou e já saiu arrastando, sem segurar parado antes (o jeito normal no computador).
+  function liftCard(el, x, y, down, dragNow) {
+    const s = byId(el.dataset.card); if (!s || C) return;
+    const r = el.getBoundingClientRect();
+    const copy = el.cloneNode(true);
+    copy.removeAttribute('id'); copy.querySelectorAll('[id]').forEach(n => n.removeAttribute('id'));
+    const inner = document.createElement('div');
+    inner.className = 'lift-in' + (el.classList.contains('feature') ? '' : ' row');
+    inner.style.setProperty('--ox', (x - r.left) + 'px'); inner.style.setProperty('--oy', (y - r.top) + 'px');
+    inner.appendChild(copy);
+    lift.replaceChildren(inner);
+    lift.className = '';
+    Object.assign(lift.style, { width: r.width + 'px', height: r.height + 'px' });
+    moveLift(r.left, r.top);
+    lift.hidden = false; ctxEl.hidden = false; ctxEl.classList.remove('out');
+    el.classList.add('lifted');
+    C = { s, el, r, inner, sx: x, sy: y, bx: r.left, by: r.top, down, drag: !!dragNow, over: false };
+    requestAnimationFrame(() => { if (C && C.inner === inner) inner.classList.add('up'); });
+    if (dragNow) { dragOn(); try { getSelection().removeAllRanges(); } catch (e) {} return; }
+    placeMenu();
     try { if (navigator.vibrate) navigator.vibrate(8); } catch (e) {}
   }
-  function closeActions() { $('#actWrap').hidden = true; actFor = null; }
-  $('#actCancel').addEventListener('click', closeActions);
-  $('#actWrap').addEventListener('click', (e) => { if (e.target.id === 'actWrap') closeActions(); });
-  $('#actRead').addEventListener('click', () => { const s = actFor; closeActions(); if (s) openPrompter(s); });
-  $('#actEdit').addEventListener('click', () => { const s = actFor; closeActions(); if (s) openPrompter(s, false, true); });
-  $('#actDel').addEventListener('click', () => { const s = actFor; closeActions(); if (s) removeScript(s); });
-  // Segurar meio segundo no card ou numa linha abre o menu. No Android e no computador, o menu do sistema vira o nosso.
-  let lp = null, lpFired = false;
-  const lpCancel = () => { if (lp) { clearTimeout(lp.t); lp = null; } };
+  // O menu nasce embaixo do card; sem espaço, em cima; se nem assim couber, o card sobe para dar lugar.
+  function placeMenu() {
+    const r = C.r, vw = window.innerWidth, vh = window.innerHeight, sa = safe();
+    menu.classList.remove('out'); menu.style.visibility = 'hidden'; menu.hidden = false;
+    const mh = menu.offsetHeight, mw = menu.offsetWidth, minTop = sa.t + 12, maxBot = vh - sa.b - 12;
+    let top, cardTop = r.top;
+    if (r.bottom + 10 + mh <= maxBot) top = r.bottom + 10;
+    else if (r.top - 10 - mh >= minTop) top = r.top - 10 - mh;
+    else {
+      cardTop = Math.max(minTop, maxBot - mh - 10 - r.height);
+      top = Math.min(cardTop + r.height + 10, maxBot - mh);
+      C.by = cardTop; lift.classList.add('settle'); moveLift(r.left, cardTop);
+    }
+    // Card largo tocado do lado direito: o menu encosta na direita, perto do dedo.
+    let left = r.left;
+    if (C.sx > r.left + r.width / 2 && r.width > mw * 1.4) left = r.right - mw;
+    left = clamp(left, 12, vw - mw - 12);
+    Object.assign(menu.style, { left: left + 'px', top: top + 'px', visibility: '' });
+    menu.style.setProperty('--ox', clamp(C.sx - left, 0, mw) + 'px');
+    menu.style.setProperty('--oy', (top < cardTop ? mh : 0) + 'px');
+  }
+  function finishCtx() {
+    if (!C) return;
+    C.el.classList.remove('lifted');
+    lift.hidden = true; lift.replaceChildren(); lift.className = ''; lift.style.transform = '';
+    ctxEl.hidden = true; ctxEl.classList.remove('out');
+    menu.hidden = true; menu.classList.remove('out');
+    document.documentElement.classList.remove('dragging');
+    bin.classList.remove('open', 'over');
+    C = null;
+  }
+  const wait = (ms, fn) => setTimeout(fn, reduceMotion.matches ? 0 : ms);
+  // Volta o card ao lugar dele e fecha tudo.
+  function closeCtx() {
+    if (!C) return;
+    const c = C;
+    menu.classList.add('out'); ctxEl.classList.add('out');
+    document.documentElement.classList.remove('dragging'); bin.classList.remove('open', 'over');
+    lift.classList.add('settle'); moveLift(c.r.left, c.r.top);
+    c.inner.classList.remove('up'); c.inner.style.transform = ''; c.inner.style.opacity = '';
+    wait(240, () => { if (C === c) finishCtx(); });
+  }
+  function dragTo(x, y) {
+    const dx = x - C.sx, dy = y - C.sy;
+    moveLift(C.bx + dx, C.by + dy);
+    // A lixeirinha é pequena: a área de soltar vai além dela, para o dedo não precisar de mira.
+    const d = bin.getBoundingClientRect(), pad = 40;
+    const over = x >= d.left - pad && x <= d.right + pad && y >= d.top - pad - 16 && y <= d.bottom + pad;
+    if (over !== C.over) {
+      C.over = over;
+      bin.classList.toggle('over', over);
+      try { if (over && navigator.vibrate) navigator.vibrate(6); } catch (e) {}
+    }
+    // Quanto mais longe do lugar, menor o card; em cima da Lixeira, menor ainda.
+    const k = over ? 0.26 : Math.max(0.5, 1.03 - Math.hypot(dx, dy) / 420);
+    C.inner.style.transform = 'scale(' + k.toFixed(3) + ')';
+    C.inner.style.opacity = over ? '0.85' : '';
+  }
+  function dropInTrash() {
+    const c = C, i = bin.querySelector('svg').getBoundingClientRect();
+    lift.classList.add('settle');
+    // O card cai na boca da lixeirinha, onde a tampa está aberta.
+    moveLift(c.bx + i.left + i.width / 2 - c.sx, c.by + i.top + i.height * 0.3 - c.sy);
+    c.inner.style.transform = 'scale(.05)'; c.inner.style.opacity = '0';
+    ctxEl.classList.add('out');
+    // Chegou: a tampa fecha por cima dos papéis e a lixeira fica cheia; a barra volta ao normal logo depois.
+    wait(260, () => {
+      if (C !== c) return;
+      bin.classList.remove('open', 'over');
+      trashScript(c.s, true);
+      wait(560, () => { if (C === c) finishCtx(); });
+    });
+  }
+
+
+  window.addEventListener('pointermove', (e) => {
+    // Dedo que anda antes do tempo é rolagem: cancela. Mouse que anda com o botão apertado é arrasto: o card sai junto.
+    if (hold && Math.hypot(e.clientX - hold.x, e.clientY - hold.y) > (hold.mouse ? 5 : 10)) {
+      const h = hold; holdCancel();
+      if (h.mouse) { lpFired = true; swallow = true; liftCard(h.c, h.x, h.y, true, true); }
+    }
+    if (!C || !C.down) return;
+    if (!C.drag) {
+      if (Math.hypot(e.clientX - C.sx, e.clientY - C.sy) < 8) return;
+      C.drag = true;
+      menu.classList.add('out');
+      lift.classList.remove('settle');
+      dragOn();
+    }
+    dragTo(e.clientX, e.clientY);
+  }, { passive: true });
+  function pointerEnd(cancelled) {
+    holdCancel();
+    if (!C || !C.down) return;
+    C.down = false;
+    if (!C.drag) return; // só levantou: o menu fica aberto
+    if (C.over && !cancelled) dropInTrash(); else closeCtx();
+  }
+  window.addEventListener('pointerup', () => pointerEnd(false));
+  window.addEventListener('pointercancel', () => pointerEnd(true));
+  // Com o card levantado a página não rola: o dedo é do card.
+  document.addEventListener('touchmove', (e) => { if (C) e.preventDefault(); }, { passive: false });
+  window.addEventListener('wheel', (e) => { if (C) e.preventDefault(); }, { passive: false });
+  ctxEl.addEventListener('click', closeCtx);
+  const ctxAct = (fn) => () => { if (!C) return; const s = C.s; finishCtx(); fn(s); };
+  $('#ctxRead').addEventListener('click', ctxAct((s) => openPrompter(s)));
+  $('#ctxEdit').addEventListener('click', ctxAct((s) => openPrompter(s, false, true)));
+  $('#ctxDel').addEventListener('click', () => {
+    if (!C) return;
+    const c = C;
+    menu.classList.add('out'); ctxEl.classList.add('out');
+    c.inner.style.transform = 'scale(.8)'; c.inner.style.opacity = '0';
+    wait(200, () => { if (C !== c) return; finishCtx(); trashScript(c.s); });
+  });
+  // Segurar meio segundo no card ou numa linha levanta o card. No Android e no computador, o menu do sistema vira o nosso.
+  let hold = null, lpFired = false;
+  const holdCancel = () => { if (hold) { clearTimeout(hold.t); hold = null; } };
   // Ao soltar o dedo depois de segurar, o navegador ainda manda um clique no mesmo ponto.
-  // Esse clique cairia no menu recém-aberto (e poderia apertar Apagar): ele é descartado.
+  // Esse clique cairia no fundo (e fecharia o menu) ou num botão do menu: ele é descartado.
   let swallow = false, swallowT = 0;
   document.addEventListener('click', (e) => { if (swallow) { swallow = false; e.stopPropagation(); e.preventDefault(); } }, true);
   document.addEventListener('pointerup', () => { if (swallow) { clearTimeout(swallowT); swallowT = setTimeout(() => { swallow = false; }, 450); } }, true);
   home.addEventListener('pointerdown', (e) => {
     lpFired = false;
-    if (e.button > 0) return;
+    if (e.button > 0 || C) return;
     const c = e.target.closest('[data-card]'); if (!c) return;
-    lp = { x: e.clientX, y: e.clientY, t: setTimeout(() => { lp = null; lpFired = true; swallow = true; openActions(c.dataset.card); }, 480) };
+    hold = { x: e.clientX, y: e.clientY, c, mouse: e.pointerType === 'mouse', t: setTimeout(() => { const h = hold; hold = null; if (!h) return; lpFired = true; swallow = true; liftCard(h.c, h.x, h.y, true); }, 450) };
   });
-  home.addEventListener('pointermove', (e) => { if (lp && Math.hypot(e.clientX - lp.x, e.clientY - lp.y) > 10) lpCancel(); });
-  home.addEventListener('pointerup', lpCancel);
-  home.addEventListener('pointercancel', lpCancel);
-  window.addEventListener('scroll', lpCancel, { passive: true });
+  window.addEventListener('scroll', holdCancel, { passive: true });
   home.addEventListener('contextmenu', (e) => {
     const c = e.target.closest('[data-card]'); if (!c) return;
-    e.preventDefault(); lpCancel(); openActions(c.dataset.card);
+    e.preventDefault();
+    if (C) return;
+    // Toque longo no Android: o dedo ainda está na tela, então dá para arrastar em seguida.
+    if (hold) { const h = hold; holdCancel(); lpFired = true; swallow = true; liftCard(h.c, h.x, h.y, true); }
+    else liftCard(c, e.clientX, e.clientY, false);
   });
 
   /* ---------------- motor do prompter ---------------- */
   const P = { pos: 0, max: 0, playing: false, counting: false, last: 0, elapsed: 0, raf: 0, lineH: 0, cueY: 0, cd: 0 };
   const stage = $('#stage'), content = $('#content');
   // Modo câmera: letra própria (menor, numa faixa perto da lente) e nunca espelhado.
-  const cam = { on: false, stream: null, rec: null, chunks: [], tick: 0, mime: '', qual: '', short: '', hide: false, paused: false, takes: 0, acc: 0, seg: 0, fromHome: false };
+  const cam = { on: false, stream: null, rec: null, list: [], cur: null, stopping: null, tick: 0, mime: '', qual: '', short: '', hide: false, paused: false, seg: 0, fromHome: false };
   const fsz = () => cam.on ? settings.camFont : settings.fontSize;
   const mir = () => cam.on ? 'none' : settings.mirror;
   const pxPerSec = () => settings.speed * fsz() * 0.05;
@@ -1495,7 +1826,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     if (closing) {
       if (written(current.text)) return;
       // Roteiro que já tinha texto e foi esvaziado: some, mas com Desfazer (volta o texto de antes).
-      if (written(P.editOrig)) { current.text = P.editOrig; keep(current); removeScript(current); }
+      if (written(P.editOrig)) { current.text = P.editOrig; keep(current); trashScript(current); }
       else toast('Roteiro sem texto não foi salvo');
       return;
     }
@@ -1560,7 +1891,8 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
 
   document.addEventListener('keydown', (e) => {
     if (!$('#newWrap').hidden) { if (e.key === 'Escape') closeNew(); return; }
-    if (!$('#actWrap').hidden) { if (e.key === 'Escape') closeActions(); return; }
+    if (C) { if (e.key === 'Escape') closeCtx(); return; }
+    if (view === 'trash') { if (e.key === 'Escape') show('home'); return; }
     if (!$('#pickWrap').hidden) { if (e.key === 'Escape') closePick(); return; }
     if (!$('#sheetWrap').hidden) { if (e.key === 'Escape') closeSheet(); return; }
     if (view !== 'prompter') return;
@@ -1580,8 +1912,8 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   /* ---------------- câmera: gravar lendo o roteiro, ou só a câmera ----------------
      Usa a câmera do próprio aparelho pelo navegador, no máximo que ele entregar (4K ou Full HD, à escolha),
      taxa de dados alta e voz no volume habitual. A qualidade real aparece na tela.
-     Vários takes viram um vídeo só: o botão de gravar pausa entre os takes e Concluir fecha o vídeo. */
-  const CAN_PAUSE = typeof window.MediaRecorder === 'function' && typeof MediaRecorder.prototype.pause === 'function';
+     Vários takes viram um vídeo só: cada take é gravado num arquivo próprio (dá para apagar o último sem
+     mexer nos outros) e Concluir junta os que ficaram num vídeo só, sem regravar. */
   const RES = { '4k': { w: 3840, h: 2160 }, hd: { w: 1920, h: 1080 } };
   const scriptOn = () => !!current && !cam.hide;
   let take = null;
@@ -1593,7 +1925,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     pr.classList.toggle('cam-loading', cam.on && !!cam.loading);
     pr.classList.toggle('noscript', cam.on && !scriptOn());
     pr.classList.toggle('session', !!cam.rec);
-    pr.classList.toggle('recording', !!cam.rec && !cam.paused);
+    pr.classList.toggle('recording', !!cam.cur);
     $('#recQual').classList.toggle('locked', !!cam.rec);
     $$('#recQual [data-res]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.res === (settings.camRes === 'hd' ? 'hd' : '4k'))));
     document.documentElement.classList.toggle('cam-on', cam.on);
@@ -1663,53 +1995,80 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     const px = (st.width || 1920) * (st.height || 1080), fps = st.frameRate || 30;
     return Math.round(Math.min(40e6, Math.max(10e6, px * fps * 0.22)));
   }
-  const recMs = () => cam.acc + (cam.rec && !cam.paused ? performance.now() - cam.seg : 0);
+  const keptMs = () => cam.list.reduce((a, t) => a + t.ms, 0);
+  const recMs = () => keptMs() + (cam.cur ? performance.now() - cam.seg : 0);
+  const takeCount = () => cam.list.length + (cam.cur ? 1 : 0);
   function updRecTime() {
     $('#recTime').textContent = fmt(recMs() / 1000);
-    $('#recTakes').textContent = cam.rec ? (cam.takes === 1 ? 'take 1' : cam.takes + ' takes') : '';
+    const n = takeCount();
+    $('#recTakes').textContent = cam.rec ? (n === 1 ? 'take 1' : n + ' takes') : '';
   }
-  function startRec() {
-    cam.mime = pickMime();
+  function newRecorder() {
     const opts = { videoBitsPerSecond: bitrate(), audioBitsPerSecond: 192000 };
     if (cam.mime) opts.mimeType = cam.mime;
-    let r;
-    try { r = new MediaRecorder(cam.stream, opts); }
-    catch (e) { try { r = new MediaRecorder(cam.stream); } catch (e2) { toast('Não deu para gravar neste aparelho'); return false; } }
-    cam.rec = r; cam.chunks = []; cam.takes = 1; cam.acc = 0; cam.paused = false;
-    r.ondataavailable = (e) => { if (e.data && e.data.size) cam.chunks.push(e.data); };
-    r.onstop = finishRec;
-    r.start(1000);
-    cam.seg = performance.now();
+    try { return new MediaRecorder(cam.stream, opts); }
+    catch (e) { try { return new MediaRecorder(cam.stream); } catch (e2) { return null; } }
+  }
+  // Um take: um gravador e um arquivo só dele. Ao parar, entra na lista do vídeo.
+  function startTake() {
+    const r = newRecorder();
+    if (!r) { toast('Não deu para gravar neste aparelho'); return false; }
+    const t = { chunks: [], ms: 0, type: '' };
+    r.ondataavailable = (e) => { if (e.data && e.data.size) t.chunks.push(e.data); };
+    cam.stopping = new Promise(res => {
+      r.onstop = () => { t.type = r.mimeType || cam.mime || 'video/mp4'; res(); };
+    });
+    try { r.start(1000); } catch (e) { toast('Não deu para gravar neste aparelho'); cam.stopping = null; return false; }
+    cam.cur = r; cam.curTake = t; cam.seg = performance.now(); cam.paused = false;
     camState();
     clearInterval(cam.tick); cam.tick = setInterval(updRecTime, 250); updRecTime();
     return true;
   }
-  // Fim de um take: o arquivo pausa, não fecha. O próximo take continua o mesmo vídeo.
-  function pauseTake() {
-    if (!cam.rec || cam.paused) return;
-    if (!CAN_PAUSE) { finishSession(); return; }
-    try { cam.rec.pause(); } catch (e) { finishSession(); return; }
-    cam.acc += performance.now() - cam.seg; cam.paused = true;
-    setPlaying(false); camState(); updRecTime();
-    toast('Take ' + cam.takes + ' gravado. Grave o próximo ou toque em Concluir');
+  function stopTake() {
+    const r = cam.cur; if (!r) return cam.stopping || Promise.resolve();
+    cam.curTake.ms = performance.now() - cam.seg;
+    cam.list.push(cam.curTake);
+    cam.cur = null; cam.paused = true;
+    clearInterval(cam.tick);
+    try { if (r.state !== 'inactive') r.stop(); } catch (e) {}
+    return cam.stopping;
   }
-  function resumeTake() {
-    try { cam.rec.resume(); } catch (e) { toast('Não deu para continuar o vídeo'); return false; }
-    cam.takes++; cam.seg = performance.now(); cam.paused = false;
-    camState(); updRecTime();
+  function startRec() {
+    cam.mime = pickMime(); cam.list = []; cam.rec = true;
+    if (!startTake()) { cam.rec = null; camState(); updRecTime(); return false; }
     return true;
   }
-  function finishSession() {
+  // Fim de um take: o vídeo continua aberto. O próximo take entra no mesmo vídeo.
+  function pauseTake() {
+    if (!cam.cur) return;
+    const n = takeCount();
+    stopTake();
+    setPlaying(false); camState(); updRecTime();
+    toast('Take ' + n + ' gravado. Grave o próximo, apague este ou toque em Concluir');
+  }
+  const resumeTake = () => startTake();
+  // Apagar o último take: só ele sai; os anteriores continuam no vídeo.
+  $('#cDelTake').addEventListener('click', async (e) => {
+    e.currentTarget.blur();
+    if (!cam.rec || cam.cur) return;
+    await cam.stopping;
+    const n = cam.list.length;
+    if (!n) return;
+    cam.list.pop();
+    if (!cam.list.length) cam.rec = null;   // sem take nenhum, a câmera volta ao começo
+    toTop(); camState(); updRecTime();
+    toast('Take ' + n + ' apagado');
+  });
+  async function finishSession() {
     if (!cam.rec) return;
-    if (!cam.paused) cam.acc += performance.now() - cam.seg;
-    cam.paused = true;
-    clearInterval(cam.tick);
     setPlaying(false);
-    if (cam.rec.state !== 'inactive') cam.rec.stop();
+    await stopTake();
+    cam.paused = true;
+    finishRec();
   }
   function recToggle() {
     if (P.counting) { setPlaying(false); return; }
-    if (cam.rec && !cam.paused) { pauseTake(); return; }
+    if (cam.rec && cam.cur) { pauseTake(); return; }
     // Contagem, depois grava (ou continua o vídeo) e rola junto.
     if (scriptOn() && P.pos >= P.max - 1) { P.pos = 0; render(); }
     if (!cam.rec) P.elapsed = 0;
@@ -1720,21 +2079,206 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   // Se o app sair da tela no meio de um vídeo, o iPhone corta a câmera: fecha o que já foi gravado.
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && cam.rec) finishSession(); });
 
-  function finishRec() {
-    const r = cam.rec; cam.rec = null;
-    const type = (r && r.mimeType) || cam.mime || 'video/mp4';
-    const blob = new Blob(cam.chunks, { type }); cam.chunks = [];
-    const dur = cam.acc / 1000, takes = cam.takes;
-    cam.acc = 0; cam.takes = 0; cam.paused = false;
+  /* ---------------- juntar os takes num vídeo só, sem regravar ----------------
+     Cada take é um MP4 em fragmentos: cabeçalho (ftyp + moov) e blocos (moof + mdat) com o tempo de cada um.
+     O vídeo final usa o cabeçalho do primeiro take e põe os blocos de todos em sequência, deslocando o tempo
+     de cada take para depois do anterior. O vídeo em si (mdat) é só copiado, sem passar pela memória toda.
+     Se algo não bater (outro formato, codec diferente entre takes), quem chama entrega os takes separados. */
+  const MP4 = (() => {
+    const tp = (dv, o) => String.fromCharCode(dv.getUint8(o + 4), dv.getUint8(o + 5), dv.getUint8(o + 6), dv.getUint8(o + 7));
+    function kids(dv, start, end) {
+      const out = []; let o = start;
+      while (o + 8 <= end) {
+        let size = dv.getUint32(o), hdr = 8;
+        if (size === 1) { size = Number(dv.getBigUint64(o + 8)); hdr = 16; } else if (size === 0) size = end - o;
+        if (size < hdr || o + size > end) throw new Error('caixa quebrada');
+        out.push({ type: tp(dv, o), off: o, size, hdr }); o += size;
+      }
+      return out;
+    }
+    const kid = (dv, box, type) => kids(dv, box.off + box.hdr, box.off + box.size).find(k => k.type === type);
+    const kidsOf = (dv, box, type) => kids(dv, box.off + box.hdr, box.off + box.size).filter(k => k.type === type);
+    async function tops(blob) {
+      const out = []; let o = 0; const n = blob.size;
+      while (o + 8 <= n) {
+        const dv = new DataView(await blob.slice(o, Math.min(n, o + 16)).arrayBuffer());
+        let size = dv.getUint32(0), hdr = 8;
+        if (size === 1) { size = Number(dv.getBigUint64(8)); hdr = 16; } else if (size === 0) size = n - o;
+        if (size < hdr || o + size > n) throw new Error('arquivo quebrado');
+        out.push({ type: tp(dv, 0), off: o, size, hdr }); o += size;
+      }
+      return out;
+    }
+    const bytes = async (blob, b) => new Uint8Array(await blob.slice(b.off, b.off + b.size).arrayBuffer());
+    // campos de duração e escala de tempo: [posição da escala, posição da duração, versão]
+    function timeFields(dv, box) {
+      const v = dv.getUint8(box.off + box.hdr), p = box.off + box.hdr + 4;
+      return v === 1 ? { v, ts: p + 16, dur: p + 20 } : { v, ts: p + 8, dur: p + 12 };
+    }
+    function setDur(dv, pos, v, val) {
+      if (v === 1) dv.setBigUint64(pos, BigInt(Math.max(0, Math.round(val))));
+      else dv.setUint32(pos, Math.min(0xffffffff, Math.max(0, Math.round(val))));
+    }
+    // Descrição do codec para comparar entre takes. A caixa btrt só informa a taxa de bits medida naquele take
+    // (muda de um take para outro e não afeta a reprodução), então entra zerada na comparação.
+    function codecKey(src) {
+      const u = new Uint8Array(src);
+      for (let i = 0; i + 20 <= u.length; i++) {
+        if (u[i] === 0 && u[i + 1] === 0 && u[i + 2] === 0 && u[i + 3] === 20 && u[i + 4] === 0x62 && u[i + 5] === 0x74 && u[i + 6] === 0x72 && u[i + 7] === 0x74) u.fill(0, i + 8, i + 20);
+      }
+      return Array.from(u).join(',');
+    }
+    // Lê o cabeçalho: faixas (id, escala de tempo, descrição do codec) e durações padrão.
+    function readMoov(u8) {
+      const dv = new DataView(u8.buffer, u8.byteOffset, u8.byteLength);
+      const moov = { type: 'moov', off: 0, size: u8.length, hdr: 8 };
+      const mvhd = kid(dv, moov, 'mvhd'); if (!mvhd) throw new Error('sem mvhd');
+      const mv = timeFields(dv, mvhd);
+      const tracks = new Map();
+      for (const trak of kidsOf(dv, moov, 'trak')) {
+        const tkhd = kid(dv, trak, 'tkhd'), mdia = kid(dv, trak, 'mdia');
+        const mdhd = mdia && kid(dv, mdia, 'mdhd'), minf = mdia && kid(dv, mdia, 'minf'), hdlr = mdia && kid(dv, mdia, 'hdlr');
+        const stbl = minf && kid(dv, minf, 'stbl'), stsd = stbl && kid(dv, stbl, 'stsd');
+        if (!tkhd || !mdhd || !stsd || !hdlr) throw new Error('faixa incompleta');
+        const kind = tp(dv, hdlr.off + hdlr.hdr + 4);
+        const tv = dv.getUint8(tkhd.off + tkhd.hdr), tp4 = tkhd.off + tkhd.hdr + 4;
+        const id = dv.getUint32(tp4 + (tv === 1 ? 16 : 8));
+        const md = timeFields(dv, mdhd);
+        tracks.set(id, { id, kind, ts: dv.getUint32(md.ts), stsd: codecKey(u8.subarray(stsd.off, stsd.off + stsd.size)),
+          tkhdDur: { pos: tp4 + (tv === 1 ? 24 : 16), v: tv }, mdhdDur: { pos: md.dur, v: md.v }, defDur: 0 });
+      }
+      const mvex = kid(dv, moov, 'mvex');
+      if (mvex) for (const trex of kidsOf(dv, mvex, 'trex')) {
+        const p = trex.off + trex.hdr + 4, t = tracks.get(dv.getUint32(p));
+        if (t) t.defDur = dv.getUint32(p + 8);
+      }
+      const mehd = mvex && kid(dv, mvex, 'mehd');
+      return { u8, dv, movieTs: dv.getUint32(mv.ts), mvhdDur: { pos: mv.dur, v: mv.v }, tracks,
+        mehdDur: mehd ? { pos: mehd.off + mehd.hdr + 4, v: dv.getUint8(mehd.off + mehd.hdr) } : null };
+    }
+    // Lê um bloco: para cada faixa, onde está o tempo de início, o valor e quanto o bloco dura.
+    function readMoof(u8, head) {
+      const dv = new DataView(u8.buffer, u8.byteOffset, u8.byteLength);
+      const moof = { type: 'moof', off: 0, size: u8.length, hdr: 8 };
+      const mfhd = kid(dv, moof, 'mfhd'); if (!mfhd) throw new Error('sem mfhd');
+      const trafs = [];
+      for (const traf of kidsOf(dv, moof, 'traf')) {
+        const tfhd = kid(dv, traf, 'tfhd'), tfdt = kid(dv, traf, 'tfdt');
+        if (!tfhd || !tfdt) throw new Error('bloco sem tempo');
+        const fp = tfhd.off + tfhd.hdr, flags = dv.getUint32(fp) & 0xffffff, id = dv.getUint32(fp + 4);
+        const tr = head.tracks.get(id); if (!tr) throw new Error('faixa desconhecida');
+        let q = fp + 8, baseOff = -1, defDur = tr.defDur;
+        if (flags & 0x1) { baseOff = q; q += 8; }
+        if (flags & 0x2) q += 4;
+        if (flags & 0x8) defDur = dv.getUint32(q);
+        const tv = dv.getUint8(tfdt.off + tfdt.hdr), tpos = tfdt.off + tfdt.hdr + 4;
+        const base = tv === 1 ? Number(dv.getBigUint64(tpos)) : dv.getUint32(tpos);
+        let dur = 0;
+        for (const trun of kidsOf(dv, traf, 'trun')) {
+          const rp = trun.off + trun.hdr, rf = dv.getUint32(rp) & 0xffffff, cnt = dv.getUint32(rp + 4);
+          let r = rp + 8; if (rf & 0x1) r += 4; if (rf & 0x4) r += 4;
+          const per = ((rf & 0x100) ? 4 : 0) + ((rf & 0x200) ? 4 : 0) + ((rf & 0x400) ? 4 : 0) + ((rf & 0x800) ? 4 : 0);
+          if (rf & 0x100) { for (let i = 0; i < cnt; i++) dur += dv.getUint32(r + i * per); }
+          else dur += cnt * defDur;
+        }
+        trafs.push({ id, idPos: fp + 4, ts: tr.ts, tv, tpos, base, dur, baseOff });
+      }
+      return { u8, dv, seqPos: mfhd.off + mfhd.hdr + 4, trafs };
+    }
+    async function readTake(blob) {
+      const list = await tops(blob);
+      const ftyp = list.find(b => b.type === 'ftyp'), moovB = list.find(b => b.type === 'moov');
+      if (!moovB) throw new Error('sem cabeçalho');
+      const head = readMoov(await bytes(blob, moovB));
+      const parts = []; let start = Infinity, end = 0;
+      for (const b of list) {
+        if (b.type === 'moof') {
+          const m = readMoof(await bytes(blob, b), head); m.srcOff = b.off;
+          for (const t of m.trafs) { start = Math.min(start, t.base / t.ts); end = Math.max(end, (t.base + t.dur) / t.ts); }
+          parts.push(m);
+        } else if (b.type === 'mdat') parts.push({ mdat: blob.slice(b.off, b.off + b.size), size: b.size });
+        // o resto (mfra, sidx, styp, free) fica de fora: no vídeo juntado ele apontaria para lugares errados
+      }
+      if (!parts.some(p => p.trafs)) throw new Error('não está em fragmentos');
+      return { blob, ftyp, head, parts, start, end };
+    }
+    async function join(blobs, type) {
+      const takes = [];
+      for (const b of blobs) takes.push(await readTake(b));
+      const first = takes[0];
+      // O navegador pode numerar as faixas em outra ordem a cada take (vídeo 1 e áudio 2, ou o contrário):
+      // as faixas casam pelo tipo, e os blocos dos takes seguintes ganham o número do primeiro.
+      const kinds = [...first.head.tracks.values()].map(t => t.kind);
+      if (new Set(kinds).size !== kinds.length) throw new Error('duas faixas do mesmo tipo');
+      first.map = new Map([...first.head.tracks.keys()].map(id => [id, id]));
+      for (const t of takes.slice(1)) {
+        if (t.head.tracks.size !== first.head.tracks.size) throw new Error('faixas diferentes');
+        t.map = new Map();
+        for (const [id, tr] of first.head.tracks) {
+          const o = [...t.head.tracks.values()].find(x => x.kind === tr.kind);
+          if (!o || o.ts !== tr.ts) throw new Error('faixa diferente entre takes (' + tr.kind + ')');
+          t.map.set(o.id, id);
+          if (o.stsd !== tr.stsd) { const x = tr.stsd.split(','), y = o.stsd.split(','); let i = 0; while (i < x.length && x[i] === y[i]) i++; throw new Error('codec diferente entre takes (faixa ' + id + ', byte ' + i + ' de ' + x.length + '/' + y.length + ')'); }
+        }
+      }
+      const out = [], head = first.head;
+      let pos = 0, seq = 1, at = 0;
+      if (first.ftyp) { const f = await bytes(first.blob, first.ftyp); out.push(f); pos += f.length; }
+      const moov = new Uint8Array(head.u8); out.push(moov); pos += moov.length;
+      for (const t of takes) {
+        for (const p of t.parts) {
+          if (p.mdat) { out.push(p.mdat); pos += p.size; continue; }
+          const u8 = new Uint8Array(p.u8), dv = new DataView(u8.buffer);
+          dv.setUint32(p.seqPos, seq++);
+          for (const f of p.trafs) {
+            dv.setUint32(f.idPos, t.map.get(f.id));
+            const nb = f.base - Math.round(t.start * f.ts) + Math.round(at * f.ts);
+            if (nb < 0) throw new Error('tempo negativo');
+            if (f.tv === 1) dv.setBigUint64(f.tpos, BigInt(nb));
+            else if (nb > 0xffffffff) throw new Error('tempo grande demais'); else dv.setUint32(f.tpos, nb);
+            if (f.baseOff >= 0) dv.setBigUint64(f.baseOff, BigInt(Number(dv.getBigUint64(f.baseOff)) - p.srcOff + pos));
+          }
+          out.push(u8); pos += u8.length;
+        }
+        at += t.end - t.start;
+      }
+      // Cabeçalho: em vídeo de fragmentos ele não guarda amostra nenhuma, então as durações dele vão a zero
+      // (o leitor da Apple soma a duração do cabeçalho com a dos blocos e dobraria o tempo). O total vai no mehd.
+      const mdv = new DataView(moov.buffer);
+      setDur(mdv, head.mvhdDur.pos, head.mvhdDur.v, 0);
+      if (head.mehdDur) setDur(mdv, head.mehdDur.pos, head.mehdDur.v, at * head.movieTs);
+      for (const tr of head.tracks.values()) {
+        setDur(mdv, tr.tkhdDur.pos, tr.tkhdDur.v, 0);
+        setDur(mdv, tr.mdhdDur.pos, tr.mdhdDur.v, 0);
+      }
+      return new Blob(out, { type });
+    }
+    return { join };
+  })();
+
+  async function finishRec() {
+    const list = cam.list.filter(t => t.chunks.length); cam.list = []; cam.rec = null; cam.cur = null; cam.paused = false;
     camState(); updRecTime();
-    if (!blob.size) { toast('A gravação não chegou a começar'); return; }
+    if (!list.length) { toast('A gravação não chegou a começar'); return; }
+    const type = list[0].type || cam.mime || 'video/mp4';
+    const ms = list.reduce((a, t) => a + t.ms, 0), n = list.length;
+    const blobs = list.map(t => new Blob(t.chunks, { type: t.type || type }));
     const d = new Date(), ext = /mp4/.test(type) ? 'mp4' : 'webm';
-    const base = (current ? nameOf(current) : 'Câmera').replace(/[\\/:*?"<>|]+/g, ' ').slice(0, 40).trim();
-    take = { blob, type, url: URL.createObjectURL(blob),
-      name: 'TeleGron ' + base + ' ' + d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()) + ' ' + pad2(d.getHours()) + 'h' + pad2(d.getMinutes()) + '.' + ext };
+    const base = 'TeleGron ' + (current ? nameOf(current) : 'Câmera').replace(/[\\/:*?"<>|]+/g, ' ').slice(0, 40).trim() + ' ' + d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()) + ' ' + pad2(d.getHours()) + 'h' + pad2(d.getMinutes());
+    $('#review').hidden = false; $('#rvSave').disabled = true;
+    $('#rvInfo').textContent = n > 1 ? 'Juntando os ' + n + ' takes…' : '';
+    let files;
+    if (n === 1) files = [{ blob: blobs[0], name: base + '.' + ext }];
+    else {
+      try { files = [{ blob: await MP4.join(blobs, type), name: base + '.' + ext }]; }
+      catch (e) { console.warn('TeleGron: os takes não deram para juntar, vão separados:', e && e.message); files = blobs.map((b, i) => ({ blob: b, name: base + ' take ' + (i + 1) + '.' + ext })); }
+    }
+    const size = files.reduce((a, f) => a + f.blob.size, 0);
+    take = { files, type, url: URL.createObjectURL(files[0].blob) };
     $('#rvVideo').src = take.url;
-    $('#rvInfo').textContent = [takes > 1 ? takes + ' takes' : '', cam.qual, fmt(dur), Math.max(1, Math.round(blob.size / 1048576)) + ' MB'].filter(Boolean).join(' · ');
-    $('#review').hidden = false;
+    $('#rvInfo').textContent = [n > 1 ? n + ' takes' + (files.length > 1 ? ' em ' + files.length + ' vídeos' : '') : '', cam.qual, fmt(ms / 1000), Math.max(1, Math.round(size / 1048576)) + ' MB'].filter(Boolean).join(' · ');
+    $('#rvSave').textContent = files.length > 1 ? 'Salvar os ' + files.length + ' vídeos' : 'Salvar vídeo';
+    $('#rvSave').disabled = false;
   }
   function closeReview() {
     const v = $('#rvVideo'); v.pause(); v.removeAttribute('src'); v.load();
@@ -1743,16 +2287,19 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   }
   $('#rvSave').addEventListener('click', async () => {
     if (!take) return;
-    const file = new File([take.blob], take.name, { type: take.type });
+    const files = take.files.map(f => new File([f.blob], f.name, { type: take.type }));
     try {
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({ files: [file], title: take.name });
-        closeReview(); toTop(); toast('Vídeo salvo'); return;
+      if (navigator.canShare && navigator.canShare({ files })) {
+        await navigator.share({ files, title: files[0].name });
+        closeReview(); toTop(); toast(files.length > 1 ? 'Vídeos salvos' : 'Vídeo salvo'); return;
       }
     } catch (e) { if (e && e.name === 'AbortError') return; }
-    const a = document.createElement('a'); a.href = take.url; a.download = take.name;
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(() => { closeReview(); toTop(); }, 400); toast('Vídeo baixado');
+    for (const f of take.files) {
+      const u = URL.createObjectURL(f.blob), a = document.createElement('a'); a.href = u; a.download = f.name;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(u), 4000);
+    }
+    setTimeout(() => { closeReview(); toTop(); }, 400); toast(take.files.length > 1 ? 'Vídeos baixados' : 'Vídeo baixado');
   });
   // Gravar de novo já começa outro vídeo (com a contagem); Excluir apaga e deixa a câmera pronta.
   $('#rvRetake').addEventListener('click', () => { closeReview(); toTop(); recToggle(); });
@@ -1760,7 +2307,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
 
   // Roteiro na câmera: escolher qual passa na tela, ou nenhum.
   function openPick() {
-    if (cam.rec && !cam.paused) { toast('Pause o take para trocar o roteiro'); return; }
+    if (cam.cur) { toast('Pause o take para trocar o roteiro'); return; }
     const on = scriptOn();
     const row = (id, icon, title, meta, sel) => `<button type="button" role="radio" aria-checked="${sel}" data-pick="${id}"><svg class="pi" aria-hidden="true"><use href="#${icon}"/></svg><span class="fn">${title}</span><span class="fd">${meta}</span><svg class="ck" aria-hidden="true"><use href="#i-check"/></svg></button>`;
     $('#pickList').innerHTML = row('', 'i-cam', 'Sem roteiro', 'Só a câmera', !on) +
