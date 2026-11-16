@@ -766,8 +766,15 @@ html.dragging #binBtn.over{transform:scale(1.14);color:var(--accent-text);transi
 .gl::after,.gk:not(.cb)::after{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;padding:1px;background:var(--lg-rim);pointer-events:none;
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
 .gl:not(.gl-accent){background:var(--lg-fill);box-shadow:var(--lg-shadow);-webkit-backdrop-filter:var(--lg-blur);backdrop-filter:var(--lg-blur)}
-.gl.gl-danger{box-shadow:var(--lg-shadow)}
-.gl-danger::after{background:linear-gradient(135deg,rgba(255,140,130,.9),rgba(255,93,82,.4) 30%,rgba(255,93,82,.18) 50%,rgba(255,93,82,.35) 74%,rgba(255,120,110,.7))}
+/* perigo (Excluir para sempre): o mesmo fosco com um tom de vermelho, aro vermelho de 1 px igual em toda a volta;
+   hover aumenta o tom; apertar enche de vermelho com letra branca e afunda; desligado, tudo apagado */
+.gl.gl-danger{color:var(--danger);
+  background:linear-gradient(color-mix(in srgb,var(--danger) 13%,transparent),color-mix(in srgb,var(--danger) 7%,transparent)),var(--lg-fill);
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--danger) 45%,transparent),var(--lg-shadow)}
+.gl-danger::after{display:none}
+@media (hover:hover){.gl.gl-danger:hover{color:var(--danger);background:linear-gradient(color-mix(in srgb,var(--danger) 22%,transparent),color-mix(in srgb,var(--danger) 14%,transparent)),var(--lg-fill);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--danger) 60%,transparent),var(--lg-shadow)}}
+.gl.gl-danger:active{color:#fff;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,0) 50%),var(--danger);box-shadow:inset 0 0 0 1px rgba(120,10,4,.25),var(--lg-shadow)}
+.gl.gl-danger:disabled{color:color-mix(in srgb,var(--danger) 42%,transparent);background:var(--lg-fill);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--danger) 18%,transparent),var(--lg-shadow)}
 .gl-accent::after{background:linear-gradient(135deg,rgba(255,255,255,.75),rgba(255,255,255,.18) 28%,rgba(255,255,255,0) 50%,rgba(255,255,255,.1) 74%,rgba(255,255,255,.4))}
 .gl-accent,.gl-accent:active{-webkit-backdrop-filter:var(--lg-blur);backdrop-filter:var(--lg-blur)}
 .gl,.gk:not(.cb){transition:background .2s,box-shadow .2s,color .2s,transform .35s cubic-bezier(.3,1.3,.5,1)}
