@@ -221,6 +221,10 @@ label[for]{cursor:pointer}
 .item-main:focus-visible{outline-offset:-2px;border-radius:16px}
 .item-title{font-size:16px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .item-meta{font-size:13px;color:var(--fg-2);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Marca de roteiro já filmado. */
+.rec-tag{color:var(--accent-text);font-weight:600}
+.rec-tag svg{width:12px;height:12px;vertical-align:-1px;margin-right:3px}
+.item.done .item-title{color:var(--fg-2)}
 /* play da lista: aro de tecla (o mesmo vidro das outras) com um miolo no degradê GRON e o play branco.
    O miolo tem o relevo do botão laranja; no hover clareia, ao tocar afunda. Sem brilho, sem pulso. */
 .item-play{position:relative;display:grid;place-items:center;width:44px;height:44px;margin-right:11px;border-radius:50%;color:#fff;flex:none}
@@ -801,7 +805,7 @@ html.dragging #binBtn.over{transform:scale(1.1);color:var(--accent-text)}
       </section>
 
       <section id="listSec" aria-labelledby="listLabel">
-        <h2 class="sec-label" id="listLabel">Outros roteiros</h2>
+        <h2 class="sec-label" id="listLabel">Todos os roteiros</h2>
         <ul class="list" id="list"></ul>
       </section>
     </div>
@@ -1060,6 +1064,7 @@ html.dragging #binBtn.over{transform:scale(1.1);color:var(--accent-text)}
 <div id="ctxMenu" role="menu" aria-label="Opções do roteiro" hidden>
   <button class="ctx-btn" id="ctxRead" type="button" role="menuitem"><svg aria-hidden="true"><use href="#i-play"/></svg>Ler no prompter</button>
   <button class="ctx-btn" id="ctxEdit" type="button" role="menuitem"><svg aria-hidden="true"><use href="#i-edit"/></svg>Editar</button>
+  <button class="ctx-btn" id="ctxRec" type="button" role="menuitem"><svg aria-hidden="true"><use href="#i-check"/></svg><span>Marcar como gravado</span></button>
   <button class="ctx-btn danger" id="ctxDel" type="button" role="menuitem"><svg aria-hidden="true"><use href="#i-trash"/></svg>Mover para a Lixeira</button>
 </div>
 <div id="safe" aria-hidden="true"></div>
@@ -1392,24 +1397,27 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   }
   function renderHome(animate) {
     const q = $('#search').value.trim().toLowerCase();
-    const sorted = scripts.slice().sort((a, b) => b.updated - a.updated);
+    const sorted = scripts.slice().sort(byNum);
     const n = sorted.length;
     const total = sorted.reduce((a, s) => a + secs(s.text), 0);
     $('#count').hidden = n === 0;
     $('#count').textContent = n === 0 ? '' :
       plural(n, 'roteiro', 'roteiros') + ' · ' + (total < 60 ? Math.max(1, Math.round(total)) + ' s' : Math.round(total / 60) + ' min') + ' de leitura';
     $('#searchWrap').hidden = n < 3 && !q;
-    const featured = q ? null : sorted[0];
-    const rest = q ? sorted.filter(s => (s.title + ' ' + s.text).toLowerCase().includes(q)) : sorted.slice(1);
+    // O card mostra o último editado; a lista fica sempre na ordem de entrada, com ele dentro,
+    // para editar um roteiro não mudar nada de lugar.
+    const featured = q ? null : sorted.reduce((a, s) => (!a || s.updated > a.updated ? s : a), null);
+    const rest = q ? sorted.filter(s => (s.title + ' ' + s.text).toLowerCase().includes(q)) : n > 1 ? sorted : [];
     $('#featureSec').hidden = !featured;
     if (featured) paintFeature(featured);
     $('#listSec').hidden = !rest.length;
-    $('#listLabel').textContent = q ? plural(rest.length, 'resultado', 'resultados') : 'Outros roteiros';
+    $('#listLabel').textContent = q ? plural(rest.length, 'resultado', 'resultados') : 'Todos os roteiros';
     $('#listLabel').classList.toggle('first', !!q);
     $('#list').innerHTML = rest.map((s, i) => {
       const w = words(s.text), name = esc(nameOf(s));
-      return `<li class="item" data-card="${s.id}" style="--i:${Math.min(i, 8)}">
-        <button class="item-main" type="button" data-edit="${s.id}" aria-label="Abrir ${name}"><span class="item-title">${name}</span><span class="item-meta">${dur(secs(s.text))} · ${plural(w, 'palavra', 'palavras')} · ${ago(s.updated)}</span></button>
+      const rec = s.recorded ? '<span class="rec-tag"><svg aria-hidden="true"><use href="#i-check"/></svg>Gravado</span> · ' : '';
+      return `<li class="item${s.recorded ? ' done' : ''}" data-card="${s.id}" style="--i:${Math.min(i, 8)}">
+        <button class="item-main" type="button" data-edit="${s.id}" aria-label="Abrir ${name}"><span class="item-title">${esc(nameOf(s))}</span><span class="item-meta">${rec}${dur(secs(s.text))} · ${plural(w, 'palavra', 'palavras')} · ${ago(s.updated)}</span></button>
         <button class="item-play" type="button" data-play="${s.id}" aria-label="Ler ${name} no prompter"><svg><use href="#i-play"/></svg></button>
       </li>`;
     }).join('');
@@ -1425,7 +1433,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   const draft = (text = '', title = '') => ({ id: uid(), title, text, updated: Date.now() });
   function keep(s) {
     const inList = scripts.includes(s);
-    if (hasContent(s) && !inList) scripts.push(s);
+    if (hasContent(s) && !inList) { if (!s.n) s.n = nextNum(); scripts.push(s); }
     else if (!hasContent(s) && inList) scripts = scripts.filter(x => x !== s);
   }
   home.addEventListener('click', (e) => {
@@ -1457,7 +1465,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
      apagar nem sobrescrever nada: o que já está aqui igual é pulado, e roteiro com o mesmo id mas texto
      diferente entra como outro roteiro. */
   const BACKUP = 'telegron-roteiros';
-  const pick = ({ id, title, text, updated, deleted }) => ({ id, title, text, updated, ...(deleted ? { deleted } : {}) });
+  const pick = ({ id, n, title, text, updated, recorded, deleted }) => ({ id, n, title, text, updated, ...(recorded ? { recorded } : {}), ...(deleted ? { deleted } : {}) });
   $('#exportAll').addEventListener('click', async (e) => {
     e.currentTarget.blur();
     const d = new Date(), ymd = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
@@ -1482,15 +1490,17 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     const all = () => scripts.concat(trash);
     let novos = 0, iguais = 0;
     for (const r of (Array.isArray(data.roteiros) ? data.roteiros : []).filter(ok)) {
-      const s = { id: String(r.id || uid()), title: String(r.title || ''), text: r.text, updated: +r.updated || Date.now() };
+      const s = { id: String(r.id || uid()), n: +r.n || 0, title: String(r.title || ''), text: r.text, updated: +r.updated || Date.now(), ...(r.recorded ? { recorded: +r.recorded } : {}) };
       if (all().some(x => same(x, s))) { iguais++; continue; }
       if (all().some(x => x.id === s.id)) s.id = uid();
+      if (!s.n || all().some(x => x.n === s.n)) s.n = nextNum();
       scripts.push(s); novos++;
     }
     for (const r of (Array.isArray(data.lixeira) ? data.lixeira : []).filter(ok)) {
-      const s = { id: String(r.id || uid()), title: String(r.title || ''), text: r.text, updated: +r.updated || Date.now(), deleted: +r.deleted || Date.now() };
+      const s = { id: String(r.id || uid()), n: +r.n || 0, title: String(r.title || ''), text: r.text, updated: +r.updated || Date.now(), deleted: +r.deleted || Date.now(), ...(r.recorded ? { recorded: +r.recorded } : {}) };
       if (all().some(x => same(x, s))) continue;
       if (all().some(x => x.id === s.id)) s.id = uid();
+      if (!s.n || all().some(x => x.n === s.n)) s.n = nextNum();
       trash.push(s);
     }
     saveScripts(); saveTrash(); binState(false); renderHome(false);
@@ -1519,6 +1529,16 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   let trash = store.get('pe.trash', []);
   if (!Array.isArray(trash)) trash = [];
   const saveTrash = () => store.set('pe.trash', trash);
+  /* Ordem de entrada: o roteiro ganha um número quando entra na lista e fica com ele, mesmo editado,
+     apagado ou restaurado; a lista mostra o mais novo em cima. O número não aparece na tela. Os que já
+     existiam recebem pela ordem em que foram criados (o id começa com a hora da criação). */
+  function nextNum() { return scripts.concat(trash).reduce((m, s) => Math.max(m, s.n || 0), 0) + 1; }
+  function byNum(a, b) { return (b.n || 0) - (a.n || 0); }
+  {
+    const bornAt = (s) => { const t = parseInt(String(s.id).slice(0, -5), 36); return t > 1e12 && t < 1e13 ? t : (s.updated || 0); };
+    const sem = scripts.concat(trash).filter(s => !s.n).sort((a, b) => bornAt(a) - bornAt(b));
+    if (sem.length) { let k = nextNum(); sem.forEach(s => { s.n = k++; }); store.set('pe.scripts', scripts); saveTrash(); }
+  }
   // A lixeirinha da barra de baixo fica cheia com roteiro dentro e vazia quando a Lixeira esvazia.
   const bin = $('#binBtn');
   function binState(gulp) {
@@ -1620,6 +1640,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     lift.hidden = false; ctxEl.hidden = false; ctxEl.classList.remove('out');
     el.classList.add('lifted');
     C = { s, el, r, inner, sx: x, sy: y, bx: r.left, by: r.top, down, drag: !!dragNow, over: false };
+    $('#ctxRec span').textContent = s.recorded ? 'Marcar como não gravado' : 'Marcar como gravado';
     requestAnimationFrame(() => { if (C && C.inner === inner) inner.classList.add('up'); });
     if (dragNow) { dragOn(); try { getSelection().removeAllRanges(); } catch (e) {} return; }
     placeMenu();
@@ -1732,6 +1753,11 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   const ctxAct = (fn) => () => { if (!C) return; const s = C.s; finishCtx(); fn(s); };
   $('#ctxRead').addEventListener('click', ctxAct((s) => openPrompter(s)));
   $('#ctxEdit').addEventListener('click', ctxAct((s) => openPrompter(s, false, true)));
+  $('#ctxRec').addEventListener('click', ctxAct((s) => {
+    if (s.recorded) delete s.recorded; else s.recorded = Date.now();
+    saveScripts(); renderHome(false);
+    toast('“' + nameOf(s) + '” ' + (s.recorded ? 'marcado como gravado' : 'voltou para a fila'));
+  }));
   $('#ctxDel').addEventListener('click', () => {
     if (!C) return;
     const c = C;
@@ -1965,8 +1991,10 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   }
   // Grava o que foi escrito. Sem texto, o roteiro não fica salvo.
   function commitEdit() {
-    current.text = et.value; current.title = ti.value.trim();
-    current.updated = Date.now();
+    const title = ti.value.trim();
+    // Abrir e fechar sem mexer não conta como edição.
+    if (et.value !== current.text || title !== (current.title || '').trim()) current.updated = Date.now();
+    current.text = et.value; current.title = title;
     keep(current); saveScripts();
   }
   function leaveEdit(closing) {
@@ -2529,7 +2557,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     const type = list[0].type || cam.mime || 'video/mp4';
     const d = new Date(), ext = /mp4/.test(type) ? 'mp4' : 'webm';
     const base = 'TeleGron ' + (current ? nameOf(current) : 'Câmera').replace(/[\\/:*?"<>|]+/g, ' ').slice(0, 40).trim() + ' ' + d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()) + ' ' + pad2(d.getHours()) + 'h' + pad2(d.getMinutes());
-    take = { type, ext, base, playing: 0, url: '',
+    take = { type, ext, base, playing: 0, url: '', script: scriptOn() ? current : null,
       takes: list.map(t => ({ blob: new Blob(t.chunks, { type: t.type || type }), ms: t.ms, keep: true })) };
     const many = take.takes.length > 1;
     $('.rv').classList.toggle('has-takes', many);
@@ -2580,6 +2608,11 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   }
   // Salvar: junta só os takes marcados, na ordem em que foram gravados, num vídeo só e sem regravar.
   // Se não der para juntar, salva os takes marcados como vídeos separados (nada se perde).
+  // Vídeo salvo com um roteiro passando: o roteiro fica marcado como gravado na lista.
+  function markRecorded() {
+    const s = take && take.script;
+    if (s && scripts.includes(s) && !s.recorded) { s.recorded = Date.now(); saveScripts(); }
+  }
   $('#rvSave').addEventListener('click', async () => {
     if (!take) return;
     const kept = take.takes.filter(t => t.keep);
@@ -2597,7 +2630,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     try {
       if (navigator.canShare && navigator.canShare({ files })) {
         await navigator.share({ files, title: files[0].name });
-        closeReview(); toTop(); toast(files.length > 1 ? 'Vídeos salvos' : 'Vídeo salvo'); return;
+        markRecorded(); closeReview(); toTop(); toast(files.length > 1 ? 'Vídeos salvos' : 'Vídeo salvo'); return;
       }
     } catch (e) { if (e && e.name === 'AbortError') return; }
     for (const f of list) {
@@ -2605,7 +2638,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
       document.body.appendChild(a); a.click(); a.remove();
       setTimeout(() => URL.revokeObjectURL(u), 4000);
     }
-    setTimeout(() => { closeReview(); toTop(); }, 400); toast(list.length > 1 ? 'Vídeos baixados' : 'Vídeo baixado');
+    markRecorded(); setTimeout(() => { closeReview(); toTop(); }, 400); toast(list.length > 1 ? 'Vídeos baixados' : 'Vídeo baixado');
   });
   // Gravar de novo já começa outro vídeo (com a contagem); Excluir apaga e deixa a câmera pronta.
   $('#rvRetake').addEventListener('click', () => { closeReview(); toTop(); recToggle(); });
@@ -2617,7 +2650,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     const on = scriptOn();
     const row = (id, icon, title, meta, sel) => `<button type="button" role="radio" aria-checked="${sel}" data-pick="${id}"><svg class="pi" aria-hidden="true"><use href="#${icon}"/></svg><span class="fn">${title}</span><span class="fd">${meta}</span><svg class="ck" aria-hidden="true"><use href="#i-check"/></svg></button>`;
     $('#pickList').innerHTML = row('', 'i-cam', 'Sem roteiro', 'Só a câmera', !on) +
-      scripts.slice().sort((a, b) => b.updated - a.updated).map(s => row(s.id, 'i-doc', esc(nameOf(s)), dur(secs(s.text)) + ' · ' + plural(words(s.text), 'palavra', 'palavras'), on && s === current)).join('');
+      scripts.slice().sort(byNum).map(s => row(s.id, 'i-doc', esc(nameOf(s)), dur(secs(s.text)) + ' · ' + plural(words(s.text), 'palavra', 'palavras'), on && s === current)).join('');
     $('#pickWrap').hidden = false;
   }
   function closePick() { $('#pickWrap').hidden = true; }
