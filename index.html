@@ -164,13 +164,19 @@ label[for]{cursor:pointer}
 /* rente ao alto da tela o conteúdo se apaga de leve, para não brigar com os botões */
 .home::before{content:"";position:fixed;left:0;right:0;top:0;height:calc(var(--st) + 66px);z-index:8;pointer-events:none;background:linear-gradient(to bottom,color-mix(in srgb,var(--bg) 70%,transparent),color-mix(in srgb,var(--bg) 0%,transparent))}
 .top-actions{display:flex;align-items:center;gap:10px;flex:none}
-.theme-t{position:relative;display:inline-flex;align-items:center;justify-content:space-between;width:70px;height:38px;padding:0 10px;border-radius:99px;background:var(--well);box-shadow:var(--well-shadow);border:1px solid var(--hair);color:var(--fg-3);flex:none;transition:background-color .2s}
-@media (hover:hover){.theme-t:hover{background:var(--well-h)}}
-.theme-t svg{position:relative;z-index:1;width:17px;height:17px;transition:color .2s}
-.theme-t .knob{position:absolute;top:3px;left:3px;width:30px;height:30px;border-radius:50%;background:var(--key);border:1px solid var(--key-edge);box-shadow:var(--key-lift);transition:transform .28s var(--ease)}
-:root:not([data-theme="light"]) .theme-t .knob{transform:translateX(32px)}
+/* Tema: mesma altura da engrenagem (42), bolinha de 34 com 4 de folga em toda a volta e cada ícone
+   no centro exato da posição da bolinha (21 e 59). Na troca, a bolinha corre com mola, o sol gira
+   ao chegar e a lua balança; o ícone de fora fica menor e apagado. */
+.theme-t{position:relative;display:block;width:80px;height:42px;padding:0;border-radius:21px;color:var(--fg-3);flex:none}
+.theme-t svg{position:absolute;top:50%;z-index:1;width:18px;height:18px;margin-top:-9px;transition:color .3s,opacity .3s,transform .55s cubic-bezier(.3,1.5,.5,1)}
+.theme-t .sun{left:12px}
+.theme-t .moon{right:12px}
+.theme-t .knob{position:absolute;top:4px;left:4px;width:34px;height:34px;border-radius:50%;background:var(--key);border:1px solid var(--key-edge);box-shadow:var(--key-lift);transition:transform .5s cubic-bezier(.3,1.3,.5,1)}
+:root:not([data-theme="light"]) .theme-t .knob{transform:translateX(38px)}
 :root[data-theme="light"] .theme-t .sun{color:var(--accent-text)}
+:root[data-theme="light"] .theme-t .moon{opacity:.75;transform:rotate(-15deg) scale(.82)}
 :root:not([data-theme="light"]) .theme-t .moon{color:var(--fg)}
+:root:not([data-theme="light"]) .theme-t .sun{opacity:.75;transform:rotate(-90deg) scale(.82)}
 .lt{margin:14px 0 4px;font-size:34px;line-height:1.08;font-weight:800;letter-spacing:-.03em}
 .lt-sub{margin:0 0 18px;color:var(--fg-2);font-size:15px;font-variant-numeric:tabular-nums}
 .search{display:flex;align-items:center;gap:8px;height:44px;padding:0 12px;border-radius:12px;background:var(--field);border:1px solid var(--hair);box-shadow:var(--field-shadow);margin-bottom:22px;cursor:text;transition:border-color .15s}
