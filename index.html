@@ -124,7 +124,7 @@ label[for]{cursor:pointer}
 @media (hover:hover){.btn:hover,.round:hover,.chip:hover,.step:hover,.color:hover,.item-play:hover,.del:hover{background:var(--key-h)}}
 .btn:active,.round:active,.chip:active,.step:active,.color:active,.item-play:active,.del:active{--kt:.1s ease;background:var(--key-p);transform:scale(.96)}
 /* degradê com border-box: cobre a borda também; sem isso ele se repete por baixo da borda translúcida e desenha um quadrado dentro do botão redondo */
-.btn.primary,.play{background:var(--grad-sheen),var(--grad);border:0;color:var(--accent-ink);box-shadow:var(--grad-lift);text-shadow:0 1px 1px rgba(110,25,0,.25);transition:filter .15s,box-shadow .15s,transform var(--kt)}
+.btn.primary,.play{background:var(--grad-sheen),var(--grad);border:0;color:var(--accent-ink);box-shadow:var(--grad-lift);transition:filter .15s,box-shadow .15s,transform var(--kt)}
 .play{background:var(--grad-sheen),var(--grad-sq)}
 @media (hover:hover){.btn.primary:hover,.play:hover{filter:brightness(1.07) saturate(1.04)}}
 .btn.primary:active,.play:active{--kt:.1s ease;filter:brightness(.94);transform:scale(.96)}
@@ -711,7 +711,7 @@ html.dragging #binBtn.over{transform:scale(1.14);color:var(--accent-text);transi
 @media (hover:hover){.gl:hover{background:var(--gl-fill-h)}}
 .gl:active{--kt:.1s ease;background:var(--gl-fill-p);transform:scale(.95)}
 /* laranja: a ação principal, quase cheio, com o mesmo aro */
-.gl-accent,.gl-accent:active{background:var(--grad-sheen),linear-gradient(115deg,rgba(255,162,0,.94),rgba(248,108,0,.92) 52%,rgba(238,58,0,.94));color:#fff;text-shadow:0 1px 1px rgba(110,25,0,.25);box-shadow:var(--grad-lift),0 10px 24px -10px rgba(0,0,0,.55)}
+.gl-accent,.gl-accent:active{background:var(--grad-sheen),linear-gradient(115deg,rgba(255,162,0,.94),rgba(248,108,0,.92) 52%,rgba(238,58,0,.94));color:#fff;box-shadow:var(--grad-lift),0 10px 24px -10px rgba(0,0,0,.55)}
 @media (hover:hover){.gl-accent:hover{background:linear-gradient(180deg,rgba(255,255,255,.27),rgba(255,255,255,0) 55%),linear-gradient(115deg,rgba(255,162,0,.94),rgba(248,108,0,.92) 52%,rgba(238,58,0,.94))}}
 /* perigo: aro e texto vermelhos; vermelho cheio só no hover e ao apertar, sem filete claro na borda */
 .gl-danger{color:var(--danger);box-shadow:var(--gl-danger-shadow)}
@@ -720,6 +720,54 @@ html.dragging #binBtn.over{transform:scale(1.14);color:var(--accent-text);transi
 /* desligado: o vidro continua inteiro, só o ícone e o texto se apagam */
 .gl:disabled{pointer-events:none;color:var(--fg-3)}
 .gl-danger:disabled{color:color-mix(in srgb,var(--danger) 42%,transparent)}
+/* ---------- vidro do iPhone (iOS 26) nos botões ----------
+   Mais claro e mais transparente, com o fundo bem saturado através dele, e um aro especular de 1 px
+   desenhado em vetor (degradê recortado por máscara de cor sólida, sem imagem): forte em cima à
+   esquerda e embaixo à direita, quase sumindo nas laterais, como a luz batendo na borda do vidro.
+   Ao tocar, o vidro cresce e clareia, como no iPhone, e volta com mola. */
+:root{--lg-fill:radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,.13),rgba(255,255,255,0) 70%),rgba(255,255,255,.05);
+  --lg-fill-h:radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,.2),rgba(255,255,255,0) 70%),rgba(255,255,255,.09);
+  --lg-fill-p:radial-gradient(120% 100% at 50% 0%,rgba(255,255,255,.26),rgba(255,255,255,0) 75%),rgba(255,255,255,.13);
+  --lg-rim:linear-gradient(135deg,rgba(255,255,255,.62),rgba(255,255,255,.14) 26%,rgba(255,255,255,.03) 50%,rgba(255,255,255,.1) 74%,rgba(255,255,255,.36));
+  --lg-shadow:inset 0 0 14px rgba(255,255,255,.05),0 8px 24px -8px rgba(0,0,0,.6),0 1px 3px rgba(0,0,0,.3);
+  --lg-blur:blur(14px) saturate(150%)}
+:root[data-theme="light"]{--lg-fill:radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,.75),rgba(255,255,255,0) 70%),rgba(255,255,255,.32);
+  --lg-fill-h:radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,.9),rgba(255,255,255,0) 70%),rgba(255,255,255,.5);
+  --lg-fill-p:radial-gradient(120% 100% at 50% 0%,#fff,rgba(255,255,255,0) 75%),rgba(255,255,255,.62);
+  --lg-rim:linear-gradient(135deg,#fff,rgba(255,255,255,.7) 26%,rgba(0,0,0,.06) 50%,rgba(255,255,255,.6) 74%,#fff);
+  --lg-shadow:inset 0 0 14px rgba(255,255,255,.35),0 0 0 .5px rgba(0,0,0,.1),0 8px 24px -10px rgba(0,0,0,.22),0 1px 3px rgba(0,0,0,.08);
+  --lg-blur:blur(14px) saturate(150%)}
+.gl,.gk:not(.cb){position:relative;isolation:isolate}
+.gl::after,.gk:not(.cb)::after{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;padding:1px;background:var(--lg-rim);pointer-events:none;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.gl:not(.gl-accent){background:var(--lg-fill);box-shadow:var(--lg-shadow);-webkit-backdrop-filter:var(--lg-blur);backdrop-filter:var(--lg-blur)}
+.gl.gl-danger{box-shadow:var(--lg-shadow)}
+.gl-danger::after{background:linear-gradient(135deg,rgba(255,140,130,.9),rgba(255,93,82,.4) 30%,rgba(255,93,82,.18) 50%,rgba(255,93,82,.35) 74%,rgba(255,120,110,.7))}
+.gl-accent::after{background:linear-gradient(135deg,rgba(255,255,255,.75),rgba(255,255,255,.18) 28%,rgba(255,255,255,0) 50%,rgba(255,255,255,.1) 74%,rgba(255,255,255,.4))}
+.gl-accent,.gl-accent:active{-webkit-backdrop-filter:var(--lg-blur);backdrop-filter:var(--lg-blur)}
+.gl,.gk:not(.cb){transition:background .2s,box-shadow .2s,color .2s,transform .5s cubic-bezier(.3,1.6,.5,1)}
+@media (hover:hover){.gl:not(.gl-accent):not(.gl-danger):hover{background:var(--lg-fill-h)}}
+.gl:not(.gl-accent):not(.gl-danger):active{background:var(--lg-fill-p)}
+.gl:active,.gk:not(.cb):active{transform:scale(1.06);transition:background .12s,box-shadow .12s,color .12s,transform .16s ease-out}
+.gl-accent:active{filter:brightness(1.08)}
+.theme-t.gl:active{transform:scale(1.04)}
+/* ---------- laranja GRON em vidro: os botões principais (Ler, play, Novo roteiro, Pronto, Salvar vídeo) ----------
+   O degradê da marca continua inteiro; por cima, a luz do vidro: reflexo largo no alto, luz que se junta
+   na borda de baixo (o vidro devolvendo a luz) e o aro especular de 1 px, tudo em degradê vetorial.
+   O aro é a camada border-box por baixo do preenchimento, então não precisa de pseudo-elemento. */
+:root{--og-rim:linear-gradient(135deg,rgba(255,250,240,.95),rgba(255,196,130,.55) 26%,rgba(226,74,0,.55) 52%,rgba(255,170,90,.5) 76%,rgba(255,236,214,.85));
+  --og-lift:inset 0 0 14px rgba(255,236,210,.2),0 6px 18px -8px rgba(0,0,0,.55),0 1px 2px rgba(0,0,0,.2)}
+:root[data-theme="light"]{--og-lift:inset 0 0 14px rgba(255,236,210,.22),0 6px 18px -8px rgba(150,50,0,.32),0 1px 2px rgba(0,0,0,.1)}
+.btn.primary,.play,.gl-accent,.gl-accent:active,.item-play::before{--og-base:var(--grad);border:1px solid transparent;
+  background:radial-gradient(120% 80% at 50% -10%,rgba(255,255,255,.34),rgba(255,255,255,0) 58%) padding-box,
+    radial-gradient(80% 60% at 50% 118%,rgba(255,228,170,.42),rgba(255,228,170,0) 72%) padding-box,
+    var(--og-base) padding-box,var(--og-rim) border-box;
+  box-shadow:var(--og-lift);color:#fff}
+.play,.item-play::before{--og-base:var(--grad-sq)}
+.gl-accent::after{display:none}
+.btn.primary:active,.play:active,.gl-accent:active{--kt:.16s ease-out;filter:brightness(1.07);transform:scale(1.05)}
+.item-play:active::before{filter:brightness(1.07);transform:scale(1.06)}
+.item-play::before{transition:filter .15s,transform .45s cubic-bezier(.3,1.6,.5,1)}
 
 /* barras de baixo: botões soltos, sem cápsula em volta */
 .dock .dock-in{gap:10px;padding:0;background:none;border:0;box-shadow:none}
