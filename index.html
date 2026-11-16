@@ -1104,7 +1104,6 @@ html[data-vt="close"]::view-transition-new(root){animation:vt-rise .46s cubic-be
       <div class="group">
         <h3 class="group-h"><svg aria-hidden="true"><use href="#i-hand"/></svg>Toque na tela</h3>
         <div class="box">
-          <div class="row"><label for="sTap">Tocar pausa e retoma</label><span class="sw"><input id="sTap" type="checkbox" data-set="tapToggle"><span></span></span></div>
           <div class="row"><label for="sHide">Esconder controles ao rolar</label><span class="sw"><input id="sHide" type="checkbox" data-set="autoHide"><span></span></span></div>
           <div class="row"><label for="sDrag">Arrastar o texto pausa</label><span class="sw"><input id="sDrag" type="checkbox" data-set="dragPauses"><span></span></span></div>
         </div>
@@ -1237,7 +1236,7 @@ html[data-vt="close"]::view-transition-new(root){animation:vt-rise .46s cubic-be
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   };
   const DEFAULTS = { fontSize: 56, camFont: 34, camRes: '4k', camFacing: 'user', font: 'inter', lineHeight: 1.3, margin: 6, align: 'left', speed: 22, mirror: 'none',
-    fg: '#ffffff', bg: '#000000', cue: 30, showCue: true, countdown: 3, tapToggle: true, autoHide: true, dragPauses: true, theme: 'auto' };
+    fg: '#ffffff', bg: '#000000', cue: 30, showCue: true, countdown: 3, autoHide: true, dragPauses: true, theme: 'auto' };
   const FONTS = {
     inter: '"Inter", system-ui, sans-serif',
     atkinson: '"Atkinson Hyperlegible", "Inter", system-ui, sans-serif',
@@ -1258,7 +1257,7 @@ html[data-vt="close"]::view-transition-new(root){animation:vt-rise .46s cubic-be
 
 [olhar para a lente]
 
-Toque na tela para começar e toque de novo para pausar. Se perder o ponto, arraste o texto com o dedo para voltar ou avançar.
+Toque no play para começar e no pause para parar. Se perder o ponto, arraste o texto com o dedo para voltar ou avançar.
 
 Para usar no vidro do teleprompter, abra os Ajustes e escolha o **espelhamento horizontal**. O texto fica invertido no celular e aparece certo no reflexo do vidro.
 
@@ -1276,6 +1275,8 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   let settings = Object.assign({}, DEFAULTS, store.get('pe.settings', {}));
   // O respiro automático no começo saiu: espaço em branco só onde o roteiro tiver [espaço].
   delete settings.leadIn;
+  // Tocar no texto não dá mais play; o ajuste saiu.
+  delete settings.tapToggle;
   let scripts = store.get('pe.scripts', null);
   const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
   if (!Array.isArray(scripts)) {
@@ -2097,8 +2098,9 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   });
   const endDrag = (e, cancelled) => {
     if (drag && !drag.moved && !cancelled) {
-      if (settings.tapToggle) setPlaying(!P.playing);
-      else $('#hud').classList.toggle('faded');
+      // Tocar no texto não dá play, não pausa e não edita: o texto só rola com o dedo.
+      // Rodando com os controles escondidos, o toque só traz os controles de volta (para alcançar o pause).
+      if (P.playing && $('#hud').classList.contains('faded')) $('#hud').classList.remove('faded');
     }
     drag = null; stage.style.cursor = '';
   };
