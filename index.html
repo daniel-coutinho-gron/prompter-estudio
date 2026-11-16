@@ -300,6 +300,18 @@ label[for]{cursor:pointer}
 #prompter.cam #countdown{background:none}
 #prompter.cam.counting #camView{filter:brightness(.42)}
 @supports (-webkit-background-clip:text) or (background-clip:text){#countdown span{background:var(--grad-sq);-webkit-background-clip:text;background-clip:text;color:transparent}}
+/* Contagem fluida: o escurecido entra e sai devagar; cada número chega de longe ganhando foco, respira
+   um pouco menor durante o segundo dele e sai encolhendo, já dando lugar ao próximo. No fim o escurecido
+   some enquanto o texto começa a rolar, sem corte. */
+#countdown{animation:cd-in .32s ease both;transition:opacity .34s ease}
+#countdown.out{opacity:0}
+@keyframes cd-in{from{opacity:0}}
+#countdown span{display:block;padding:0 .06em;animation:cd-num 1s both;will-change:transform,opacity}
+@keyframes cd-num{
+  0%{opacity:0;transform:scale(1.45);filter:blur(14px);animation-timing-function:cubic-bezier(.16,.84,.3,1)}
+  26%{opacity:1;transform:scale(1);filter:blur(0);animation-timing-function:linear}
+  76%{opacity:1;transform:scale(.93);filter:blur(0);animation-timing-function:cubic-bezier(.55,0,.8,.3)}
+  100%{opacity:0;transform:scale(.62);filter:blur(8px)}}
 #progress{position:absolute;top:0;left:0;height:3px;width:0;background:var(--grad-line);z-index:3;pointer-events:none}
 .hud-top,.hud-bottom{position:absolute;left:0;right:0;z-index:2;transition:opacity .3s}
 .hud-top{top:0;display:flex;align-items:center;gap:8px;padding:calc(var(--st) + 10px) var(--gr) 0 var(--gl)}
@@ -2076,7 +2088,17 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
       P.cd = setInterval(() => { n--; if (n <= 0) { clearInterval(P.cd); showCount(false); P.counting = false; go(); } else put(n); }, 1000);
     } else go();
   }
-  function showCount(on) { $('#countdown').hidden = !on; $('#prompter').classList.toggle('counting', on); }
+  // Mostrar e esconder a contagem sem corte: ao sair, o escurecido apaga e só então a camada some.
+  let cdHideT = 0;
+  function showCount(on) {
+    const el = $('#countdown');
+    clearTimeout(cdHideT);
+    $('#prompter').classList.toggle('counting', on);
+    if (on) { el.classList.remove('out'); el.hidden = false; return; }
+    if (el.hidden) return;
+    el.classList.add('out');
+    cdHideT = setTimeout(() => { el.hidden = true; el.classList.remove('out'); el.textContent = ''; }, reduceMotion.matches ? 0 : 360);
+  }
   function jump(dy) { P.pos = clamp(P.pos + dy, 0, P.max); render(); }
   function changeSpeed(d) { settings.speed = clamp(settings.speed + d, 1, 60); saveSettings(true); syncSpeed(); render(); }
   function changeFont(d) {
