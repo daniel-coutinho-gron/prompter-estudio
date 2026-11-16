@@ -347,9 +347,9 @@ label[for]{cursor:pointer}
 #prompter.editing .p-title-in{display:block;width:100%;min-width:0;height:20px;padding:0;margin:0;border:0;outline:none;background:none;color:var(--fg);font:600 14.5px var(--ui);text-overflow:ellipsis}
 .p-title-in::placeholder{color:var(--fg-3)}
 /* lápis: sempre no laranja GRON em vidro, como o play (editar é a ação principal do topo) */
-#pEdit,#prompter.editing #pEdit{border:1px solid transparent;color:#fff;box-shadow:var(--og-lift);
+#pEdit,#prompter.editing #pEdit{border:0;color:#fff;box-shadow:var(--og-lift);
   background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,0) 50%) padding-box,
-    var(--grad-sq) padding-box,var(--og-rim) border-box}
+    var(--grad-sq) padding-box}
 #pEdit::before,#pEdit::after{display:none}
 @media (hover:hover){#pEdit:hover{filter:brightness(1.07)}}
 #pEdit:active{filter:brightness(1.05);transform:scale(.94)}
@@ -403,7 +403,7 @@ label[for]{cursor:pointer}
 .rec-res{display:inline-flex;gap:0;height:34px;align-items:stretch;padding:3px;-webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);border-radius:99px;background:rgba(22,22,26,.38);box-shadow:inset 1px 1px 0 rgba(255,255,255,.22),inset -1px -1px 0 rgba(255,255,255,.06),inset 0 0 0 1px rgba(255,255,255,.08)}
 .rec-res button{height:28px;padding:0 12px;border-radius:99px;color:rgba(255,255,255,.72);font-size:12.5px;font-weight:700;white-space:nowrap;transition:background-color .15s,color .15s}
 @media (hover:hover){.rec-res button:not([aria-pressed="true"]):hover{background:rgba(255,255,255,.14);color:#fff}}
-.rec-res button[aria-pressed="true"]{background:var(--grad-sheen),var(--grad);box-shadow:inset 1px 1px 0 rgba(255,240,222,.5);color:#fff}
+.rec-res button[aria-pressed="true"]{background:var(--grad-sheen),var(--grad);box-shadow:inset 0 0 0 1px rgba(255,236,214,.16);color:#fff}
 .rec-res.locked{opacity:.5}
 .rec-fps{color:rgba(255,255,255,.72);font-weight:500;white-space:nowrap}
 /* takes do vídeo: a pílula aparece no lugar da qualidade (que fica travada durante o vídeo), só com o take pausado.
@@ -781,15 +781,14 @@ html.dragging #binBtn.over{transform:scale(1.14);color:var(--accent-text);transi
 .gk:not(.cb):active{background:var(--lg-fill-p)}
 .theme-t.gl:active{transform:scale(.96)}
 /* ---------- laranja GRON em vidro: os botões principais (Ler, play, Novo roteiro, Pronto, Salvar vídeo) ----------
-   O degradê da marca continua inteiro; por cima, a luz do vidro: reflexo largo no alto, luz que se junta
-   na borda de baixo (o vidro devolvendo a luz) e o aro especular de 1 px, tudo em degradê vetorial.
-   O aro é a camada border-box por baixo do preenchimento, então não precisa de pseudo-elemento. */
-:root{--og-rim:linear-gradient(180deg,rgba(255,200,140,.5),rgba(238,58,0,.6));
-  --og-lift:0 6px 16px -8px rgba(0,0,0,.5)}
-:root[data-theme="light"]{--og-lift:0 6px 16px -8px rgba(150,50,0,.3)}
-.btn.primary,.play,.gl-accent,.gl-accent:active,.item-play::before{--og-base:var(--grad);border:1px solid transparent;
+   O degradê da marca continua inteiro; por cima, no mesmo fosco dos outros botões,
+   luz suave no alto e um aro de 1 px igual em toda a volta (sombra interna sem deslocamento).
+   O aro em degradê por borda (claro em cima, vermelho embaixo) saiu em 16/11: deixava a borda torta. */
+:root{--og-lift:inset 0 0 0 1px rgba(255,236,214,.16),0 6px 16px -8px rgba(0,0,0,.5)}
+:root[data-theme="light"]{--og-lift:inset 0 0 0 1px rgba(255,236,214,.2),0 6px 16px -8px rgba(150,50,0,.3)}
+.btn.primary,.play,.gl-accent,.gl-accent:active,.item-play::before{--og-base:var(--grad);border:0;
   background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,0) 50%) padding-box,
-    var(--og-base) padding-box,var(--og-rim) border-box;
+    var(--og-base) padding-box;
   box-shadow:var(--og-lift);color:#fff}
 .play,.item-play::before{--og-base:var(--grad-sq)}
 .gl-accent::after{display:none}
@@ -803,7 +802,7 @@ html.dragging #binBtn.over{transform:scale(1.14);color:var(--accent-text);transi
 .dock::before{content:"";position:absolute;left:0;right:0;bottom:0;height:calc(var(--sb) + 104px);z-index:-1;background:linear-gradient(to bottom,transparent,color-mix(in srgb,var(--bg) 30%,transparent) 55%,color-mix(in srgb,var(--bg) 78%,transparent));pointer-events:none}
 .dock .btn.gl{height:54px;border-radius:27px;padding:0 20px;font-size:16px;font-weight:600;letter-spacing:-.012em}
 #newBtn{gap:10px}
-.plus{display:grid;place-items:center;width:26px;height:26px;margin-left:-4px;border-radius:50%;background:rgba(255,255,255,.24);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+.plus{display:grid;place-items:center;width:26px;height:26px;margin-left:-4px;border-radius:50%;background:rgba(255,255,255,.24);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
 .plus svg{width:15px;height:15px}
 #camBtn{flex:none}
 #binBtn{width:54px}
