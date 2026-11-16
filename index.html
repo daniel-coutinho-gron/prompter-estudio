@@ -346,7 +346,14 @@ label[for]{cursor:pointer}
 #prompter.editing .p-title{display:none}
 #prompter.editing .p-title-in{display:block;width:100%;min-width:0;height:20px;padding:0;margin:0;border:0;outline:none;background:none;color:var(--fg);font:600 14.5px var(--ui);text-overflow:ellipsis}
 .p-title-in::placeholder{color:var(--fg-3)}
-#prompter.editing #pEdit{background:var(--grad) border-box;border-color:rgba(255,170,90,.55);color:#fff}
+/* lápis: sempre no laranja GRON em vidro, como o play (editar é a ação principal do topo) */
+#pEdit,#prompter.editing #pEdit{border:1px solid transparent;color:#fff;box-shadow:var(--og-lift);
+  background:radial-gradient(120% 80% at 50% -10%,rgba(255,255,255,.34),rgba(255,255,255,0) 58%) padding-box,
+    radial-gradient(80% 60% at 50% 118%,rgba(255,228,170,.42),rgba(255,228,170,0) 72%) padding-box,
+    var(--grad-sq) padding-box,var(--og-rim) border-box}
+#pEdit::before,#pEdit::after{display:none}
+@media (hover:hover){#pEdit:hover{filter:brightness(1.07)}}
+#pEdit:active{filter:brightness(1.07)}
 #prompter.editing .edit-bar{display:block;position:absolute;left:0;right:0;z-index:3;bottom:calc(var(--sb) + 12px + var(--kb,0px));padding:0 var(--gr) 0 var(--gl)}
 .edit-bar .panel{padding:10px 12px}
 .edit-bar .cb .aa{font-weight:800}
@@ -1247,7 +1254,7 @@ html[data-vt="close"]::view-transition-new(root){animation:vt-rise .46s cubic-be
     get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   };
-  const DEFAULTS = { fontSize: 56, camFont: 34, camRes: '4k', camFacing: 'user', font: 'inter', lineHeight: 1.3, margin: 6, align: 'left', speed: 22, mirror: 'none',
+  const DEFAULTS = { fontSize: 56, camFont: 34, camRes: '4k', camFacing: 'user', font: 'inter', lineHeight: 1.3, margin: 6, align: 'left', speed: 22, mirror: 'v',
     fg: '#ffffff', bg: '#000000', cue: 30, showCue: true, countdown: 3, autoHide: true, dragPauses: true, theme: 'auto' };
   const FONTS = {
     inter: '"Inter", system-ui, sans-serif',
@@ -1260,8 +1267,8 @@ html[data-vt="close"]::view-transition-new(root){animation:vt-rise .46s cubic-be
   const MIRROR_LBL = { none: 'Espelho', h: 'Horiz.', v: 'Vert.', hv: 'Ambos' };
   const MIRROR_INFO = {
     none: { c1: 'Na tela', c2: '', t: 'Leitura direta, sem vidro.', d: 'O texto aparece como em qualquer app. Use com o celular de frente para você.' },
-    h: { c1: 'No celular', c2: 'No reflexo do vidro', t: 'Teleprompter de vidro, celular com o topo virado para você.', d: 'É o mais comum. No celular as letras ficam trocadas de lado, e no vidro você lê normal.' },
-    v: { c1: 'No celular', c2: 'No reflexo do vidro', t: 'Teleprompter de vidro, celular com o topo virado para a câmera.', d: 'No celular o texto fica de cabeça para baixo, e no vidro você lê normal.' },
+    h: { c1: 'No celular', c2: 'No reflexo do vidro', t: 'Teleprompter de vidro, celular com o topo virado para você.', d: 'No celular as letras ficam trocadas de lado, e no vidro você lê normal.' },
+    v: { c1: 'No celular', c2: 'No reflexo do vidro', t: 'Teleprompter de vidro, celular deitado com o topo virado para a câmera.', d: 'É o que a GRON usa e já vem ligado. No celular o texto fica de cabeça para baixo, e no vidro você lê normal.' },
     hv: { c1: 'No celular', c2: 'Com o celular invertido', t: 'Celular preso de ponta-cabeça, sem vidro.', d: 'O texto dá meia volta para você ler direto, mesmo com o aparelho virado.' }
   };
   const WPM = 150;
@@ -1271,7 +1278,7 @@ html[data-vt="close"]::view-transition-new(root){animation:vt-rise .46s cubic-be
 
 Toque no play para começar e no pause para parar. Se perder o ponto, arraste o texto com o dedo para voltar ou avançar.
 
-Para usar no vidro do teleprompter, abra os Ajustes e escolha o **espelhamento horizontal**. O texto fica invertido no celular e aparece certo no reflexo do vidro.
+No teleprompter de vidro, com o celular deitado, o **espelhamento vertical** já vem ligado: o texto fica de cabeça para baixo no celular e aparece certo no reflexo do vidro. Para ler direto na tela, escolha Normal nos Ajustes.
 
 [pausa]
 
