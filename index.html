@@ -495,6 +495,7 @@ label[for]{cursor:pointer}
 .slider .thumb{position:absolute;top:50%;left:var(--p);width:28px;height:28px;margin:-14px 0 0 -14px;border-radius:50%;background:linear-gradient(180deg,#fff,#e8e8ed);box-shadow:0 1px 1px rgba(0,0,0,.3),0 2px 7px rgba(0,0,0,.4),inset 0 -1px 0 rgba(0,0,0,.08);transition:transform .12s}
 @media (hover:hover){.slider:hover .thumb{transform:scale(1.06)}}
 .slider.dragging .thumb{transform:scale(1.1)}
+.slider.press .thumb{transform:scale(1.18);transition:transform .12s ease-out}
 .slider:focus-visible .thumb{box-shadow:0 0 0 3px var(--accent)}
 
 /* ---------- ajustes ---------- */
@@ -605,6 +606,22 @@ label[for]{cursor:pointer}
 .keys .k{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px}
 .keys kbd{font-family:var(--ui);font-size:12.5px;font-weight:600;background:var(--key);border:1px solid var(--key-edge);box-shadow:var(--key-lift);border-radius:7px;padding:2px 7px;color:var(--fg);white-space:nowrap}
 .ver{margin:22px 0 0;text-align:center;font-size:12px;color:var(--fg-3)}
+/* Toque nas folhas (Ajustes, roteiro da câmera): o controle afunda quando o dedo encosta e volta com mola.
+   A classe .press fica pelo menos 120 ms, senão o toque rápido do iPhone some antes de aparecer. */
+.sheet .seg button,.sheet .tile,.sheet .fonts button,.sheet .fp-head,.sheet #pickList button{transform-origin:center;transition-property:background,background-color,color,box-shadow,border-color,transform;transition-duration:.15s,.15s,.15s,.15s,.15s,.45s;transition-timing-function:ease,ease,ease,ease,ease,cubic-bezier(.3,1.6,.5,1)}
+.sheet .press{transition-duration:.15s,.15s,.15s,.15s,.15s,.1s!important;transition-timing-function:ease!important}
+.sheet .seg button.press{transform:scale(.9)}
+.sheet .tile.press{transform:scale(.93)}
+.sheet .fonts button.press,.sheet #pickList button.press{transform:scale(.97);background:var(--well-h)}
+.sheet .fp-head.press{transform:scale(.97)}
+.sheet .btn.press,.sheet .step.press,.sheet .color.press,.sheet-x.press{--kt:.1s ease;background:var(--key-p);transform:scale(.93)}
+/* Chave: a bolinha estica na direção em que vai correr, como no iPhone. */
+.sw span::after{transition:transform .3s cubic-bezier(.3,1.4,.5,1),width .2s var(--ease)}
+.sw.press span::after{width:34px}
+.sw.press input:checked + span::after{transform:translateX(13px)}
+/* Escolha feita: o visto da fonte e o cartão de cor entram com um pulinho. */
+.fonts button[aria-checked="true"] .ck{animation:ck-pop .4s cubic-bezier(.3,1.6,.5,1)}
+@keyframes ck-pop{from{transform:scale(.3);opacity:0}}
 
 #toast{position:fixed;left:50%;bottom:calc(var(--sb) + 100px);transform:translateX(-50%);z-index:60;max-width:min(86vw,420px);padding:11px 16px;border-radius:16px;background:var(--toast-bg);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:0;box-shadow:inset 1px 1px 0 rgba(255,255,255,.16),inset 0 0 0 1px rgba(255,255,255,.07),0 14px 30px -12px rgba(0,0,0,.6);color:#fff;font-size:14px;font-weight:600;text-align:center;pointer-events:none;opacity:0;transition:opacity .25s}
 #toast.show{opacity:1}
@@ -617,6 +634,14 @@ html.cam-on #toast{bottom:calc(var(--sb) + 210px)}
 #lift.settle{transition:transform .26s var(--ease)}
 .lift-in{height:100%;transform-origin:var(--ox,50%) var(--oy,50%);transition:transform .22s var(--ease),opacity .2s,box-shadow .22s;border-radius:20px}
 .lift-in.up{transform:scale(1.03);box-shadow:0 24px 50px -16px rgba(0,0,0,.75)}
+/* Arrastando, quem anima é o código (mola a cada quadro); a transição do CSS só volta para assentar ou cair. */
+.lift-in.free{transition:opacity .2s,box-shadow .22s;will-change:transform}
+#lift.settle{transition:transform .5s cubic-bezier(.3,1.35,.5,1)}
+#lift.settle .lift-in{transition:transform .5s cubic-bezier(.3,1.35,.5,1),opacity .2s,box-shadow .22s}
+#lift.drop{transition:transform .34s cubic-bezier(.55,0,.3,1)}
+#lift.drop .lift-in{transition:transform .34s cubic-bezier(.55,0,.3,1),opacity .3s ease-in}
+/* O card que voa não desfoca o que está atrás: refazer vidro a cada quadro trava o iPhone. */
+#lift *{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 :root[data-theme="light"] .lift-in.up{box-shadow:0 24px 50px -18px rgba(0,0,0,.35)}
 .lift-in > .feature{height:100%}
 .lift-in.row{border-radius:18px;overflow:hidden;background:var(--lift-fill);box-shadow:var(--rim)}
@@ -653,7 +678,7 @@ html.dragging,html.dragging *{cursor:grabbing!important;-webkit-user-select:none
 #camBtn,#newBtn{transition:opacity .2s,transform var(--kt),background .15s,box-shadow .15s}
 html.dragging #camBtn,html.dragging #newBtn{opacity:.28;pointer-events:none}
 html.dragging #binBtn{transform:scale(1.04)}
-html.dragging #binBtn.over{transform:scale(1.1);color:var(--accent-text)}
+html.dragging #binBtn.over{transform:scale(1.14);color:var(--accent-text);transition:background .15s,box-shadow .15s,transform .4s cubic-bezier(.3,1.6,.5,1),color .2s}
 
 /* ---------- Lixeira ---------- */
 .tr-bar{justify-content:space-between}
@@ -710,12 +735,27 @@ html.dragging #binBtn.over{transform:scale(1.1);color:var(--accent-text)}
 #trAll{height:36px;padding:0 16px;border-radius:18px;color:var(--accent-text);font-size:14.5px;font-weight:600;letter-spacing:-.005em}
 .theme-t.gl:active{transform:scale(.96)}
 
-/* ---------- troca de tela: sai a velha, depois entra a nova ---------- */
-::view-transition-old(root),::view-transition-new(root){mix-blend-mode:normal}
-::view-transition-old(root){animation:vt-out .15s ease-out both}
-::view-transition-new(root){animation:vt-in .24s var(--ease) .1s backwards}
-@keyframes vt-out{to{opacity:0;transform:translateX(calc(var(--vt-dir,1) * -14px))}}
-@keyframes vt-in{from{opacity:0;transform:translateX(calc(var(--vt-dir,1) * 14px))}}
+/* ---------- troca de tela ----------
+   Lixeira: empurra de lado, como navegar no iPhone (a tela nova cobre a velha, que recua escurecendo; voltar desfaz).
+   Prompter: abre crescendo da lista e fecha encolhendo de volta, como abrir e fechar um app. */
+::view-transition-old(root),::view-transition-new(root){mix-blend-mode:normal;animation-duration:.46s;animation-timing-function:cubic-bezier(.32,.72,0,1);animation-fill-mode:both}
+html[data-vt]::view-transition-group(root){background:var(--bg)}
+html[data-vt="push"]::view-transition-old(root){animation-name:vt-recede}
+html[data-vt="push"]::view-transition-new(root){animation-name:vt-push-in;box-shadow:-12px 0 40px rgba(0,0,0,.35)}
+html[data-vt="pop"]::view-transition-old(root){z-index:2;animation-name:vt-pop-out;box-shadow:-12px 0 40px rgba(0,0,0,.35)}
+html[data-vt="pop"]::view-transition-new(root){animation-name:vt-return}
+@keyframes vt-push-in{from{transform:translateX(100%)}}
+@keyframes vt-recede{to{transform:translateX(-26%);filter:brightness(.72)}}
+@keyframes vt-pop-out{to{transform:translateX(100%)}}
+@keyframes vt-return{from{transform:translateX(-26%);filter:brightness(.72)}}
+html[data-vt="open"]::view-transition-old(root){animation:vt-sink .4s cubic-bezier(.32,.72,0,1) both}
+html[data-vt="open"]::view-transition-new(root){animation:vt-grow .46s cubic-bezier(.32,.72,0,1) both}
+html[data-vt="close"]::view-transition-old(root){z-index:2;animation:vt-shrink .36s cubic-bezier(.4,0,.6,1) both}
+html[data-vt="close"]::view-transition-new(root){animation:vt-rise .46s cubic-bezier(.32,.72,0,1) both}
+@keyframes vt-sink{to{transform:scale(.92);opacity:0}}
+@keyframes vt-grow{from{transform:scale(.86);opacity:0;border-radius:28px}}
+@keyframes vt-shrink{to{transform:scale(.86);opacity:0;border-radius:28px}}
+@keyframes vt-rise{from{transform:scale(.94);opacity:.3}}
 .home.entering .item{animation:rise .32s var(--ease) backwards;animation-delay:calc(var(--i,0) * 24ms + 140ms)}
 @keyframes rise{from{opacity:0;transform:translateY(8px)}}
 
@@ -1126,6 +1166,18 @@ html.dragging #binBtn.over{transform:scale(1.1);color:var(--accent-text)}
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   // iPhone: sem isto o Safari não mostra o estado de "apertado" (:active) dos botões.
   document.addEventListener('touchstart', () => {}, { passive: true });
+  // Toque nas folhas: marca o controle tocado e solta com um mínimo de tempo, para a animação aparecer até no toque rápido.
+  const PRESS = '.sheet .seg button, .sheet .tile, .sheet .fonts button, .sheet .fp-head, .sheet .sw, .sheet .btn, .sheet .step, .sheet .color, .sheet-x, .sheet .slider, .sheet #pickList button';
+  document.addEventListener('pointerdown', (e) => {
+    const el = e.target.closest(PRESS); if (!el) return;
+    el.classList.add('press');
+    const t0 = performance.now();
+    const up = () => {
+      window.removeEventListener('pointerup', up); window.removeEventListener('pointercancel', up);
+      setTimeout(() => el.classList.remove('press'), Math.max(0, 120 - (performance.now() - t0)));
+    };
+    window.addEventListener('pointerup', up); window.addEventListener('pointercancel', up);
+  }, true);
   const store = {
     get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
@@ -1252,7 +1304,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   }
   function setTheme(next) {
     const go = () => { settings.theme = next; changed('theme'); };
-    if (document.startViewTransition && !reduceMotion.matches) { document.documentElement.style.setProperty('--vt-dir', '0'); document.startViewTransition(go); }
+    if (document.startViewTransition && !reduceMotion.matches) { document.startViewTransition(go); }
     else go();
   }
   $('#themeToggle').addEventListener('click', () => setTheme(effTheme() === 'dark' ? 'light' : 'dark'));
@@ -1340,7 +1392,8 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   }
 
   /* ---------------- troca de tela ---------------- */
-  const ORDER = { home: 0, trash: 1, prompter: 1 };
+  // Que animação cada troca usa: Lixeira empurra de lado; o prompter abre e fecha em escala.
+  const VT = { 'home>trash': 'push', 'trash>home': 'pop', 'home>prompter': 'open', 'prompter>home': 'close' };
   let view = 'home';
   function show(next, after, instant) {
     const prev = view;
@@ -1354,8 +1407,10 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
       if (after) after();
     };
     if (!instant && prev !== next && document.startViewTransition && !reduceMotion.matches) {
-      document.documentElement.style.setProperty('--vt-dir', ORDER[next] >= ORDER[prev] ? '1' : '-1');
-      document.startViewTransition(apply);
+      const root = document.documentElement;
+      root.dataset.vt = VT[prev + '>' + next] || 'open';
+      const t = document.startViewTransition(apply);
+      t.finished.finally(() => { delete root.dataset.vt; });
     } else apply();
   }
 
@@ -1417,7 +1472,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
       const w = words(s.text), name = esc(nameOf(s));
       const rec = s.recorded ? '<span class="rec-tag"><svg aria-hidden="true"><use href="#i-check"/></svg>Gravado</span> · ' : '';
       return `<li class="item${s.recorded ? ' done' : ''}" data-card="${s.id}" style="--i:${Math.min(i, 8)}">
-        <button class="item-main" type="button" data-edit="${s.id}" aria-label="Abrir ${name}"><span class="item-title">${esc(nameOf(s))}</span><span class="item-meta">${rec}${dur(secs(s.text))} · ${plural(w, 'palavra', 'palavras')} · ${ago(s.updated)}</span></button>
+        <button class="item-main" type="button" data-open="${s.id}" aria-label="Abrir ${name}"><span class="item-title">${esc(nameOf(s))}</span><span class="item-meta">${rec}${dur(secs(s.text))} · ${plural(w, 'palavra', 'palavras')} · ${ago(s.updated)}</span></button>
         <button class="item-play" type="button" data-play="${s.id}" aria-label="Ler ${name} no prompter"><svg><use href="#i-play"/></svg></button>
       </li>`;
     }).join('');
@@ -1440,7 +1495,9 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     if (lpFired) { lpFired = false; e.preventDefault(); return; }
     const dl = e.target.closest('[data-del]'); if (dl) { const s = byId(dl.dataset.del); if (s) trashScript(s); return; }
     const p = e.target.closest('[data-play]'); if (p) { const s = byId(p.dataset.play); if (s) openPrompter(s); return; }
-    const ed = e.target.closest('[data-edit]'); if (ed) { const s = byId(ed.dataset.edit); if (s) openPrompter(s, false, true); }
+    // Tocar no roteiro só abre: escrever liga pelo lápis (ou pelo Editar, que é o mesmo que tocar no lápis).
+    const op = e.target.closest('[data-open]'); if (op) { const s = byId(op.dataset.open); if (s) openPrompter(s); return; }
+    const ed = e.target.closest('[data-edit]'); if (ed) { const s = byId(ed.dataset.edit); if (s) openPrompter(s, false, 'focus'); }
   });
   $('#search').addEventListener('input', () => renderHome(false));
   // Roteiro novo: primeiro o título, num card; depois o prompter abre pronto para colar o texto.
@@ -1669,6 +1726,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   }
   function finishCtx() {
     if (!C) return;
+    dragStop(C);
     C.el.classList.remove('lifted');
     lift.hidden = true; lift.replaceChildren(); lift.className = ''; lift.style.transform = '';
     ctxEl.hidden = true; ctxEl.classList.remove('out');
@@ -1684,35 +1742,65 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
     const c = C;
     menu.classList.add('out'); ctxEl.classList.add('out');
     document.documentElement.classList.remove('dragging'); bin.classList.remove('open', 'over');
+    dragStop(c);
     lift.classList.add('settle'); moveLift(c.r.left, c.r.top);
     c.inner.classList.remove('up'); c.inner.style.transform = ''; c.inner.style.opacity = '';
-    wait(240, () => { if (C === c) finishCtx(); });
+    wait(420, () => { if (C === c) finishCtx(); });
   }
+  // O dedo dá o alvo; o card corre atrás com mola a cada quadro, inclina com a velocidade e,
+  // perto da Lixeira, é puxado para a boca dela como um ímã.
   function dragTo(x, y) {
-    const dx = x - C.sx, dy = y - C.sy;
-    moveLift(C.bx + dx, C.by + dy);
+    const c = C, dx = x - c.sx, dy = y - c.sy;
+    if (c.x == null) { c.x = c.bx; c.y = c.by; c.k = 1.03; c.rot = 0; c.inner.classList.add('free'); }
     // A lixeirinha é pequena: a área de soltar vai além dela, para o dedo não precisar de mira.
     const d = bin.getBoundingClientRect(), pad = 40;
     const over = x >= d.left - pad && x <= d.right + pad && y >= d.top - pad - 16 && y <= d.bottom + pad;
-    if (over !== C.over) {
-      C.over = over;
+    if (over !== c.over) {
+      c.over = over;
       bin.classList.toggle('over', over);
       try { if (over && navigator.vibrate) navigator.vibrate(6); } catch (e) {}
     }
+    let tx = c.bx + dx, ty = c.by + dy;
+    if (over) {
+      const bx = d.left + d.width / 2 - (c.sx - c.bx), by = d.top + d.height * 0.3 - (c.sy - c.by);
+      tx += (bx - tx) * 0.45; ty += (by - ty) * 0.45;
+    }
+    c.tx = tx; c.ty = ty;
     // Quanto mais longe do lugar, menor o card; em cima da Lixeira, menor ainda.
-    const k = over ? 0.26 : Math.max(0.5, 1.03 - Math.hypot(dx, dy) / 420);
-    C.inner.style.transform = 'scale(' + k.toFixed(3) + ')';
-    C.inner.style.opacity = over ? '0.85' : '';
+    c.tk = over ? 0.26 : Math.max(0.5, 1.03 - Math.hypot(dx, dy) / 420);
+    c.inner.style.opacity = over ? '0.85' : '';
+    if (!c.raf) c.raf = requestAnimationFrame(dragFrame);
   }
+  let dragT = 0;
+  function dragFrame(now) {
+    const c = C; if (!c) return;
+    c.raf = 0;
+    if (!c.down || !c.drag) return;
+    // Mola independente da taxa de quadros (60 ou 120 Hz no iPhone).
+    const dt = Math.min(48, now - (dragT || now - 16)) / 16.67; dragT = now;
+    const f = (a) => 1 - Math.pow(1 - a, dt);
+    const px = c.x;
+    c.x += (c.tx - c.x) * f(0.42); c.y += (c.ty - c.y) * f(0.42);
+    c.k += (c.tk - c.k) * f(0.22);
+    const vx = (c.x - px) / dt;
+    c.rot += (clamp(vx * 0.55, -10, 10) - c.rot) * f(0.18);
+    moveLift(c.x, c.y);
+    c.inner.style.transform = 'rotate(' + c.rot.toFixed(2) + 'deg) scale(' + c.k.toFixed(3) + ')';
+    const still = Math.abs(c.tx - c.x) < 0.3 && Math.abs(c.ty - c.y) < 0.3 && Math.abs(c.tk - c.k) < 0.002 && Math.abs(c.rot) < 0.05;
+    if (!still) c.raf = requestAnimationFrame(dragFrame); else dragT = 0;
+  }
+  // Para a mola e devolve o card às transições do CSS.
+  function dragStop(c) { if (c.raf) cancelAnimationFrame(c.raf); c.raf = 0; dragT = 0; c.inner.classList.remove('free'); }
   function dropInTrash() {
     const c = C, i = bin.querySelector('svg').getBoundingClientRect();
-    lift.classList.add('settle');
+    dragStop(c);
+    lift.classList.add('drop');
     // O card cai na boca da lixeirinha, onde a tampa está aberta.
     moveLift(c.bx + i.left + i.width / 2 - c.sx, c.by + i.top + i.height * 0.3 - c.sy);
-    c.inner.style.transform = 'scale(.05)'; c.inner.style.opacity = '0';
+    c.inner.style.transform = 'rotate(' + (c.rot > 0 ? 14 : -14) + 'deg) scale(.05)'; c.inner.style.opacity = '0';
     ctxEl.classList.add('out');
     // Chegou: a tampa fecha por cima dos papéis e a lixeira fica cheia; a barra volta ao normal logo depois.
-    wait(260, () => {
+    wait(320, () => {
       if (C !== c) return;
       bin.classList.remove('open', 'over');
       trashScript(c.s, true);
@@ -1732,7 +1820,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
       if (Math.hypot(e.clientX - C.sx, e.clientY - C.sy) < 8) return;
       C.drag = true;
       menu.classList.add('out');
-      lift.classList.remove('settle');
+      lift.classList.remove('settle', 'drop');
       dragOn();
     }
     dragTo(e.clientX, e.clientY);
@@ -1752,7 +1840,7 @@ Quando terminar, apague este exemplo e crie o seu roteiro em Novo roteiro.`;
   ctxEl.addEventListener('click', closeCtx);
   const ctxAct = (fn) => () => { if (!C) return; const s = C.s; finishCtx(); fn(s); };
   $('#ctxRead').addEventListener('click', ctxAct((s) => openPrompter(s)));
-  $('#ctxEdit').addEventListener('click', ctxAct((s) => openPrompter(s, false, true)));
+  $('#ctxEdit').addEventListener('click', ctxAct((s) => openPrompter(s, false, 'focus')));
   $('#ctxRec').addEventListener('click', ctxAct((s) => {
     if (s.recorded) delete s.recorded; else s.recorded = Date.now();
     saveScripts(); renderHome(false);
