@@ -58,6 +58,7 @@
   --glass:rgba(26,26,31,.42); --glass-strong:rgba(28,28,33,.72); --glass-edge:rgba(255,255,255,.1);
   --glass-lift:inset 1px 1px 0 rgba(255,255,255,.13),inset -1px -1px 0 rgba(255,255,255,.04),0 18px 40px -14px rgba(0,0,0,.75);
   --amb:radial-gradient(90% 55% at 0% 0%,rgba(150,150,170,.2),transparent 62%),radial-gradient(70% 50% at 100% 42%,rgba(170,142,112,.12),transparent 66%),radial-gradient(90% 55% at 18% 100%,rgba(105,115,140,.17),transparent 66%);
+  --amb-x:radial-gradient(90% calc(55% - 264px) at 0% 240px,rgba(150,150,170,.2),transparent 62%),radial-gradient(70% calc(50% - 240px) at 100% calc(42% + 38.4px),rgba(170,142,112,.12),transparent 66%),radial-gradient(90% calc(55% - 264px) at 18% calc(100% - 240px),rgba(105,115,140,.17),transparent 66%);
   --scrim:rgba(0,0,0,.6);
   color-scheme:dark;
 }
@@ -80,6 +81,7 @@
   --glass:rgba(255,255,255,.5); --glass-strong:rgba(250,250,252,.74); --glass-edge:rgba(255,255,255,.75);
   --glass-lift:inset 1px 1px 0 #fff,0 0 0 .5px rgba(0,0,0,.08),0 18px 40px -16px rgba(0,0,0,.25);
   --amb:radial-gradient(90% 55% at 0% 0%,#fff,rgba(255,255,255,0) 62%),radial-gradient(70% 50% at 100% 42%,rgba(234,222,205,.8),rgba(234,222,205,0) 66%),radial-gradient(90% 55% at 18% 100%,rgba(204,212,228,.85),rgba(204,212,228,0) 66%);
+  --amb-x:radial-gradient(90% calc(55% - 264px) at 0% 240px,#fff,rgba(255,255,255,0) 62%),radial-gradient(70% calc(50% - 240px) at 100% calc(42% + 38.4px),rgba(234,222,205,.8),rgba(234,222,205,0) 66%),radial-gradient(90% calc(55% - 264px) at 18% calc(100% - 240px),rgba(204,212,228,.85),rgba(204,212,228,0) 66%);
   --scrim:rgba(0,0,0,.3);
   color-scheme:light;
 }
@@ -105,6 +107,12 @@ html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--ui);font-size:16px;font-weight:500;line-height:1.4;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 /* luz ambiente bem suave, em tons neutros: é o que o vidro deixa ver. Fica parada enquanto a página rola */
 body::before{content:"";position:fixed;inset:0;z-index:-1;background:var(--amb);pointer-events:none}
+/* No Safari do iOS 26 a página aparece atrás da barra de endereço e da barra de baixo, e a camada fixa só
+   começa abaixo delas: a luz terminava ali numa linha reta. Onde o navegador entende raio com calc() (WebKit,
+   que é todo navegador do iPhone), a camada passa 240 px da tela em cima e embaixo e --amb-x desconta esses
+   240 px nas posições e nos raios: o que aparece na tela é o mesmo, e a luz continua atrás das barras.
+   O Chrome não aceita calc() no raio e descartaria a luz inteira; lá fica a camada do tamanho da tela. */
+@supports (background-image:radial-gradient(1% calc(1% - 1px),red,red)){body::before{top:-240px;bottom:-240px;background:var(--amb-x)}}
 [hidden]{display:none!important}
 /* app, não página: segurar o dedo em qualquer lugar não seleciona texto nem abre o menu de copiar do iPhone
    (no card, o toque longo abre o menu do app e o Safari selecionava a tela inteira por baixo).
@@ -161,8 +169,10 @@ label[for]{cursor:pointer}
    A faixa vazia da barra não pega toque; só os botões. */
 .appbar{position:sticky;top:calc(var(--st) + 8px);z-index:9;pointer-events:none}
 .appbar > *{pointer-events:auto}
-/* rente ao alto da tela o conteúdo se apaga de leve, para não brigar com os botões */
-.home::before{content:"";position:fixed;left:0;right:0;top:0;height:calc(var(--st) + 66px);z-index:8;pointer-events:none;background:linear-gradient(to bottom,color-mix(in srgb,var(--bg) 70%,transparent),color-mix(in srgb,var(--bg) 0%,transparent))}
+/* rente ao alto da tela o conteúdo se apaga de leve, para não brigar com os botões.
+   Sobe 240 px além da tela no mesmo tom da borda: no Safari do iOS 26 o texto que rola para trás da barra
+   de endereço continua visível, e o escurecido que nascia na borda cortava a palavra numa linha reta. */
+.home::before{content:"";position:fixed;left:0;right:0;top:-240px;height:calc(240px + var(--st) + 66px);z-index:8;pointer-events:none;background:linear-gradient(to bottom,color-mix(in srgb,var(--bg) 70%,transparent) 240px,color-mix(in srgb,var(--bg) 0%,transparent))}
 .top-actions{display:flex;align-items:center;gap:10px;flex:none}
 /* Tema: mesma altura da engrenagem (42), bolinha de 34 com 4 de folga em toda a volta e cada ícone
    no centro exato da posição da bolinha (21 e 59). Na troca, a bolinha corre com mola, o sol gira
@@ -805,8 +815,10 @@ html.dragging #binBtn.over{transform:scale(1.14);color:var(--accent-text);transi
 
 /* barras de baixo: botões soltos, sem cápsula em volta */
 .dock .dock-in{gap:10px;padding:0;background:none;border:0;box-shadow:none}
-/* o conteúdo passa por trás dos botões (é o que faz o vidro aparecer) e só se apaga de leve rente à borda da tela */
-.dock::before{content:"";position:absolute;left:0;right:0;bottom:0;height:calc(var(--sb) + 104px);z-index:-1;background:linear-gradient(to bottom,transparent,color-mix(in srgb,var(--bg) 30%,transparent) 55%,color-mix(in srgb,var(--bg) 78%,transparent));pointer-events:none}
+/* o conteúdo passa por trás dos botões (é o que faz o vidro aparecer) e só se apaga de leve rente à borda da tela.
+   Desce 240 px além da tela no mesmo tom da borda, pelo mesmo motivo do topo: no Safari do iOS 26 a lista
+   continua visível atrás da barra de baixo do navegador. */
+.dock::before{content:"";position:absolute;left:0;right:0;bottom:-240px;height:calc(var(--sb) + 104px + 240px);z-index:-1;background:linear-gradient(to bottom,transparent,color-mix(in srgb,var(--bg) 30%,transparent) calc((var(--sb) + 104px) * .55),color-mix(in srgb,var(--bg) 78%,transparent) calc(var(--sb) + 104px));pointer-events:none}
 .dock .btn.gl{height:54px;border-radius:27px;padding:0 20px;font-size:16px;font-weight:600;letter-spacing:-.012em}
 #newBtn{gap:10px}
 .plus{display:grid;place-items:center;width:26px;height:26px;margin-left:-4px;border-radius:50%;background:rgba(255,255,255,.24);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
